@@ -27,6 +27,16 @@ class AdminController extends Controller
         ]);
     }
 
+    public function create() {
+        return view('pages.admin.createUser');
+    }
+
+    public function store(Request $request) {
+        $user = new User($request->all());
+        $user->save();
+        return redirect(route('users'));
+    }
+
     public function edit(User $user) {
         return view('pages.admin.editUser', compact('user'));
     }

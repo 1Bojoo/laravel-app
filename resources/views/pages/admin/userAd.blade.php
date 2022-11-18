@@ -4,7 +4,17 @@
 
 @section('content')
 
-    <div class="" style="background-color: #F2F2F2">
+    <div class="">
+        <div class="row">
+          <div class="col-12 mt-5 mb-2">
+            <h2>Lista użytkowników</h2>
+          </div>
+          {{-- <div class="col-6">
+            <a class="float-right" href="{{route('createUser')}}">
+              <button type="button" class="btn btn-primary">Dodaj</button>
+            </a>
+          </div> --}}
+        </div>
         <table class="table">
             <thead>
               <tr>

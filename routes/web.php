@@ -31,6 +31,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
             Route::get('/pages/admin/userAd', 'users')->name('users');
+            Route::get('/pages/admin/createUser', 'create')->name('createUser');
+            Route::post('/pages/admin/userAd', 'store')->name('storeUser');
             Route::get('/pages/admin/editUser/{user}', 'edit')->name('editUser');
             Route::post('/pages/admin/userAd/{user}', 'update')->name('updateUser');
             Route::delete('/pages/admin/userAd/{user}', 'destroy');
