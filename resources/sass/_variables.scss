@@ -1,0 +1,26 @@
+// Body
+$body-bg: #f8fafc;
+
+// Typography
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+
+$utilities: (
+    "width": (
+        property: width,
+        class: w,
+        values: (
+            25: 25%,
+            50: 50%,
+            70: 70%,
+            71: 71%,
+            72: 72%,
+            73: 73%,
+            74: 74%,
+            75: 75%,
+            100: 100%,
+            auto: auto
+        )
+    )
+)
