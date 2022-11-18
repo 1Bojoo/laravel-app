@@ -23,7 +23,9 @@
                 <td>{{$user->email}}</td>
                 <td>{{$user->role}}</td>
                 <td>
-                  <button type="button" class="edit btn btn-warning">Edytuj</button>
+                  <a href="{{route('editUser', $user->id)}}">
+                    <button type="button" class="edit btn btn-warning">Edytuj</button>
+                  </a>
                   <button type="button" class="delete btn btn-danger" data-id="{{$user->id}}">Usuń</button>
                 </td>
               </tr>
@@ -39,7 +41,8 @@
       $('.delete').click(function() {
         $.ajax({
           method: "DELETE",
-          url: "/pages/admin/userAd/" + $(this).data('id')
+          url: "/pages/admin/userAd/" + $(this).data('id'),
+          data: {_token: '{{csrf_token()}}'}
         })
         .done(function(response) {
           window.location.reload();

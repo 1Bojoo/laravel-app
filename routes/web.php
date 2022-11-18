@@ -22,10 +22,18 @@ Route::get('/', function() {
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    Route::controller(AnnController::class)->group(function() {
+        Route::get('/pages/crAnn', 'create')->name('crann');
+        Route::post('/pages/crAnn', 'store');
+    });
+
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
-            Route::get('/pages/admin/userAd', 'users');
-            Route::delete('/pages/admin/userAd/{id}', 'destroy');
+            Route::get('/pages/admin/userAd', 'users')->name('users');
+            Route::get('/pages/admin/editUser/{user}', 'edit')->name('editUser');
+            Route::post('/pages/admin/userAd/{user}', 'update')->name('updateUser');
+            Route::delete('/pages/admin/userAd/{user}', 'destroy');
         });
     });
     
@@ -33,11 +41,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::controller(AnnController::class)->group(function() {
     Route::get('/pages/ann', 'index');
-    Route::get('/pages/crAnn', 'create');
-    Route::post('/pages/crAnn', 'store');
     Route::get('/pages/selAnn/{id}', 'selAnn')->name('selAnn');
 });
 
 Auth::routes();
+
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

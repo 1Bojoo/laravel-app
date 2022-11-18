@@ -65,36 +65,6 @@ class AnnController extends Controller
         return redirect('/pages/ann');
     }
 
-    // public function reservation(Request $request) {
-    //     $request->validate([
-    //         'name' => 'required',
-    //         'desc' => 'required',
-    //         'price' => 'required',
-    //         'country' => 'required',
-    //         'city' => 'required',
-    //         'province' => 'required',
-    //         'street' => 'required',
-    //         'hNum' => 'required',
-    //         'postalCode' => 'required',
-
-    //     ]);
-
-    //     Announcement::create([
-    //         'image' => implode('|', $image),
-    //         'name' => $request->name,
-    //         'desc' => $request->desc,
-    //         'price' => $request->price,
-    //         'country' => $request->country,
-    //         'city' => $request->city,
-    //         'province' => $request->province,
-    //         'street' => $request->street,
-    //         'hNum' => $request->hNum,
-    //         'postalCode' => $request->postalCode,
-    //     ]);
-
-    //     return redirect('/pages/ann');
-    // }
-
     public function create(){
         return view('pages.crAnn');
     }

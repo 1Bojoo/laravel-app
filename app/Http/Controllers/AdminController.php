@@ -20,11 +20,20 @@ class AdminController extends Controller
         return view('pages.admin.userAd', compact('users'));
     }
 
-    public function destroy($id) {
-        $flight = User::find($id);
-        $flight->delete();
+    public function destroy(User $user) {
+        $user->delete();
         return response()->json([
             'status' => 'success'
         ]);
+    }
+
+    public function edit(User $user) {
+        return view('pages.admin.editUser', compact('user'));
+    }
+
+    public function update(Request $request, User $user){
+        $user->fill($request->all());
+        $user->save();
+        return redirect(route('users'));
     }
 }

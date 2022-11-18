@@ -60,9 +60,10 @@
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
-                                        <a class="dropdown-item" href="">Panel Administratora</a>
+                                        <a class="dropdown-item" href="{{route('users')}}">Użytkownicy</a>
                                     @endcan
                                     <a class="dropdown-item" href="">Moje ogłoszenia</a>
+                                    <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
