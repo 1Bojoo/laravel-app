@@ -12,6 +12,7 @@
             <input type="file" name="image[]" class="form-control" multiple>
         </div>
     </div>
+    <input type="hidden" name="userID" class="form-control" value="{{$user}}">
     <div class="form-group">
         <label for="">Nazwa</label>
         <input type="text" name="name" class="form-control">

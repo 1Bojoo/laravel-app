@@ -24,8 +24,8 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/pages/ann') }}">
-                    {{ config('app.name', 'Laravel') }}
+                <a class="navbar-brand" href="{{ url('/') }}">
+                    JBMS
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>
@@ -62,7 +62,8 @@
                                     @can('isAdmin')
                                         <a class="dropdown-item" href="{{route('users')}}">Użytkownicy</a>
                                     @endcan
-                                    <a class="dropdown-item" href="">Moje ogłoszenia</a>
+                                    <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
+                                    <a class="dropdown-item" href="{{route('myann')}}">Moje ogłoszenia</a>
                                     <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

@@ -9,5 +9,10 @@ class Announcement extends Model
 {
     protected $table = 'announcements';
 
-    protected $fillable = ['name', 'desc', 'price', 'country', 'city', 'province', 'street', 'hNum', 'postalCode', 0, 'image'];
+    protected $fillable = ['userID', 'name', 'desc', 'price', 'country', 'city', 'province', 'street', 'hNum', 'postalCode', 0, 'image'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

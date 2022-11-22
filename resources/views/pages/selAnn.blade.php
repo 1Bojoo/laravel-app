@@ -30,14 +30,17 @@
             @guest
                 <p>Rejestracja dostępna po zalogowaniu</p>
             @else
-                <form action="/pages/selAnn" method="post" enctype="multipart/form-data">
+                <form action="/pages/selAnn/{{$anns->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
                     @csrf
-                    <div class="form-group w-70 mb-2">
-                        <input type="datetime-local" name="date-start" class="form-control">
+                    <div class="w-70">
+                        <div class="form-group mb-2">
+                            <input type="hidden" name="annId" value={{$anns->id}}>
+                            <input type="date" name="date_start" class="form-control">
+                        </div>
+                        <div class="from-group">
+                            <input type="date" name="date_end" class="form-control">
+                        </div><br>
                     </div>
-                    <div class="from-group w-70">
-                        <input type="datetime-local" name="date_end" class="form-control">
-                    </div><br>
                     <button class="btn btn-primary w-70">Zarezerwuj</button>
                 </form>
             @endguest

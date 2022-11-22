@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Auth;
 
 class AnnController extends Controller
 {
@@ -22,6 +24,7 @@ class AnnController extends Controller
     public function store(Request $request) {
         $request->validate([
             'name' => 'required',
+            'userID' => 'required',
             'desc' => 'required',
             'price' => 'required',
             'country' => 'required',
@@ -51,6 +54,7 @@ class AnnController extends Controller
 
         Announcement::create([
             'image' => implode('|', $image),
+            'userID' => $request->userID,
             'name' => $request->name,
             'desc' => $request->desc,
             'price' => $request->price,
@@ -62,10 +66,23 @@ class AnnController extends Controller
             'postalCode' => $request->postalCode,
         ]);
 
-        return redirect('/pages/ann');
+        return redirect('/');
+    }
+
+    public function reservation(Request $request){
+        Reservation::create([
+            'annID' => $request->annId,
+            'userID' => $request->user()->id,
+            'arrDate' => $request->date_start,
+            'depDate' => $request->date_end,
+        ]);
+
+        return redirect('/');
     }
 
     public function create(){
-        return view('pages.crAnn');
+        $user = auth()->user()->id;
+
+        return view('pages.crAnn', compact('user'));
     }
 }

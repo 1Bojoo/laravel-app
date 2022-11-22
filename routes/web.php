@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\AnnController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResController;
 
 /*
@@ -17,16 +18,24 @@ use App\Http\Controllers\ResController;
 |
 */
 
-Route::get('/', function() {
-    return view('welcome');
-});
-
 Route::middleware(['auth', 'verified'])->group(function () {
+
+    // OGŁOSZENIA
 
     Route::controller(AnnController::class)->group(function() {
         Route::get('/pages/crAnn', 'create')->name('crann');
         Route::post('/pages/crAnn', 'store');
+        Route::post('/pages/selAnn/{id}', 'reservation');
     });
+
+    // PANEL UŻYTKOWNIKA
+
+    Route::controller(UserController::class)->group(function() {
+        Route::get('pages/user/myAnn', 'showAnn')->name('myann');
+        Route::get('pages/user/myRes', 'showRes')->name('myres');
+    });
+
+    // PANEL ADMINISTRATORA
 
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
@@ -41,12 +50,13 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
 });
 
+//WIDOK NIEZALOGOWANEGO UŻYTKOWNIKA
+
 Route::controller(AnnController::class)->group(function() {
-    Route::get('/pages/ann', 'index');
+    Route::get('/', 'index');
     Route::get('/pages/selAnn/{id}', 'selAnn')->name('selAnn');
 });
 
 Auth::routes();
-
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

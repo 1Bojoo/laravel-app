@@ -13,14 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reservation', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('annID');
-            $table->string('userName');
-            $table->date('arrDate');
-            $table->date('depDate');
-            $table->string('email');
-            $table->timestamps();
+        Schema::table('announcements', function (Blueprint $table) {
+            $table->unsignedBigInteger('userID')->nullable()->after('id');
+            $table->foreign('userID')->references('id')->on('users');
         });
     }
 
@@ -31,6 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reservation');
+        Schema::table('announcements', function (Blueprint $table) {
+            $table->dropForeign('announcements_userID_foreign');
+            $table->dropColumn('userID');
+        });
     }
 };
