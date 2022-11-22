@@ -9,5 +9,15 @@ class Reservation extends Model
 {
     protected $table = 'reservation';
 
-    protected $fillable = ['annID', 'userID', 'arrDate', 'depDate'];
+    protected $fillable = ['announcement_id', 'user_id', 'arrDate', 'depDate'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function announcement()
+    {
+        return $this->belongsTo(Announcement::class);
+    }
 }

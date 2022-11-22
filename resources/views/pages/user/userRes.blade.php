@@ -15,24 +15,17 @@
               <tr>
                 <th scope="col">#</th>
                 <th scope="col">Nazwa</th>
-                <th scope="col">Email</th>
-                <th scope="col">Rola</th>
-                <th scope="col">Akcje</th>
+                <th scope="col">Od</th>
+                <th scope="col">Do</th>
               </tr>
             </thead>
             <tbody>
-              @foreach($anns as $ann)
+              @foreach($result as $ann)
               <tr>
                 <th scope="row">{{$ann->id}}</th>
+                <td>{{$ann->user_id}}</td>
                 <td>{{$ann->name}}</td>
-                <td>{{$user->email}}</td>
-                <td>{{$user->role}}</td>
-                <td>
-                  <a href="{{route('editUser', $user->id)}}">
-                    <button type="button" class="edit btn btn-warning">Edytuj</button>
-                  </a>
-                  <button type="button" class="delete btn btn-danger" data-id="{{$user->id}}">Usuń</button>
-                </td>
+                <td>{{$ann->name}}</td>
               </tr>
               @endforeach
             </tbody>

@@ -71,8 +71,8 @@ class AnnController extends Controller
 
     public function reservation(Request $request){
         Reservation::create([
-            'annID' => $request->annId,
-            'userID' => $request->user()->id,
+            'announcement_id' => $request->annId,
+            'user_id' => $request->user()->id,
             'arrDate' => $request->date_start,
             'depDate' => $request->date_end,
         ]);

@@ -15,8 +15,10 @@ return new class extends Migration
     {
         Schema::create('reservation', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('annID');
-            $table->integer('userID');
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('announcement_id')->nullable();
+            $table->foreign('announcement_id')->references('id')->on('announcements');
             $table->date('arrDate');
             $table->date('depDate');
             $table->timestamps();
