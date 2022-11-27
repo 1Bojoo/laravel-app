@@ -4,12 +4,19 @@
 
 @section('content')
 
+  @php
+    $counter = 1;
+  @endphp
+
     <div class="">
         <div class="row">
           <div class="col-12 mt-5 mb-2">
             <h2>Lista rezerwacji</h2>
           </div>
         </div>
+        @if ()
+            
+        @else
         <table class="table">
             <thead>
               <tr>
@@ -20,16 +27,17 @@
               </tr>
             </thead>
             <tbody>
-              @foreach($result as $ann)
+              @foreach($result as $item)
               <tr>
-                <th scope="row">{{$ann->id}}</th>
-                <td>{{$ann->user_id}}</td>
-                <td>{{$ann->name}}</td>
-                <td>{{$ann->name}}</td>
+                <th scope="row">{{$counter++}}</th>
+                <td>{{$item->user_id}}</td>
+                <td>{{$item->name}}</td>
+                <td>{{$item->desc}}</td>
               </tr>
               @endforeach
             </tbody>
           </table>
+          @endif
     </div>
 
 @endsection

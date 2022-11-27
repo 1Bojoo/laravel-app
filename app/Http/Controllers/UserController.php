@@ -20,12 +20,19 @@ class UserController extends Controller
 
     public function showRes(){
         $userID = auth()->user()->id;
-        $res = Reservation::where('user_id', $userID)->pluck('announcement_id');
-        $anns2 = Announcement::where('id', $res)->get();
-        $anns = User::find($userID)->reservation;
+        $check = Reservation::all();
 
-        $merged = $anns->merge($anns2);
-        $result = $merged->all();
+        if(!$check->isEmpty()){
+            $res = Reservation::where('user_id', $userID)->pluck('announcement_id');
+            $anns2 = Announcement::where('id', $res)->get();
+            // $anns = User::find($userID)->reservation;
+            $anns = Reservation::where('user_id', $userID)->get();
+
+            $merged = $anns->merge($anns2);
+            $result = $merged->all();
+        }else{
+            $result = collect([]);
+        }
 
         return View::make('pages.user.userRes')
         ->with(compact('result'));

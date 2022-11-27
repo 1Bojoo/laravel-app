@@ -44,7 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::post('/pages/admin/userAd', 'store')->name('storeUser');
             Route::get('/pages/admin/editUser/{user}', 'edit')->name('editUser');
             Route::post('/pages/admin/userAd/{user}', 'update')->name('updateUser');
-            Route::delete('/pages/admin/userAd/{user}', 'destroy');
+            Route::delete('/pages/admin/userAd/{user}', 'destroy')->name('destroyUser');
         });
     });
     
