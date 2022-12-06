@@ -4,14 +4,10 @@
 
 @section('content')
 
-@php
-    $counter = 1;
-@endphp
-
 @foreach ($anns as $item)
 
     @php
-        $image = DB::table('announcements')->where('id', $counter)->first();
+        $image = DB::table('announcements')->where('id', $item->id)->first();
         $images = explode('|', $image->image);
         $url = route('selAnn', ['id' => $item->id]);
     @endphp
@@ -62,11 +58,7 @@
       </div>
 
   </a>
-
-    @php
-        $counter++;   
-    @endphp
-    
+   
 @endforeach
 
 @endsection

@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+
+body {
+    margin: 0 auto;
+    background-color: #C4C4C4;
+    font-family: 'Lato', sans-serif;
+    scroll-behavior: smooth;
+}
+
+/* CLASS */
+
+.navbar {
+    background-color: #181818 !important;
+}
+
+.dropdown-menu.show{
+  left: -98px !important;
+}
+
+.tekst-custom {
+    margin-top: 120px !important;
+}
+
+.tekst-custom-2 {
+    margin-top: 55px !important;
+}
+
+.recommended {
+    width: 100%;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 180px;
+    z-index: 4;
+}
+
+.recommended-header {
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 80px;
+    margin-top: 80px;
+    text-transform: uppercase;
+}
+
+.responsiveimg {
+    width: 100%;
+    max-width: 1920px;
+    height: auto;
+}
+
+.responsivemini {
+    max-width: 100%;
+    border-radius: 40px;
+    height: auto;
+    -webkit-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    -moz-box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+    box-shadow: 8px 8px 24px 0px rgba(66, 68, 90, 1);
+}
+
+.img-mini > p {
+  margin-top: 15px;
+  letter-spacing: 1px;
+}
+
+.responsivemini:hover {
+    cursor: pointer;
+    -webkit-filter: grayscale(100%);
+    -moz-filter: grayscale(100%);
+    filter: grayscale(100%);
+    transition: all 0.5s ease;
+}
+
+.gallery-box {
+    position: relative;
+    margin-bottom: 25px;
+    text-align: center;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+/* ID */
+
+#category {
+  letter-spacing: 1px;
+  border-radius: 0px 0px 20px 20px;
+  z-index: 9;
+}
+
+#loginLink {
+  color: #8b7b72 !important;
+}
+
+#loginLink:hover {
+  color: rgb(219, 219, 219) !important;
+}
+
+#heroText > h1, #heroText > h4 {
+  letter-spacing: 10px;
+}
+
+#lockImg {
+  cursor: pointer;
+}
+
+#lockImg:hover {
+  content: url('../img/lockPremium.png');
+}
+
+#boyImg {
+  cursor: pointer;
+}
+
+#boyImg:hover {
+  content: url('../img/boyPremium.png');
+}
+
+.btn-warning{
+  color: hsl(0, 0%, 100%) !important;
+  border-color: hsl(106, 34%, 52%) !important;
+  background-color: hsl(106, 34%, 52%) !important;
+}
+
+.btn-outline-warning {
+  color: hsl(106, 34%, 52%) !important;
+  border-color: hsl(106, 34%, 52%) !important;
+}
+.btn-outline-warning:hover {
+  color: rgb(255, 255, 255) !important;
+  background-color: hsl(106, 34%, 52%) !important;
+  border-color: hsl(106, 34%, 52%) !important;
+}
+
+.gradient-custom {
+  background: linear-gradient(to bottom, rgba(255,255,255,0.15) 0%, rgba(0,0,0,0.15) 100%), radial-gradient(at top center, rgba(255,255,255,0.40) 0%, rgba(0,0,0,0.40) 120%) #989898;
+  }
+
+@media (min-width: 1200px){
+    .recommended {
+         max-width: 1140px;
+    }
+}
+
+@keyframes shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}

@@ -5,13 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Announcement;
 use App\Models\User;
+use App\Models\Reservation;
 
 class AdminController extends Controller
 {
     public function ann() {
         $anns = Announcement::all();
 
-        return view('pages.admin.annAd', compact('anns'));
+        return view('pages.admin.userAnn', compact('anns'));
     }
 
     public function users() {
@@ -20,11 +21,17 @@ class AdminController extends Controller
         return view('pages.admin.userAd', compact('users'));
     }
 
-    public function destroy(User $user) {
+    public function destroyUser(User $user) {
+        Announcement::where('userID', $user->id)->delete();
+        Reservation::where('user_id', $user->id)->delete();
         $user->delete();
         return response()->json([
             'status' => 'success'
         ]);
+    }
+
+    public function destroyAnn(Announcement $ann) {
+        $ann->delete();
     }
 
     public function create() {

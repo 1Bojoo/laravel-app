@@ -6,6 +6,7 @@ use App\Http\Controllers\AnnController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,7 +33,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(UserController::class)->group(function() {
         Route::get('pages/user/myAnn', 'showAnn')->name('myann');
+
+        Route::get('pages/user/myAnn/{id}', 'destroyAnn')->name('delAnn');
+
+        Route::get('pages/user/editAnn/{ann}', 'editAnn')->name('editAnn');
+        Route::post('pages/user/myAnn/{ann}', 'updateAnn')->name('updateAnn');
+
         Route::get('pages/user/myRes', 'showRes')->name('myres');
+
+        Route::get('pages/user/myRes/{id}', 'destroyRes')->name('delRes');
+
+        // Route::get('pages/user/myRes/{id}', 'editRes')->name('editRes');
+        // Route::post('pages/user/myRes/{id}', 'updateRes')->name('updateRes');
     });
 
     // PANEL ADMINISTRATORA
@@ -40,11 +52,15 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
             Route::get('/pages/admin/userAd', 'users')->name('users');
+            Route::get('/pages/admin/userAnn', 'ann')->name('announcements');
             Route::get('/pages/admin/createUser', 'create')->name('createUser');
             Route::post('/pages/admin/userAd', 'store')->name('storeUser');
+
             Route::get('/pages/admin/editUser/{user}', 'edit')->name('editUser');
             Route::post('/pages/admin/userAd/{user}', 'update')->name('updateUser');
-            Route::delete('/pages/admin/userAd/{user}', 'destroy')->name('destroyUser');
+
+            Route::delete('/pages/admin/userAd/{user}', 'destroyUser')->name('destroyUser');
+            Route::delete('/pages/admin/userAnn/{ann}', 'destroyAnn')->name('destroyAnn');
         });
     });
     
@@ -53,10 +69,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //WIDOK NIEZALOGOWANEGO UŻYTKOWNIKA
 
 Route::controller(AnnController::class)->group(function() {
-    Route::get('/', 'index');
+    Route::get('/', 'index')->name('ann');
     Route::get('/pages/selAnn/{id}', 'selAnn')->name('selAnn');
 });
 
-Auth::routes();
+Route::get('/main', [MainController::class, 'index'])->name('main');
+
+Auth::routes(['verify' => true]);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -51,7 +51,7 @@
       $('.delete').click(function() {
         $.ajax({
           method: "DELETE",
-          url: "/pages/admin/userAd/" + $(this).data('id'),
+          url: "{{route('users')}}/" + $(this).data('id'),
           data: {_token: '{{csrf_token()}}'}
         })
         .done(function(response) {

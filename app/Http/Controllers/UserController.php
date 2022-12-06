@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\DB;
 use App\Models\Announcement;
 use App\Models\User;
 use App\Models\Reservation;
@@ -20,21 +21,37 @@ class UserController extends Controller
 
     public function showRes(){
         $userID = auth()->user()->id;
-        $check = Reservation::all();
 
-        if(!$check->isEmpty()){
-            $res = Reservation::where('user_id', $userID)->pluck('announcement_id');
-            $anns2 = Announcement::where('id', $res)->get();
-            // $anns = User::find($userID)->reservation;
-            $anns = Reservation::where('user_id', $userID)->get();
+        $res = DB::table('announcements')
+                    ->leftJoin('reservation', 'announcements.id', '=', 'reservation.announcement_id')
+                    ->where('reservation.user_id', $userID)
+                    ->get();
 
-            $merged = $anns->merge($anns2);
-            $result = $merged->all();
-        }else{
-            $result = collect([]);
-        }
 
         return View::make('pages.user.userRes')
-        ->with(compact('result'));
+        ->with(compact('res'));
     }
+
+    public function destroyAnn($id){
+        $annID = Announcement::where('id', $id)->pluck('id');
+        Reservation::where('announcement_id', $annID)->delete();
+        Announcement::where('id', $id)->delete();
+        return redirect(route('myann'));
+    }
+
+    public function editAnn(Announcement $ann){
+        return view('pages/user/userAnnEdit', compact('ann'));
+    }
+
+    public function updateAnn(Request $request, Announcement $ann){
+        $ann->fill($request->all());
+        $ann->save();
+        return redirect(route('myann'));
+    }
+
+    public function destroyRes($id){
+        Reservation::where('id', $id)->delete();
+        return redirect(route('myres'));
+    }
+
 }

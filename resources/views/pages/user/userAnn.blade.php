@@ -33,6 +33,7 @@
                     <tr>
                         <th scope="col">Nazwa</th>
                         <th scope="col">Cena</th>
+                        <th scope="col">Akcje</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -40,6 +41,10 @@
                     <tr>
                         <td>{{$ann->name}}</td>
                         <td>{{$ann->price}} zł</td>
+                        <td>
+                            <a href="{{route('editAnn', $ann->id)}}" class="btn btn-warning">Edytuj</a>
+                            <a href="{{route('delAnn', $ann->id)}}" class="btn btn-danger">Usuń</a>
+                        </td>
                     </tr>
                     @endforeach
                     </tbody>
