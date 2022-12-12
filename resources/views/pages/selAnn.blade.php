@@ -33,12 +33,15 @@
                 <form action="/pages/selAnn/{{$anns->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
                     @csrf
                     <div class="w-70">
-                        <div class="form-group mb-2">
+                        <div class="input-group date mb-2">
                             <input type="hidden" name="annId" value={{$anns->id}}>
-                            <input type="date" name="date_start" class="form-control">
+                            <input type="text" name="date_start" id="startDate" class="form-control" @isset($res) @foreach($res as $item) data-id='["{{$item->arrDate}}","{{$item->depDate}}"]' @endforeach @endisset>
+                            <div class="input-group-addon">
+                                <span class="glyphicon glyphicon-th"></span>
+                            </div>
                         </div>
-                        <div class="from-group">
-                            <input type="date" name="date_end" class="form-control">
+                        <div class="from-group mb-2">
+                            <input type="date" name="date_end" id="endDate" class="form-control">
                         </div><br>
                     </div>
                     <button class="btn btn-primary w-70">Zarezerwuj</button>
@@ -46,5 +49,32 @@
             @endguest
         </div>
     </div>
+
+@endsection
+@section('script')
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
+
+    <script type="text/javascript">
+
+        var resDates = ['2022-12-15', '2022-12-20'];
+
+        var date = new Date();
+        date.setDate(date.getDate()+1);
+
+        $('#startDate').datepicker({
+            autoclose: true,
+            clearBtn: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd',
+            startDate: date,
+            beforeShowDay: function (date) {
+                var dateStr = moment(date).format('YYYY-MM-DD');
+                return $.inArray(dateStr,resDates) == -1;
+            }
+        })
+
+    </script>
 
 @endsection

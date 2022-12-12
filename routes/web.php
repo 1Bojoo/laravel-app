@@ -27,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/pages/crAnn', 'create')->name('crann');
         Route::post('/pages/crAnn', 'store');
         Route::post('/pages/selAnn/{id}', 'reservation');
+        // Route::get('/pages/selAnn/{id}/fetch-res', 'fetchRes')->name('fRes');
     });
 
     // PANEL UŻYTKOWNIKA

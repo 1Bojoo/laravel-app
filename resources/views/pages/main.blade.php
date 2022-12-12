@@ -24,7 +24,7 @@
   <div class="collapse navbar-collapse justify-content-center" id="navbarNavDropdown">
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" href="">Fryzjer</a>
+        <a class="nav-link" href="{{route('ann')}}">Fryzjer</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="">Masaż</a>

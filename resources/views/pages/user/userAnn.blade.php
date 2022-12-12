@@ -3,13 +3,6 @@
 @section('title', 'Moje ogłoszenia')
 
 @section('content')
-
-    @foreach($anns as $ann)
-        @php
-            $image = DB::table('announcements')->where('id', $ann->id)->first();
-            $images = explode('|', $image->image);
-        @endphp
-    @endforeach
     
     <div class="">
         <div class="row">
@@ -24,6 +17,11 @@
                 </form>
             @else
                 @foreach($anns as $ann)
+                    @php
+                        $image = DB::table('announcements')->where('id', $ann->id)->first();
+                        $images = explode('|', $image->image);
+                    @endphp
+
                     <a href="{{route('selAnn', ['id' => $ann->id])}}">
                         <img src="{{URL::to($images[0])}}" alt="" class="rounded" style="width: 300px; height: 200px;">
                     </a>

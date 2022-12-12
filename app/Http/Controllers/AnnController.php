@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Announcement;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Auth;
 
 class AnnController extends Controller
@@ -16,9 +17,19 @@ class AnnController extends Controller
     }
 
     public function selAnn($id) {
+
+        $res = Reservation::where('announcement_id', $id)->get();
+
         $anns = Announcement::find($id);
 
-        return view('pages.selAnn', compact('anns'));
+        if($res->isEmpty()){
+
+            return view('pages.selAnn', compact('anns'));
+
+        } else{
+
+            return view('pages.selAnn', compact('anns', 'res'));
+        }
     }
 
     public function store(Request $request) {
@@ -77,7 +88,7 @@ class AnnController extends Controller
             'depDate' => $request->date_end,
         ]);
 
-        return redirect('/');
+        return redirect(route('myres'));
     }
 
     public function create(){
