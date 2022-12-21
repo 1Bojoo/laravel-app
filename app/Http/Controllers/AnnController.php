@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Announcement;
 use App\Models\Reservation;
+use App\Models\User;
+use App\Mail\SendMailAfterRes;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
 use Auth;
 
 class AnnController extends Controller
@@ -28,7 +32,22 @@ class AnnController extends Controller
 
         } else{
 
-            return view('pages.selAnn', compact('anns', 'res'));
+            $dates = [];
+            
+            foreach($res as $range){
+                $stDate = $range->arrDate;
+                $enDate = $range->depDate;
+
+                $start_timestamp = strtotime($stDate);
+                $end_timestamp = strtotime($enDate);
+
+                for ($i = $start_timestamp; $i <= $end_timestamp; $i = strtotime('+1 day', $i)) {
+                    $date = date('Y-m-d', $i);
+                    array_push($dates, $date);
+                }
+            }
+
+            return view('pages.selAnn', compact('anns', 'res', 'dates'));
         }
     }
 
@@ -87,6 +106,14 @@ class AnnController extends Controller
             'arrDate' => $request->date_start,
             'depDate' => $request->date_end,
         ]);
+
+        $userEmail = auth()->user()->email;
+        $res = Reservation::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->pluck('announcement_id')->first();
+        $ann = Announcement::where('id', $res)->orderBy('id', 'desc')->pluck('userID')->first();
+        $user = User::where('id', $ann)->pluck('email');
+
+        Mail::to($userEmail)->send(new SendMailAfterRes());
+        Mail::to($user)->send(new SendMailAfterRes());
 
         return redirect(route('myres'));
     }

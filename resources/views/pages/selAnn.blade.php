@@ -35,7 +35,7 @@
                     <div class="w-70">
                         <div class="input-group date mb-2">
                             <input type="hidden" name="annId" value={{$anns->id}}>
-                            <input type="text" name="date_start" id="startDate" class="form-control" @isset($res) @foreach($res as $item) data-id='["{{$item->arrDate}}","{{$item->depDate}}"]' @endforeach @endisset>
+                            <input type="text" name="date_start" id="startDate" class="form-control">
                             <div class="input-group-addon">
                                 <span class="glyphicon glyphicon-th"></span>
                             </div>
@@ -53,27 +53,18 @@
 @endsection
 @section('script')
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
-
     <script type="text/javascript">
 
-        var resDates = ['2022-12-15', '2022-12-20'];
-
-        var date = new Date();
-        date.setDate(date.getDate()+1);
+        var dates = @json($dates);
 
         $('#startDate').datepicker({
+            format: 'yyyy/mm/dd',
+            startDate: new Date(),
             autoclose: true,
             clearBtn: true,
-            todayHighlight: true,
-            format: 'yyyy-mm-dd',
-            startDate: date,
-            beforeShowDay: function (date) {
-                var dateStr = moment(date).format('YYYY-MM-DD');
-                return $.inArray(dateStr,resDates) == -1;
-            }
-        })
+            todayBtn: true,
+            datesDisabled: dates
+        });
 
     </script>
 

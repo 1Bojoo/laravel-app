@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ResController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\MailController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,7 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::controller(AnnController::class)->group(function() {
         Route::get('/pages/crAnn', 'create')->name('crann');
         Route::post('/pages/crAnn', 'store');
-        Route::post('/pages/selAnn/{id}', 'reservation');
+        Route::post('/pages/selAnn/{id}', 'reservation')->name('res');
         // Route::get('/pages/selAnn/{id}/fetch-res', 'fetchRes')->name('fRes');
     });
 
