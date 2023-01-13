@@ -4,6 +4,8 @@
 
 @section('content')
 
+<div class="d-flex flex-row">
+
 @foreach ($anns as $item)
 
     @php
@@ -12,9 +14,9 @@
         $url = route('selAnn', ['id' => $item->id]);
     @endphp
 
-      <a href="{{$url}}" class="text-decoration-none">
-
       <div class="card--container d-flex flex-column p-3" style="width: 400px;" href="">
+
+        <a href="{{$url}}" class="text-decoration-none">
               
           <img src="{{URL::to($images[0])}}" alt="" class="w-100 mb-2 rounded">
               
@@ -58,6 +60,8 @@
       </div>
 
   </a>
+
+</div>
    
 @endforeach
 

@@ -30,25 +30,70 @@
             @guest
                 <p>Rejestracja dostępna po zalogowaniu</p>
             @else
-                <form action="/pages/selAnn/{{$anns->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
-                    @csrf
-                    <div class="w-70">
-                        <div class="input-group date mb-2">
-                            <input type="hidden" name="annId" value={{$anns->id}}>
-                            <input type="text" name="date_start" id="startDate" class="form-control">
-                            <div class="input-group-addon">
-                                <span class="glyphicon glyphicon-th"></span>
-                            </div>
-                        </div>
-                        <div class="from-group mb-2">
-                            <input type="date" name="date_end" id="endDate" class="form-control">
-                        </div><br>
-                    </div>
-                    <button class="btn btn-primary w-70">Zarezerwuj</button>
-                </form>
+                <div class="d-flex items-align-center justify-content-center">
+                    <button class="btn btn-primary w-70" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Zarezerwuj</button>
+                </div>
             @endguest
         </div>
     </div>
+
+    <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Rezerwacja</h1>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <select id="selRes" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-lg example">
+                        <option value="cDate">Wybierz okres rezerwacji</option>
+                        <option value="acadYear">Rok akademicki</option>
+                        <option value="acadSem">Semestr akademicki</option>
+                        <option value="selBooking">Wybrany okres</option>
+                    </select>
+
+                    <select id="selAcadYear" class="form-select form-select-md mb-3 mx-auto w-50">
+                        <option value="cYear">Wybierz rok akademicki</option>
+                        <option value="acadYear">2023/2024</option>
+                    </select>
+
+                    <select id="selAcadSem" class="form-select form-select-md mb-3 mx-auto w-50" hidden>
+                        <option value="cSem">Wybierz semestr</option>
+                        <option value="firstSem">2022/2023 (październik/luty)</option>
+                        <option value="secondSem">2022/2023 (luty/czerwiec)</option>
+                    </select>
+                </div>
+
+                <form action="/pages/selAnn/{{$anns->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                    @csrf
+                    <div class="w-50">
+
+                        <div class="resForm" hidden>
+                            <div class="form-group date mb-2 d-flex flex-row">
+                                <input type="hidden" name="annId" value={{$anns->id}}>
+                                <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
+                                <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
+                                    <i class="bi bi-calendar"></i>
+                                </div>
+                            </div>
+                            <div class="from-group date d-flex flex-row">
+                                <input type="text" placeholder="Do" name="date_end" id="endDate" class="form-control">
+                                <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
+                                    <i class="bi bi-calendar"></i>
+                                </div>
+                            </div><br>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-50 resButton" hidden>Zarezerwuj</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cofnij</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
 @endsection
 @section('script')
@@ -57,7 +102,110 @@
 
         var dates = @json($dates);
 
+        var currDate = new Date();
+        mm = currDate.getMonth()+1;
+
+        var selRes = $('#selRes option:selected').val();
+
+        if(selRes == "cDate"){
+                $('#selAcadYear').attr('hidden', true);
+                $('#selAcadSem').attr('hidden', true);
+                $('.resForm').attr('hidden', true);
+                $('.resButton').attr('hidden', true);
+            }
+
+        console.log(selRes);
+        var selAcadSem = $('#selAcadSem option:selected').val();
+        console.log(selAcadSem);
+
+        $("#selRes").change(function(){
+            selRes = $('#selRes option:selected').val();
+            console.log(selRes);
+            if(selRes == "cDate"){
+                $('#selAcadYear').attr('hidden', true);
+                $('#selAcadSem').attr('hidden', true);
+                $('.resForm').attr('hidden', true);
+                $('.resButton').attr('hidden', true);
+                $('#selAcadSem').val("cSem");
+                $('#selAcadYear').val("cYear");
+            }
+            else if(selRes == "acadYear"){
+                $('#selAcadSem').attr('hidden', true);
+                $('.resForm').attr('hidden', true);
+                $('#selAcadYear').removeAttr('hidden');
+                $('.resButton').removeAttr('hidden');
+                $('#selAcadYear').val("cYear");
+                if(mm < 10 && mm > 6){
+                    $('#startDate').val("2023-10-01");
+                    $('#endDate').val("2024-06-30");
+                }
+                else{
+                    mm = mm = currDate.getMonth()+2;
+                    var Date = currDate.getFullYear() + "-" + mm + "-01"; 
+                    $('#startDate').val(Date);
+                    $('#endDate').val("2024-06-30");
+                }
+            }
+            else if(selRes == "acadSem"){
+                $('#selAcadYear').attr('hidden', true);
+                $('.resForm').attr('hidden', true);
+                $('#selAcadSem').removeAttr('hidden');
+                $('.resButton').removeAttr('hidden');
+                if(mm < 2){
+                        $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
+                    }
+
+                $("#selAcadSem").change(function(){
+                    selAcadSem = $('#selAcadSem option:selected').val();
+                    if(selAcadSem == "firstSem"){
+                        if(mm >= 10 || mm <= 2){
+                            mm = currDate.getMonth()+2;
+                        }
+                        else{
+                            mm = "10";
+                        }
+                        endDate = "2023-02-28";
+                    }
+                    else{
+                        if(mm <= 2 && mm >= 6){
+                            mm = "02";
+                        }
+                        else{
+                            mm = currDate.getMonth()+2
+                            if(mm < 10){
+                                mm = "0"+mm;
+                            }
+                        }
+                        endDate = "2023-06-30"
+                    }
+                    var Date = currDate.getFullYear() + "-" + mm + "-01";
+                    $('#startDate').val(Date);
+                    $('#endDate').val(endDate);
+
+                })
+
+            }
+            else if(selRes == "selBooking"){
+                $('#startDate').val("");
+                $('#endDate').val("");
+                $('#selAcadSem').attr('hidden', true);
+                $('#selAcadYear').attr('hidden', true);
+                $('#selAcadSem').val("cSem");
+                $('.resForm').removeAttr('hidden');
+                $('#selAcadYear').val("cYear");
+            }
+        })
+
         $('#startDate').datepicker({
+            format: 'yyyy/mm/dd',
+            startDate: new Date(),
+            autoclose: true,
+            clearBtn: true,
+            todayBtn: true,
+            datesDisabled: dates
+        });
+
+        $('#endDate').datepicker({
             format: 'yyyy/mm/dd',
             startDate: new Date(),
             autoclose: true,

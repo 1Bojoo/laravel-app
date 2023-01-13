@@ -110,10 +110,10 @@ class AnnController extends Controller
         $userEmail = auth()->user()->email;
         $res = Reservation::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->pluck('announcement_id')->first();
         $ann = Announcement::where('id', $res)->orderBy('id', 'desc')->pluck('userID')->first();
-        $user = User::where('id', $ann)->pluck('email');
+        $owner = User::where('id', $ann)->pluck('email');
 
         Mail::to($userEmail)->send(new SendMailAfterRes());
-        Mail::to($user)->send(new SendMailAfterRes());
+        Mail::to($owner)->send(new SendMailAfterRes());
 
         return redirect(route('myres'));
     }
