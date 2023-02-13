@@ -70,6 +70,7 @@
                                     <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
                                     <a class="dropdown-item" href="{{route('myann')}}">Moje ogłoszenia</a>
                                     <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
+                                    <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Wygeneruj kod QR</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
@@ -86,6 +87,33 @@
                 </div>
             </div>
         </nav>
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">Wygeneruj kod QR</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span>Podaj swoje hasło w celu wygenerowania kodu QR: </span>
+
+                    <div class="form-outline form-white input-group mb-2">
+                        <input id="pass" type="password" class="form-control form-control-md @error('password') is-invalid @enderror" name="pass" required>
+                    </div>
+                        
+                    <button type="button" class="btn btn-primary genQR">Generuj</button><br><br>
+                    <span>Po wygenerowaniu kod QR zostanie wysłany na maila</span>
+
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cofnij</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         @if ($errors->any())
             <div class="alert alert-danger">
                 @foreach($errors->all() as $error)
@@ -98,5 +126,31 @@
         </main>
     </div>
     @yield('script')
+        <script type="text/javascript">          
+
+            $('.genQR').click(function() {
+
+                var pass = $('#pass').val();
+
+                console.log(pass);
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: 'POST',
+                    url: "{{ route('generateQR') }}",
+                    data: {
+                        pass: pass, 
+                    },
+                    success: function(c){
+                        console.log(c);
+                    },
+                    error: function(ee){
+                        console.log(ee);
+                    }
+                })
+            });
+        </script>
 </body>
 </html>

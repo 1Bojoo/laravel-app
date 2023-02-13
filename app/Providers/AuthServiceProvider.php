@@ -7,6 +7,10 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Notifications\VerifyEmail;
+use Illuminate\Notifications\Messages\MailMessage;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Auth;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -30,6 +34,13 @@ class AuthServiceProvider extends ServiceProvider
 
         $this->defineUserRoleGate('isAdmin', UserRole::ADMIN);
         $this->defineUserRoleGate('isUser', UserRole::USER);
+
+        VerifyEmail::toMailUsing(function ($notifiable, $url) {
+            return (new MailMessage)
+                ->subject('Verify Email Address')
+                ->line('Click the button below to verify your email address.')
+                ->action('Verify Email Address', $url);
+        });
     }
 
     private function defineUserRoleGate(string $name, string $role): void

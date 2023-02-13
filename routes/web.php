@@ -45,6 +45,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('pages/user/myRes/{id}', 'destroyRes')->name('delRes');
 
+        Route::post('/generateQR', 'genQR')->name('generateQR');
+
         // Route::get('pages/user/myRes/{id}', 'editRes')->name('editRes');
         // Route::post('pages/user/myRes/{id}', 'updateRes')->name('updateRes');
     });
@@ -76,6 +78,8 @@ Route::controller(AnnController::class)->group(function() {
 });
 
 Route::get('/main', [MainController::class, 'index'])->name('main');
+
+Route::post('/validateQR', [UserController::class, 'qrLogin'])->name('validateQR');
 
 Auth::routes(['verify' => true]);
 

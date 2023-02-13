@@ -9,6 +9,12 @@ use App\Models\Announcement;
 use App\Models\User;
 use App\Models\Reservation;
 use Auth;
+use App\Providers\RouteServiceProvider;
+use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Hash;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Mail\sendQR;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -52,6 +58,39 @@ class UserController extends Controller
     public function destroyRes($id){
         Reservation::where('id', $id)->delete();
         return redirect(route('myres'));
+    }
+
+    public function qrLogin(Request $request){
+        $qr = $request->qr_code;
+        $qrData = explode('|', $qr);
+
+        $credentials = ['email'=>$qrData[0], 'password'=>$qrData[1]];
+     
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+
+            return redirect()->intended('/');
+        }
+        else{
+            return redirect('/login')->with('message', 'Błędny kod QR');
+        }
+    }
+
+    public function genQR(Request $request){
+        $userEmail = auth()->user()->email;
+        $userPass = $request->pass;
+        $data = $userEmail."|".$userPass;
+        $userHashedPass = auth()->user()->password;
+
+        if(Hash::check($userPass, $userHashedPass)){
+            $qrcode = QrCode::size(500)->margin(1)->format('png')->generate($data, '../public/qrcodes/qrcode.png');
+            $pathToImage = '../public/qrcodes/qrcode.png';
+            Mail::to($userEmail)->send(new sendQR($pathToImage));
+            return response('Udało się!');
+        }
+        else{
+            return response('Błędne hasło');
+        }
     }
 
 }

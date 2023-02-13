@@ -20,7 +20,7 @@
             </div>
             <div class="ann-gallery rounded d-flex flex-wrap">
                 @foreach($images as $img)
-                    <img src="{{URL::to($img)}}" class="w-50 p-1" alt="Zdjecie">
+                    <img src="{{URL::to($img)}}" class="w-50 p-1 rounded" alt="Zdjecie">
                 @endforeach
             </div>
             <h3 >{{$anns->desc}}</h3>
@@ -90,6 +90,35 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cofnij</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="userDataModal" tabindex="-1" role="dialog" aria-labelledby="userDataModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="form-group">
+                  <label for="recipient-name" class="col-form-label">Recipient:</label>
+                  <input type="text" class="form-control" id="recipient-name">
+                </div>
+                <div class="form-group">
+                  <label for="message-text" class="col-form-label">Message:</label>
+                  <textarea class="form-control" id="message-text"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Send message</button>
             </div>
           </div>
         </div>
