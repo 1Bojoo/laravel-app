@@ -51,11 +51,11 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                        {{-- <div class="row mb-3">
                             <div class="col-md-6 offset-md-4">
                                     <button class="qrLogin btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Kod QR</button>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
@@ -80,7 +80,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="staticBackdrop" data-bs-backdrop="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+{{-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
@@ -95,7 +95,7 @@
         </div>
       </div>
     </div>
-</div>
+</div> --}}
 
 @endsection
 @section('script')

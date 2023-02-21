@@ -19,10 +19,40 @@
                 @endif
             </div>
             <div class="ann-gallery rounded d-flex flex-wrap">
-                @foreach($images as $img)
-                    <img src="{{URL::to($img)}}" class="w-50 p-1 rounded" alt="Zdjecie">
+                @foreach(array_slice($images, 0, 3) as $img)
+                    <img src="{{URL::to($img)}}"
+                    class="w-50 p-1 rounded" 
+                    alt="Zdjecie">
                 @endforeach
+                    <button type="button" class="btn w-50 border border-0 p-0 position-relative" data-bs-toggle="modal" data-bs-target="#staticBackdropGallery">
+                        <img src="{{URL::to($images[3])}}"
+                        class="w-100 p-1 rounded" 
+                        alt="Zdjecie">
+                        <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white"> Więcej zdjęć</p>
+                    </button>
             </div>
+
+            {{-- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner rounded">
+                  <div class="carousel-item active">
+                    <img src="{{URL::to($images[0])}}" id="id_0" class="d-block w-100" alt="cos tam">
+                  </div>
+                  @foreach(array_slice($images, 1) as $img)
+                    <div class="carousel-item">
+                        <img src="{{URL::to($img)}}" id="id_{{$loop->index+1}}" class="d-block w-100" alt="...">
+                    </div>
+                  @endforeach
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                  <span class="visually-hidden">Next</span>
+                </button>
+              </div> --}}
+
             <h3 >{{$anns->desc}}</h3>
         </div>
         <div class="reservation w-25 rounded ml-2 d-flex flex-column text-center" style="background-color: white; box-shadow: 0px 0px 10px -8px rgba(66, 68, 90, 1);">
@@ -44,7 +74,6 @@
               <h1 class="modal-title fs-5" id="staticBackdropLabel">Rezerwacja</h1>
             </div>
             <div class="modal-body">
-
                 <div>
                     <select id="selRes" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-lg example">
                         <option value="cDate">Wybierz okres rezerwacji</option>
@@ -67,8 +96,8 @@
 
                 <form action="/pages/selAnn/{{$anns->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
                     @csrf
-                    <div class="w-50">
 
+                    <div class="w-50">
                         <div class="resForm" hidden>
                             <div class="form-group date mb-2 d-flex flex-row">
                                 <input type="hidden" name="annId" value={{$anns->id}}>
@@ -85,6 +114,7 @@
                             </div><br>
                         </div>
                     </div>
+
                     <button class="btn btn-primary w-50 resButton" hidden>Zarezerwuj</button>
                 </form>
             </div>
@@ -95,30 +125,31 @@
         </div>
       </div>
 
-      <div class="modal fade" id="userDataModal" tabindex="-1" role="dialog" aria-labelledby="userDataModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+      <div class="modal fade" id="staticBackdropGallery" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">New message</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Galeria</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form>
-                <div class="form-group">
-                  <label for="recipient-name" class="col-form-label">Recipient:</label>
-                  <input type="text" class="form-control" id="recipient-name">
+
+                <div class="d-flex flex-wrap">
+                    @foreach ($images as $img)
+
+                        <img src="{{URL::to($img)}}"
+                        id="id_{{$loop->index}}"
+                        class="w-50 p-1 rounded" 
+                        alt="Zdjecie">
+
+                        <button type="button" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annID="{{$anns->id}}" data-imageID="{{$loop->index}}">X</button>
+
+                    @endforeach
                 </div>
-                <div class="form-group">
-                  <label for="message-text" class="col-form-label">Message:</label>
-                  <textarea class="form-control" id="message-text"></textarea>
-                </div>
-              </form>
+                
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Send message</button>
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
           </div>
         </div>
@@ -128,6 +159,26 @@
 @section('script')
 
     <script type="text/javascript">
+
+        var images = @json($images);
+
+        var imgToStr = images.join('|');
+
+        var image = imgToStr.split("|");
+
+        $('.deleteImg').click(function() {
+            $.ajax({
+            method: "DELETE",
+            url: "{{route('announcements')}}/" + $(this).data('id'),
+            data: {_token: '{{csrf_token()}}'}
+            })
+            .done(function(response) {
+            window.location.reload();
+            })
+            .fail(function(response) {
+            alert("ERROR");
+            })
+        });
 
         var dates = @json($dates);
 

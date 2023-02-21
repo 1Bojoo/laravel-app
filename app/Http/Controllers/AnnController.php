@@ -26,6 +26,8 @@ class AnnController extends Controller
 
         $anns = Announcement::find($id);
 
+        $images = Announcement::where('id', $id)->pluck('image');
+
         if($res->isEmpty()){
 
             return view('pages.selAnn', compact('anns'));
@@ -47,8 +49,24 @@ class AnnController extends Controller
                 }
             }
 
-            return view('pages.selAnn', compact('anns', 'res', 'dates'));
+            return view('pages.selAnn', compact('anns', 'res', 'dates', 'images'));
         }
+    }
+
+    public function delImage($annID, $imgID){
+
+        $img = [];
+
+        $images = Announcement::where('id', $annID)->pluck('image');
+
+        $img = explode("|", $images);
+
+        array_slice($img, $imgID, 1);
+
+        $imgToDB = implode("|", $img);
+
+        Announcement::where('id', $annID)->updateOrInsert(['images' => $imgToDB]);
+
     }
 
     public function store(Request $request) {
