@@ -16,6 +16,10 @@ class Announcement extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function rooms(){
+        return $this->hasMany(Room::class);
+    }
+
     public function reservation()
     {
         return $this->hasMany(Reservation::class);

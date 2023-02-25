@@ -7,6 +7,7 @@
     @php
         $image = DB::table('announcements')->where('id', $anns->id)->first();
         $images = explode('|', $image->image);
+        $countImg = count($images);
     @endphp
 
     <div class="ann-container p-3 d-flex justify-content-between" style="background-color: #F2F2F2">
@@ -19,17 +20,45 @@
                 @endif
             </div>
             <div class="ann-gallery rounded d-flex flex-wrap">
-                @foreach(array_slice($images, 0, 3) as $img)
+
+                @if($countImg < 4)
+
+                    @foreach(array_slice($images, 0, $countImg-1) as $img)
                     <img src="{{URL::to($img)}}"
                     class="w-50 p-1 rounded" 
                     alt="Zdjecie">
-                @endforeach
+                    @endforeach
+
                     <button type="button" class="btn w-50 border border-0 p-0 position-relative" data-bs-toggle="modal" data-bs-target="#staticBackdropGallery">
+
+                        <img src="{{URL::to($images[$countImg-1])}}"
+                        class="w-100 p-1 rounded" 
+                        alt="Zdjecie">
+
+                        <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white">Galeria zdjęć</p>
+
+                    </button>
+
+                @else
+
+                    @foreach(array_slice($images, 0, 3) as $img)
+                    <img src="{{URL::to($img)}}"
+                    class="w-50 p-1 rounded" 
+                    alt="Zdjecie">
+                    @endforeach
+
+                    <button type="button" class="btn w-50 border border-0 p-0 position-relative" data-bs-toggle="modal" data-bs-target="#staticBackdropGallery">
+
                         <img src="{{URL::to($images[3])}}"
                         class="w-100 p-1 rounded" 
                         alt="Zdjecie">
-                        <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white"> Więcej zdjęć</p>
+
+                        <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white">Galeria zdjęć</p>
+
                     </button>
+
+                @endif
+
             </div>
 
             {{-- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
@@ -60,8 +89,10 @@
             @guest
                 <p>Rejestracja dostępna po zalogowaniu</p>
             @else
-                <div class="d-flex items-align-center justify-content-center">
+                <div class="d-flex flex-column text-center items-align-center justify-content-center">
                     <button class="btn btn-primary w-70" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Zarezerwuj</button>
+                    <h4 class="mt-4">Sprawdź dostępność pokoi:</h4>
+                    <button class="btn btn-primary w-70 m-0 d-block mt-4" data-bs-toggle="modal" data-bs-target="#staticBackdropRoomAv">Pokoje</button>
                 </div>
             @endguest
         </div>
@@ -136,16 +167,70 @@
 
                 <div class="d-flex flex-wrap">
                     @foreach ($images as $img)
+                        <div class="position-relative w-50">
+                            <img src="{{URL::to($img)}}"
+                            id="id_{{$loop->index}}"
+                            class="w-100 p-1 rounded" 
+                            alt="Zdjecie">
 
-                        <img src="{{URL::to($img)}}"
-                        id="id_{{$loop->index}}"
-                        class="w-50 p-1 rounded" 
-                        alt="Zdjecie">
+                            @can('isAdmin')
 
-                        <button type="button" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annID="{{$anns->id}}" data-imageID="{{$loop->index}}">X</button>
+                            <a href="{{route('delImg', ['annID'=>$anns->id, 'imageID'=>$loop->index])}}" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$anns->id}}" data-imageid="{{$loop->index}}">X</a>
 
+                            @endcan
+
+                            {{-- <button type="button" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$anns->id}}" data-imageid="{{$loop->index}}">X</button> --}}
+                        </div>
                     @endforeach
+
+                        <div class="w-50">
+                            <button class="btn btn-primary w-50" data-bs-toggle="modal" data-bs-target="#staticBackdropAddImage">Dodaj zdjęcia</button>
+                        </div>
+
                 </div>
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="staticBackdropAddImage" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Dodaj zdjęcia</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{{route('addImage', $anns->id)}}" enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <div class="form-group">
+                        <label for="">Prześlij zdjęcia</label>
+                        <div class="files">
+                            <input type="file" name="image[]" class="form-control" multiple>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary mt-2">Dodaj</button>
+                </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="staticBackdropRoomAv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Dostępność pokoi</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
                 
             </div>
             <div class="modal-footer">
@@ -159,26 +244,6 @@
 @section('script')
 
     <script type="text/javascript">
-
-        var images = @json($images);
-
-        var imgToStr = images.join('|');
-
-        var image = imgToStr.split("|");
-
-        $('.deleteImg').click(function() {
-            $.ajax({
-            method: "DELETE",
-            url: "{{route('announcements')}}/" + $(this).data('id'),
-            data: {_token: '{{csrf_token()}}'}
-            })
-            .done(function(response) {
-            window.location.reload();
-            })
-            .fail(function(response) {
-            alert("ERROR");
-            })
-        });
 
         var dates = @json($dates);
 
@@ -197,6 +262,16 @@
         console.log(selRes);
         var selAcadSem = $('#selAcadSem option:selected').val();
         console.log(selAcadSem);
+
+        $.ajaxSetup({
+
+        headers: {
+
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+
+        }
+
+        });
 
         $("#selRes").change(function(){
             selRes = $('#selRes option:selected').val();

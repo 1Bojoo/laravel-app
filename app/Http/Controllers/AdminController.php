@@ -6,13 +6,39 @@ use Illuminate\Http\Request;
 use App\Models\Announcement;
 use App\Models\User;
 use App\Models\Reservation;
+use App\Models\Room;
 
 class AdminController extends Controller
 {
+
+    public function manPanel(){
+        return view('pages.admin.managementPanel');
+    }
+
     public function ann() {
         $anns = Announcement::all();
 
         return view('pages.admin.userAnn', compact('anns'));
+    }
+
+    public function room() {
+        $rooms = Room::all();
+
+        return view('pages.admin.roomManagement', compact('rooms'));
+    }
+
+    public function addRoom() {
+        for($i = 1; $i<20; $i++){
+
+        }
+    }
+
+    public function res() {
+        $ann = Announcement::find(1);
+
+        $res = $ann->reservation;
+
+        return view('pages.admin.userRes', compact('res'));
     }
 
     public function users() {

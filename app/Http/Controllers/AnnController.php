@@ -30,7 +30,9 @@ class AnnController extends Controller
 
         if($res->isEmpty()){
 
-            return view('pages.selAnn', compact('anns'));
+            $dates = [];
+
+            return view('pages.selAnn', compact('anns', 'dates'));
 
         } else{
 
@@ -53,20 +55,93 @@ class AnnController extends Controller
         }
     }
 
-    public function delImage($annID, $imgID){
+    public function addRooms($numOfRooms, $floor){
+
+        $dormitory = Announcement::find(1);
+
+        if($floor == 0){
+            for($i = 1; $i<=$numOfRooms; $i++){
+                $room = new Room;
+                $room->annId = 1;
+                $room->roomNum = $i;
+                $room->floor = 0;
+                $room->isOwned = false;
+                $dormitory = $dormitory->rooms()->save($room);
+            }
+        }else{
+            for($i = 1; $i<=$numOfRooms; $i++){
+                $room = new Room;
+                $room->annId = 1;
+                $room->roomNum = ($floor*100)+$i ;
+                dd($room->roomNum);
+                $room->floor = $floor;
+                $room->isOwned = false;
+                $dormitory = $dormitory->rooms()->save($room);
+            }
+        }
+    }
+
+    public function delImage($annID, $imageID){
 
         $img = [];
 
         $images = Announcement::where('id', $annID)->pluck('image');
 
+        $images = (string) $images;
+
+        $images = implode("", explode("\\", $images));
+        $images = implode("", explode('["', $images));
+        $images = implode("", explode('"]', $images));
+
         $img = explode("|", $images);
 
-        array_slice($img, $imgID, 1);
+        unset($img[$imageID]);
+
+        $img = array_values($img);
 
         $imgToDB = implode("|", $img);
 
-        Announcement::where('id', $annID)->updateOrInsert(['images' => $imgToDB]);
+        Announcement::where('id', $annID)->update(['image' => $imgToDB]);
 
+        return back();
+
+    }
+
+    public function addImage(Request $request ,$annID){
+
+        $images = Announcement::where('id', $annID)->pluck('image');
+
+        $images = (string) $images;
+
+        $images = implode("", explode("\\", $images));
+        $images = implode("", explode('["', $images));
+        $images = implode("", explode('"]', $images));
+
+        $images = explode("|", $images);
+
+        $image = array();
+
+        if($request->hasFile('image')){
+            $files = $request->file('image');
+            foreach($files as $file){
+                $image_name = md5(rand(1000,10000));
+                $ext = strtolower($file->getClientOriginalExtension());
+                $image_full_name = $image_name.'.'.$ext;
+                $image_url = 'storage/images/'.$image_full_name;
+
+                $file->storeAs('images', $image_full_name);
+
+                $image[] = $image_url;
+            }
+        }
+
+        $imgToDB = array_merge($images, $image);
+
+        $imgToDB = implode("|", $imgToDB);
+
+        Announcement::where('id', $annID)->update(['image' => $imgToDB]);
+
+        return back();
     }
 
     public function store(Request $request) {

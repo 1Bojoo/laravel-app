@@ -55,8 +55,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
-            Route::get('/pages/admin/userAd', 'users')->name('users');
+            Route::get('/pages/managementPanel', 'manPanel')->name('manPanel');
+            Route::get('/pages/admin/userRes', 'res')->name('manRes');
             Route::get('/pages/admin/userAnn', 'ann')->name('announcements');
+
+            Route::get('/pages/admin/rooms', 'room')->name('roomMan');
+
+            
+
+
+            Route::get('/pages/admin/userAd', 'users')->name('users');
+
             Route::get('/pages/admin/createUser', 'create')->name('createUser');
             Route::post('/pages/admin/userAd', 'store')->name('storeUser');
 
@@ -66,6 +75,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::delete('/pages/admin/userAd/{user}', 'destroyUser')->name('destroyUser');
             Route::delete('/pages/admin/userAnn/{ann}', 'destroyAnn')->name('destroyAnn');
         });
+
+        Route::get('/pages/selAnn/{annID}/img/{imageID}', [AnnController::class, 'delImage'])->name('delImg');
+        Route::post('/pages/selAnn/{annID}/img', [AnnController::class, 'addImage'])->name('addImage');
+
     });
     
 });
