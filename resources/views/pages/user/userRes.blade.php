@@ -24,8 +24,7 @@
         <table class="table w-75">
             <thead>
               <tr>
-                <th scope="col">#</th>
-                <th scope="col">Ogłoszenie</th>
+                <th scope="col">Pokój</th>
                 <th scope="col">Od</th>
                 <th scope="col">Do</th>
                 <th scope="col">Akcje</th>
@@ -34,8 +33,7 @@
             <tbody>
               @foreach($res as $item)
               <tr>
-                <th scope="row">{{$counter++}}</th>
-                <td>{{$item->name}}</td>
+                <td>{{$item->room->roomNum}}</td>
                 <td>{{$item->arrDate}}</td>
                 <td>{{$item->depDate}}</td>
                 <td><a href="{{route('delRes', $item->id)}}" class="btn btn-danger">Usuń</a></td>

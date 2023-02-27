@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Announcement;
+use App\Models\Dormitory;
 use App\Models\User;
 use App\Models\Reservation;
 use App\Models\Room;
@@ -15,16 +15,29 @@ class AdminController extends Controller
         return view('pages.admin.managementPanel');
     }
 
-    public function ann() {
-        $anns = Announcement::all();
+    public function dorm() {
+        $dorm = Dormitory::all();
 
-        return view('pages.admin.userAnn', compact('anns'));
+        return view('pages.admin.userAnn', compact('dorm'));
     }
 
     public function room() {
         $rooms = Room::all();
 
         return view('pages.admin.roomManagement', compact('rooms'));
+    }
+
+    public function editRoom($roomNum) {
+        $room = Room::where('roomNum', $roomNum)->first();
+
+        if($room->isOwned == false){
+            Room::where('roomNum', $roomNum)->update(['isOwned' => true]);
+        }
+        else{
+            Room::where('roomNum', $roomNum)->update(['isOwned' => false]);
+        }
+
+        return back();
     }
 
     public function addRoom() {
@@ -34,11 +47,38 @@ class AdminController extends Controller
     }
 
     public function res() {
-        $ann = Announcement::find(1);
-
-        $res = $ann->reservation;
+        $res = Reservation::all();
 
         return view('pages.admin.userRes', compact('res'));
+    }
+
+    public function deleteRes($resID) {
+        $res = Reservation::where('id', $resID)->pluck('room_id');
+
+        Room::where('id', $res)->update(['isOwned' => false]);
+
+        Reservation::where('id', $resID)->delete();
+        
+        return back();
+    }
+
+    public function editRes(Request $request, $resID){
+
+        $roomNum = $request->roomNum;
+
+        $roomID = Room::where('roomNum', $roomNum)->pluck('id')->first();
+
+        Room::where('id', 
+            Reservation::where('id', $resID)->pluck('room_id')->first()
+        )->update(['isOwned' => false]);
+
+        Reservation::where('id', $resID)->update(['room_id' => $roomID]);
+
+        Room::where('id', 
+            Reservation::where('id', $resID)->pluck('room_id')->first()
+        )->update(['isOwned' => true]);
+
+        return back();
     }
 
     public function users() {
@@ -48,16 +88,17 @@ class AdminController extends Controller
     }
 
     public function destroyUser(User $user) {
-        Announcement::where('userID', $user->id)->delete();
+        Dormitory::where('userID', $user->id)->delete();
         Reservation::where('user_id', $user->id)->delete();
         $user->delete();
         return response()->json([
             'status' => 'success'
         ]);
     }
+    
 
-    public function destroyAnn(Announcement $ann) {
-        $ann->delete();
+    public function destroyAnn(Dormitory $dorm) {
+        $dorm->delete();
     }
 
     public function create() {

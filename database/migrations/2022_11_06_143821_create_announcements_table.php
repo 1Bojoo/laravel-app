@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('announcements', function (Blueprint $table) {
+        Schema::create('dormitory', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 50);
             $table->string('desc');
@@ -37,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('announcements');
+        Schema::dropIfExists('dormitory');
     }
 };

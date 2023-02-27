@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Announcement extends Model
+class Dormitory extends Model
 {
-    protected $table = 'announcements';
+    protected $table = 'dormitory';
 
     protected $fillable = ['userID', 'name', 'desc', 'price', 'country', 'city', 'province', 'street', 'hNum', 'postalCode', 0, 'image'];
 
@@ -18,10 +18,5 @@ class Announcement extends Model
 
     public function rooms(){
         return $this->hasMany(Room::class);
-    }
-
-    public function reservation()
-    {
-        return $this->hasMany(Reservation::class);
     }
 }

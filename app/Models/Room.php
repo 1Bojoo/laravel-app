@@ -14,4 +14,8 @@ class Room extends Model
     public function announcement(){
         return $this->belongsTo(Announcement::class);
     }
+
+    public function reservation(){
+        return $this->hasOne(Reservation::class);
+    }
 }

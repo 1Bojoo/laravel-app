@@ -25,25 +25,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // OGŁOSZENIA
 
     Route::controller(AnnController::class)->group(function() {
-        Route::get('/pages/crAnn', 'create')->name('crann');
-        Route::post('/pages/crAnn', 'store');
-        Route::post('/pages/selAnn/{id}', 'reservation')->name('res');
+        Route::post('/dorm/roomRes/{id}', 'reservation')->name('res');
         // Route::get('/pages/selAnn/{id}/fetch-res', 'fetchRes')->name('fRes');
     });
 
     // PANEL UŻYTKOWNIKA
 
     Route::controller(UserController::class)->group(function() {
-        Route::get('pages/user/myAnn', 'showAnn')->name('myann');
 
-        Route::get('pages/user/myAnn/{id}', 'destroyAnn')->name('delAnn');
+        Route::get('myReservation', 'showRes')->name('myres');
 
-        Route::get('pages/user/editAnn/{ann}', 'editAnn')->name('editAnn');
-        Route::post('pages/user/myAnn/{ann}', 'updateAnn')->name('updateAnn');
-
-        Route::get('pages/user/myRes', 'showRes')->name('myres');
-
-        Route::get('pages/user/myRes/{id}', 'destroyRes')->name('delRes');
+        Route::get('myReservation/delReservation/{id}', 'destroyRes')->name('delRes');
 
         Route::post('/generateQR', 'genQR')->name('generateQR');
 
@@ -55,29 +47,31 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
-            Route::get('/pages/managementPanel', 'manPanel')->name('manPanel');
-            Route::get('/pages/admin/userRes', 'res')->name('manRes');
-            Route::get('/pages/admin/userAnn', 'ann')->name('announcements');
+            Route::get('/managementPanel', 'manPanel')->name('manPanel');
+            Route::get('/managementPanel/userRes', 'res')->name('manRes');
+            Route::get('/managementPanel/userRes/delete/{roomID}', 'deleteRes')->name('deleteRes');
+            Route::post('/managementPanel/userRes/edit/{resID}', 'editRes')->name('editRes');
 
-            Route::get('/pages/admin/rooms', 'room')->name('roomMan');
+            Route::get('/managementPanel/rooms', 'room')->name('roomMan');
+            Route::get('/managementPanel/rooms/editStatus/{roomNum}', 'editRoom')->name('editRoom');
 
-            
 
+            Route::get('/managementPanel/users', 'users')->name('users');
 
-            Route::get('/pages/admin/userAd', 'users')->name('users');
+            Route::get('/managementPanel/createUser', 'create')->name('createUser');
+            Route::post('/managementPanel/addUser', 'store')->name('storeUser');
 
-            Route::get('/pages/admin/createUser', 'create')->name('createUser');
-            Route::post('/pages/admin/userAd', 'store')->name('storeUser');
+            Route::get('/managementPanel/editUser/{user}', 'edit')->name('editUser');
+            Route::post('/managementPanel/updateUser/{user}', 'update')->name('updateUser');
 
-            Route::get('/pages/admin/editUser/{user}', 'edit')->name('editUser');
-            Route::post('/pages/admin/userAd/{user}', 'update')->name('updateUser');
-
-            Route::delete('/pages/admin/userAd/{user}', 'destroyUser')->name('destroyUser');
-            Route::delete('/pages/admin/userAnn/{ann}', 'destroyAnn')->name('destroyAnn');
+            Route::delete('/managementPanel/deleteUser/{user}', 'destroyUser')->name('destroyUser');
+            Route::delete('/managementPanel/userAnn/{ann}', 'destroyAnn')->name('destroyAnn');
         });
 
-        Route::get('/pages/selAnn/{annID}/img/{imageID}', [AnnController::class, 'delImage'])->name('delImg');
-        Route::post('/pages/selAnn/{annID}/img', [AnnController::class, 'addImage'])->name('addImage');
+        Route::get('/dorm/img/{imageID}', [AnnController::class, 'delImage'])->name('delImg');
+        Route::post('/dorm/img', [AnnController::class, 'addImage'])->name('addImage');
+        Route::get('/pages/crAnn', [AnnController::class, 'create'])->name('crann');
+        Route::post('/pages/crAnn', [AnnController::class, 'store']);
 
     });
     
@@ -87,7 +81,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::controller(AnnController::class)->group(function() {
     Route::get('/', 'index')->name('ann');
-    Route::get('/pages/selAnn/{id}', 'selAnn')->name('selAnn');
+    Route::get('/dorm', 'dormitory')->name('dorm');
 });
 
 Route::get('/main', [MainController::class, 'index'])->name('main');

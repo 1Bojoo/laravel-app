@@ -23,6 +23,7 @@
                     <th scope="col">Numer pokoju</th>
                     <th scope="col">Piętro</th>
                     <th scope="col">Najemca</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Akcje</th>
                 </tr>
                 </thead>
@@ -32,8 +33,17 @@
                     <th scope="row">{{$item->id}}</th>
                     <td>{{$item->roomNum}}</td>
                     <td>{{$item->floor}}</td>
-                    <td>{{$item->}}</td>
-                    <td></td>
+                    <td>{{$item->reservation?->user->firstname}} {{$item->reservation?->user->lastname}}</td>
+                    <td>
+                        @if($item->isOwned == false)
+                            Wolny
+                        @else
+                            Zajęty
+                        @endif
+                    </td>
+                    <td>
+                        <a href="{{route('editRoom', $item->roomNum)}}" class="btn btn-primary">Edytuj status</a>
+                    </td>
                 </tr>
                 @endforeach
                 </tbody>

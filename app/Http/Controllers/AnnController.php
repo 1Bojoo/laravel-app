@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Announcement;
+use App\Models\Dormitory;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Mail\SendMailAfterRes;
@@ -15,24 +15,21 @@ use Auth;
 class AnnController extends Controller
 {
     public function index() {
-        $anns = Announcement::all();
+        $dorm = Dormitory::all();
 
-        return view('pages.ann', compact('anns'));
+        return view('pages.ann', compact('dorm'));
     }
 
-    public function selAnn($id) {
+    public function dormitory() {
+        $res = Reservation::all();
 
-        $res = Reservation::where('announcement_id', $id)->get();
-
-        $anns = Announcement::find($id);
-
-        $images = Announcement::where('id', $id)->pluck('image');
+        $dorm = Dormitory::find(1);
 
         if($res->isEmpty()){
 
             $dates = [];
 
-            return view('pages.selAnn', compact('anns', 'dates'));
+            return view('pages.selAnn', compact('dorm', 'dates'));
 
         } else{
 
@@ -51,13 +48,50 @@ class AnnController extends Controller
                 }
             }
 
-            return view('pages.selAnn', compact('anns', 'res', 'dates', 'images'));
+            return view('pages.selAnn', compact('dorm', 'res', 'dates'));
+        }
+
+        return view('pages.selAnn', compact('dorm', 'dates'));
+    }
+
+    public function selAnn($id) {
+
+        $res = Reservation::where('announcement_id', $id)->get();
+
+        $dorm = Dormitory::find($id);
+
+        $images = Dormitory::where('id', $id)->pluck('image');
+
+        if($res->isEmpty()){
+
+            $dates = [];
+
+            return view('pages.selAnn', compact('dorm', 'dates'));
+
+        } else{
+
+            $dates = [];
+            
+            foreach($res as $range){
+                $stDate = $range->arrDate;
+                $enDate = $range->depDate;
+
+                $start_timestamp = strtotime($stDate);
+                $end_timestamp = strtotime($enDate);
+
+                for ($i = $start_timestamp; $i <= $end_timestamp; $i = strtotime('+1 day', $i)) {
+                    $date = date('Y-m-d', $i);
+                    array_push($dates, $date);
+                }
+            }
+
+            return view('pages.selAnn', compact('dorm', 'res', 'dates', 'images'));
         }
     }
 
     public function addRooms($numOfRooms, $floor){
 
-        $dormitory = Announcement::find(1);
+        $dormitory = Dormitory::find(1);
 
         if($floor == 0){
             for($i = 1; $i<=$numOfRooms; $i++){
@@ -81,11 +115,11 @@ class AnnController extends Controller
         }
     }
 
-    public function delImage($annID, $imageID){
+    public function delImage($imageID){
 
         $img = [];
 
-        $images = Announcement::where('id', $annID)->pluck('image');
+        $images = Dormitory::find(1)->pluck('image');
 
         $images = (string) $images;
 
@@ -101,15 +135,15 @@ class AnnController extends Controller
 
         $imgToDB = implode("|", $img);
 
-        Announcement::where('id', $annID)->update(['image' => $imgToDB]);
+        Dormitory::find(1)->update(['image' => $imgToDB]);
 
         return back();
 
     }
 
-    public function addImage(Request $request ,$annID){
+    public function addImage(Request $request){
 
-        $images = Announcement::where('id', $annID)->pluck('image');
+        $images = Dormitory::find(1)->pluck('image');
 
         $images = (string) $images;
 
@@ -139,7 +173,7 @@ class AnnController extends Controller
 
         $imgToDB = implode("|", $imgToDB);
 
-        Announcement::where('id', $annID)->update(['image' => $imgToDB]);
+        Dormitory::find(1)->update(['image' => $imgToDB]);
 
         return back();
     }
@@ -147,7 +181,6 @@ class AnnController extends Controller
     public function store(Request $request) {
         $request->validate([
             'name' => 'required',
-            'userID' => 'required',
             'desc' => 'required',
             'price' => 'required',
             'country' => 'required',
@@ -175,9 +208,8 @@ class AnnController extends Controller
             }
         }
 
-        Announcement::create([
+        Dormitory::create([
             'image' => implode('|', $image),
-            'userID' => $request->userID,
             'name' => $request->name,
             'desc' => $request->desc,
             'price' => $request->price,
@@ -202,7 +234,7 @@ class AnnController extends Controller
 
         $userEmail = auth()->user()->email;
         $res = Reservation::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->pluck('announcement_id')->first();
-        $ann = Announcement::where('id', $res)->orderBy('id', 'desc')->pluck('userID')->first();
+        $ann = Dormitory::where('id', $res)->orderBy('id', 'desc')->pluck('userID')->first();
         $owner = User::where('id', $ann)->pluck('email');
 
         Mail::to($userEmail)->send(new SendMailAfterRes());

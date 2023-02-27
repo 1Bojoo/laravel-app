@@ -64,12 +64,10 @@
 
                                 <div class="dropdown-menu dropdown-menu-right me-5" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
-                                        <a class="dropdown-item" href="{{route('users')}}">Użytkownicy</a>
-                                        <a class="dropdown-item" href="{{route('announcements')}}">Ogłoszenia użytkowników</a>
+                                        <a class="dropdown-item" href="{{route('manPanel')}}">Panel Zarządzania</a>
+                                        <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     @endcan
                                     <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
-                                    <a class="dropdown-item" href="{{route('myann')}}">Moje ogłoszenia</a>
-                                    <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Wygeneruj kod QR</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

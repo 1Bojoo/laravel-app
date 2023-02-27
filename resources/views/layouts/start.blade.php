@@ -68,12 +68,9 @@
 
                                 <div class="dropdown-menu dropdown-menu-left dropdown-menu-lg-start me-5" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
-                                        <a class="dropdown-item" href="{{route('users')}}">Użytkownicy</a>
-                                        <a class="dropdown-item" href="{{route('announcements')}}">Ogłoszenia użytkowników</a>
+                                    <a class="dropdown-item" href="{{route('manPanel')}}">Panel Zarządzania</a>
                                     @endcan
                                     <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
-                                    <a class="dropdown-item" href="{{route('myann')}}">Moje ogłoszenia</a>
-                                    <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">

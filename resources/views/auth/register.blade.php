@@ -17,10 +17,43 @@
                   @csrf
 
                   <div class="form-outline form-white input-group mb-2">
-                    <span class="input-group-text" id="basic-addon1">Login </span>
+                    <span class="input-group-text" id="basic-addon1">Nickname </span>
                     <input id="name" type="text" class="form-control form-control-lg @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
                     @error('name')
+                      <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+
+                  <div class="form-outline form-white input-group mb-2">
+                    <span class="input-group-text" id="basic-addon1">Firstname </span>
+                    <input id="firstname" type="text" class="form-control form-control-lg @error('firstname') is-invalid @enderror" name="firstname" value="{{ old('firstname') }}" required autocomplete="firstname" autofocus>
+
+                    @error('firstname')
+                      <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+
+                  <div class="form-outline form-white input-group mb-2">
+                    <span class="input-group-text" id="basic-addon1">Lastname </span>
+                    <input id="lastname" type="text" class="form-control form-control-lg @error('lastname') is-invalid @enderror" name="lastname" value="{{ old('lastname') }}" required autocomplete="lastname" autofocus>
+
+                    @error('lastname')
+                      <span class="invalid-feedback" role="alert">
+                      <strong>{{ $message }}</strong>
+                      </span>
+                    @enderror
+                  </div>
+
+                  <div class="form-outline form-white input-group mb-2">
+                    <span class="input-group-text" id="basic-addon1">Phone number </span>
+                    <input id="phone" type="text" class="form-control form-control-lg @error('phone') is-invalid @enderror" name="phone" value="{{ old('phone') }}" required autocomplete="phone" autofocus>
+
+                    @error('phone')
                       <span class="invalid-feedback" role="alert">
                       <strong>{{ $message }}</strong>
                       </span>

@@ -1,22 +1,22 @@
 @extends('layouts.app')
 
-@section('title', $anns->id)
+@section('title', $dorm->id)
 
 @section('content')
 
     @php
-        $image = DB::table('announcements')->where('id', $anns->id)->first();
+        $image = DB::table('dormitory')->where('id', 1)->first();
         $images = explode('|', $image->image);
         $countImg = count($images);
     @endphp
 
     <div class="ann-container p-3 d-flex justify-content-between" style="background-color: #F2F2F2">
         <div class="content w-74 p-5 rounded" style="background-color: white; box-shadow: 0px 0px 10px -8px rgba(66, 68, 90, 1);">
-            <h1>{{$anns->name}}</h1>
-            <h5>{{$anns->city}}, {{$anns->province}}, {{$anns->country}}</h5>
+            <h1>{{$dorm->name}}</h1>
+            <h5>{{$dorm->city}}, {{$dorm->province}}, {{$dorm->country}}</h5>
             <div class="ann-stats d-flex flex-row">
-                @if ($anns->rating >= 1)
-                    <p>{{$anns->rating}}</p>
+                @if ($dorm->rating >= 1)
+                    <p>{{$dorm->rating}}</p>
                 @endif
             </div>
             <div class="ann-gallery rounded d-flex flex-wrap">
@@ -60,32 +60,10 @@
                 @endif
 
             </div>
-
-            {{-- <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner rounded">
-                  <div class="carousel-item active">
-                    <img src="{{URL::to($images[0])}}" id="id_0" class="d-block w-100" alt="cos tam">
-                  </div>
-                  @foreach(array_slice($images, 1) as $img)
-                    <div class="carousel-item">
-                        <img src="{{URL::to($img)}}" id="id_{{$loop->index+1}}" class="d-block w-100" alt="...">
-                    </div>
-                  @endforeach
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-                  <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-                  <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                  <span class="visually-hidden">Next</span>
-                </button>
-              </div> --}}
-
-            <h3 >{{$anns->desc}}</h3>
+            <h3 >{{$dorm->desc}}</h3>
         </div>
         <div class="reservation w-25 rounded ml-2 d-flex flex-column text-center" style="background-color: white; box-shadow: 0px 0px 10px -8px rgba(66, 68, 90, 1);">
-            <h4 class="p-3">Cena: {{$anns->price}} zł / doba</h4>
+            <h4 class="p-3">Cena: {{$dorm->price}} zł / miesiąc</h4>
             @guest
                 <p>Rejestracja dostępna po zalogowaniu</p>
             @else
@@ -125,13 +103,13 @@
                     </select>
                 </div>
 
-                <form action="/pages/selAnn/{{$anns->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                <form action="/pages/selAnn/{{$dorm->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
                     @csrf
 
                     <div class="w-50">
                         <div class="resForm" hidden>
                             <div class="form-group date mb-2 d-flex flex-row">
-                                <input type="hidden" name="annId" value={{$anns->id}}>
+                                <input type="hidden" name="annId" value={{$dorm->id}}>
                                 <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
                                 <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
                                     <i class="bi bi-calendar"></i>
@@ -175,11 +153,11 @@
 
                             @can('isAdmin')
 
-                            <a href="{{route('delImg', ['annID'=>$anns->id, 'imageID'=>$loop->index])}}" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$anns->id}}" data-imageid="{{$loop->index}}">X</a>
+                            <a href="{{route('delImg', $loop->index)}}" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$dorm->id}}" data-imageid="{{$loop->index}}">X</a>
 
                             @endcan
 
-                            {{-- <button type="button" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$anns->id}}" data-imageid="{{$loop->index}}">X</button> --}}
+                            {{-- <button type="button" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$dorm->id}}" data-imageid="{{$loop->index}}">X</button> --}}
                         </div>
                     @endforeach
 
@@ -205,7 +183,7 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="{{route('addImage', $anns->id)}}" enctype="multipart/form-data" method="POST">
+                <form action="{{route('addImage')}}" enctype="multipart/form-data" method="POST">
                     @csrf
                     <div class="form-group">
                         <label for="">Prześlij zdjęcia</label>

@@ -15,14 +15,13 @@ return new class extends Migration
     {
         Schema::create('rooms', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedBigInteger('annId');
+            $table->unsignedBigInteger('dormId');
             $table->string('roomNum');
             $table->integer('floor');
-            $table->unsignedBigInteger('owner')->nullable();
+            $table->unsignedBigInteger('userID')->nullable();
             $table->boolean('isOwned');
             $table->timestamps();
-            $table->foreign('annId')->references('id')->on('announcements')
-                ->onDelete('cascade');
+            $table->foreign('dormId')->references('id')->on('dormitory');
         });
     }
 

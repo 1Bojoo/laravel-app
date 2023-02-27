@@ -28,14 +28,9 @@ class UserController extends Controller
     public function showRes(){
         $userID = auth()->user()->id;
 
-        $res = DB::table('announcements')
-                    ->leftJoin('reservation', 'announcements.id', '=', 'reservation.announcement_id')
-                    ->where('reservation.user_id', $userID)
-                    ->get();
+        $res = Reservation::where('user_id', $userID)->get();
 
-
-        return View::make('pages.user.userRes')
-        ->with(compact('res'));
+        return view('pages.user.userRes', compact('res'));
     }
 
     public function destroyAnn($id){

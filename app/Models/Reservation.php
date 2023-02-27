@@ -16,8 +16,8 @@ class Reservation extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function announcement()
+    public function room()
     {
-        return $this->belongsTo(Announcement::class);
+        return $this->belongsTo(Room::class);
     }
 }
