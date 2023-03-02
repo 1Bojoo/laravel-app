@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Room extends Model
+class GuestRoom extends Model
 {
-    protected $table = 'rooms';
+    protected $table = 'guest_rooms';
 
     protected $fillable = ['annID', 'roomNum', 'floor', 'isOwned'];
 
@@ -17,9 +17,5 @@ class Room extends Model
 
     public function reservation(){
         return $this->hasMany(Reservation::class);
-    }
-
-    public function first_reservation(){
-        return $this->hasOne(Reservation::class)->oldestOfMany();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dormitory;
 use App\Models\Reservation;
+use App\Models\Room;
 use App\Models\User;
 use App\Mail\SendMailAfterRes;
 use Illuminate\Support\Facades\Mail;
@@ -23,35 +24,63 @@ class AnnController extends Controller
     public function dormitory() {
         $res = Reservation::all();
 
+        $allRooms = Room::all();
+
+        $rooms = Room::where('isOwned', false)->get();
+
+        $guestRooms = Room::where('floor', 0)->get();
+
         $dorm = Dormitory::find(1);
 
-        if($res->isEmpty()){
+        if($rooms->isEmpty()){
 
             $dates = [];
 
-            return view('pages.selAnn', compact('dorm', 'dates'));
+            $avRooms = [];
 
-        } else{
+            return view('pages.selAnn', compact('dorm', 'dates', 'avRooms'));
 
-            $dates = [];
+        }elseif($res->isEmpty()){
             
-            foreach($res as $range){
-                $stDate = $range->arrDate;
-                $enDate = $range->depDate;
+            $dates = [];
 
-                $start_timestamp = strtotime($stDate);
-                $end_timestamp = strtotime($enDate);
+            $avRooms = [];
 
-                for ($i = $start_timestamp; $i <= $end_timestamp; $i = strtotime('+1 day', $i)) {
-                    $date = date('Y-m-d', $i);
-                    array_push($dates, $date);
-                }
+            foreach($rooms as $item){
+                array_push($avRooms, $item->roomNum);
             }
 
-            return view('pages.selAnn', compact('dorm', 'res', 'dates'));
-        }
+            return view('pages.selAnn', compact('dorm', 'dates', 'rooms'));
 
-        return view('pages.selAnn', compact('dorm', 'dates'));
+        }else{
+
+            $dates = array();
+
+            $array = [];
+
+            foreach($guestRooms as $item){
+                $dates[$item->roomNum] = $item->roomNum;
+                if(!is_null($item->reservation)){
+                    foreach($item->reservation as $res){
+                        
+                        $stDate = $res->arrDate;
+                        $enDate = $res->depDate;
+
+                        $start_timestamp = strtotime($stDate);
+                        $end_timestamp = strtotime($enDate);
+
+                        for ($i = $start_timestamp; $i <= $end_timestamp; $i = strtotime('+1 day', $i)) {
+                            $date = date('Y-m-d', $i);
+                            array_push($array, $date);
+                        }
+                    }
+                }
+                $dates[$item->roomNum] = $array;
+                $array = [];
+            }
+
+            return view('pages.selAnn', compact('dorm', 'res', 'dates', 'allRooms'));
+        }
     }
 
     public function selAnn($id) {
@@ -225,14 +254,23 @@ class AnnController extends Controller
     }
 
     public function reservation(Request $request){
+
+        $roomId = (int)$request->roomId;
+
         Reservation::create([
-            'announcement_id' => $request->annId,
             'user_id' => $request->user()->id,
+            'room_id' => $roomId,
             'arrDate' => $request->date_start,
             'depDate' => $request->date_end,
         ]);
 
+        Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
+
+        return back();
+
         $userEmail = auth()->user()->email;
+
+        dd($userEmail);
         $res = Reservation::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->pluck('announcement_id')->first();
         $ann = Dormitory::where('id', $res)->orderBy('id', 'desc')->pluck('userID')->first();
         $owner = User::where('id', $ann)->pluck('email');

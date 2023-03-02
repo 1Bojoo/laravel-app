@@ -76,6 +76,23 @@
         </div>
     </div>
 
+    <div class="modal fade" id="staticBackdropRoomAv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Dostępność pokoi</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -91,9 +108,26 @@
                         <option value="selBooking">Wybrany okres</option>
                     </select>
 
-                    <select id="selAcadYear" class="form-select form-select-md mb-3 mx-auto w-50">
+                    <select id="selAcadYear" class="form-select form-select-md mb-3 mx-auto w-50" hidden>
                         <option value="cYear">Wybierz rok akademicki</option>
-                        <option value="acadYear">2023/2024</option>
+                        <option value="acadYear">2022/2023</option>
+                    </select>
+
+                    <select id="selRoomAcadYear" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-ld example" hidden>
+                        <option value="cRoom">Wybierz pokój</option>
+                        @foreach ($allRooms as $item)
+
+                            @if($item->floor > 0)
+
+                                @if (is_null($item->first_reservation))
+                                    <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                                @elseif((\Carbon\Carbon::parse($item->first_reservation->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->first_reservation->depDate) > \Carbon\Carbon::parse("2023-06-30")))
+                                    <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                                @endif
+
+                            @endif
+
+                        @endforeach
                     </select>
 
                     <select id="selAcadSem" class="form-select form-select-md mb-3 mx-auto w-50" hidden>
@@ -101,15 +135,57 @@
                         <option value="firstSem">2022/2023 (październik/luty)</option>
                         <option value="secondSem">2022/2023 (luty/czerwiec)</option>
                     </select>
+
+                    <select id="selRoomFirstSem" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-ld example" hidden>
+                        <option value="cRoom">Wybierz pokój</option>
+                        @foreach ($allRooms as $item)
+
+                            @if($item->floor > 0)
+                                @if (is_null($item->first_reservation))
+                                    <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                                @elseif((\Carbon\Carbon::parse($item->first_reservation->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->first_reservation->depDate) > \Carbon\Carbon::parse("2022-02-28")))
+                                    <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                                @endif
+                            @endif
+
+                        @endforeach
+                    </select>
+
+                    <select id="selRoomSecondSem" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-ld example" hidden>
+                        <option value="cRoom">Wybierz pokój</option>
+                        @foreach ($allRooms as $item)
+
+                            @if($item->floor > 0)
+                                @if (is_null($item->first_reservation))
+                                    <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                                @elseif((\Carbon\Carbon::parse($item->first_reservation->arrDate) < \Carbon\Carbon::parse("2023-03-01")) && (\Carbon\Carbon::parse($item->first_reservation->depDate) > \Carbon\Carbon::parse("2023-06-30")))
+                                    <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                                @endif
+                            @endif
+
+                        @endforeach
+                    </select>
+
+                    <select id="selRoomGuest" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-ld example" hidden>
+                        <option value="cRoom">Wybierz pokój</option>
+                        @foreach ($allRooms as $item)
+
+                            @if($item->floor == 0)
+                                <option value="{{$item->id}}">{{$item->roomNum}}</option>
+                            @endif
+
+                        @endforeach
+                    </select>
                 </div>
 
-                <form action="/pages/selAnn/{{$dorm->id}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                <form action="{{route("res", $dorm->id)}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
                     @csrf
 
                     <div class="w-50">
                         <div class="resForm" hidden>
                             <div class="form-group date mb-2 d-flex flex-row">
-                                <input type="hidden" name="annId" value={{$dorm->id}}>
+                                <input type="hidden" name="dormId" value={{$dorm->id}}>
+                                <input type="hidden" name="roomId" id="room_id" value="">
                                 <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
                                 <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
                                     <i class="bi bi-calendar"></i>
@@ -201,29 +277,20 @@
         </div>
       </div>
 
-      <div class="modal fade" id="staticBackdropRoomAv" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h1 class="modal-title fs-5" id="staticBackdropLabel">Dostępność pokoi</h1>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
 @endsection
 @section('script')
 
     <script type="text/javascript">
 
-        var dates = @json($dates);
+        var dates = @json($dates); 
+
+        console.log(dates["1"].length);
+
+        dates.forEach(element => {
+            dates.forEach(function(row){
+                console.log(row);
+            });
+        });
 
         var currDate = new Date();
         mm = currDate.getMonth()+1;
@@ -233,13 +300,10 @@
         if(selRes == "cDate"){
                 $('#selAcadYear').attr('hidden', true);
                 $('#selAcadSem').attr('hidden', true);
+                $('#selRoomAcadYear').attr('hidden', true);
                 $('.resForm').attr('hidden', true);
                 $('.resButton').attr('hidden', true);
             }
-
-        console.log(selRes);
-        var selAcadSem = $('#selAcadSem option:selected').val();
-        console.log(selAcadSem);
 
         $.ajaxSetup({
 
@@ -254,39 +318,69 @@
         $("#selRes").change(function(){
             selRes = $('#selRes option:selected').val();
             console.log(selRes);
+            selAcadYear = $('#selAcadYear option:selected').val();
+            console.log(selAcadYear);
+
             if(selRes == "cDate"){
                 $('#selAcadYear').attr('hidden', true);
                 $('#selAcadSem').attr('hidden', true);
+                $('#selRoomAcadYear').attr('hidden', true);
                 $('.resForm').attr('hidden', true);
                 $('.resButton').attr('hidden', true);
                 $('#selAcadSem').val("cSem");
                 $('#selAcadYear').val("cYear");
+                $('#selRoomAcadYear').val("cRoom");
             }
             else if(selRes == "acadYear"){
                 $('#selAcadSem').attr('hidden', true);
-                $('.resForm').attr('hidden', true);
-                $('#selAcadYear').removeAttr('hidden');
-                $('.resButton').removeAttr('hidden');
-                $('#selAcadYear').val("cYear");
-                if(mm < 10 && mm > 6){
-                    $('#startDate').val("2023-10-01");
-                    $('#endDate').val("2024-06-30");
-                }
-                else{
-                    mm = mm = currDate.getMonth()+2;
-                    var Date = currDate.getFullYear() + "-" + mm + "-01"; 
-                    $('#startDate').val(Date);
-                    $('#endDate').val("2024-06-30");
-                }
-            }
-            else if(selRes == "acadSem"){
+                $('#selRoomAcadYear').removeAttr('hidden');
+                $("#selRoomAcadYear").change(function(){
+
+                    selRoom = $('#selRoom option:selected').val();
+
+                    if(selRoom != "cRoom"){
+
+                        $('#room_id').val(selRoom);
+                        console.log($('#room_id').val());
+
+                        $('#selAcadYear').removeAttr('hidden');
+                            $("#selAcadYear").change(function(){
+
+                                selAcadYear = $('#selAcadYear option:selected').val();
+                                console.log(selAcadYear);
+
+                                if(selAcadYear != "cYear"){
+                                $('.resButton').removeAttr('hidden');
+                                    if(mm < 10 && mm > 6){
+                                        $('#startDate').val("2022-10-01");
+                                        $('#endDate').val("2023-06-30");
+                                    }
+                                    else{
+                                        mm = mm = currDate.getMonth()+2;
+                                        var Date = currDate.getFullYear() + "-" + mm + "-01";
+                                        $('#startDate').val(Date);
+                                        $('#endDate').val("2023-06-30");
+                                    }
+                                }else{
+                                    $('.resButton').attr('hidden', true);
+                                }
+                            });
+                    } 
+                    else{
+                        $('#selAcadYear').attr('hidden', true);
+                    }
+                })
+            }else if(selRes == "acadSem"){
                 $('#selAcadYear').attr('hidden', true);
                 $('.resForm').attr('hidden', true);
+                $('#selRoomAcadYear').attr('hidden', true);
                 $('#selAcadSem').removeAttr('hidden');
-                $('.resButton').removeAttr('hidden');
-                if(mm < 2){
-                        $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
-                    }
+
+                if(mm > 2 && mm < 10){
+                    $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
+                }else{
+                    $('#selAcadSem option[value="secondSem"]').attr('hidden', true);
+                }
 
                 $("#selAcadSem").change(function(){
                     selAcadSem = $('#selAcadSem option:selected').val();
@@ -298,6 +392,15 @@
                             mm = "10";
                         }
                         endDate = "2023-02-28";
+                        $('#selRoomFirstSem').removeAttr('hidden');
+                        $("#selRoomFirstSem").change(function(){
+                            selRoom = $('#selRoomFirstSem option:selected').val();
+
+                            if(selRoom != "cRoom"){
+                                $('#room_id').val(selRoom);
+                                $('.resButton').removeAttr('hidden');
+                            }
+                        });
                     }
                     else{
                         if(mm <= 2 && mm >= 6){
@@ -310,22 +413,39 @@
                             }
                         }
                         endDate = "2023-06-30"
+                        $('#selRoomSecondSem').removeAttr('hidden');
+                        $("#selRoomSecondSem").change(function(){
+                            selRoom = $('#selRoomSecondSem option:selected').val();
+
+                            if(selRoom != "cRoom"){
+                                $('#room_id').val(selRoom);
+                                $('.resButton').removeAttr('hidden');
+                            }
+                        });
                     }
                     var Date = currDate.getFullYear() + "-" + mm + "-01";
                     $('#startDate').val(Date);
                     $('#endDate').val(endDate);
 
                 })
-
-            }
-            else if(selRes == "selBooking"){
+            }else if(selRes == "selBooking"){
                 $('#startDate').val("");
                 $('#endDate').val("");
                 $('#selAcadSem').attr('hidden', true);
                 $('#selAcadYear').attr('hidden', true);
                 $('#selAcadSem').val("cSem");
-                $('.resForm').removeAttr('hidden');
                 $('#selAcadYear').val("cYear");
+
+                $('#selRoomGuest').removeAttr('hidden');
+                    $("#selRoomGuest").change(function(){
+                        selRoom = $('#selRoomGuest option:selected').val();
+
+                        if(selRoom != "cRoom"){
+                            $('#room_id').val(selRoom);
+                            $('.resForm').removeAttr('hidden');
+                        }
+                });
+
             }
         })
 
