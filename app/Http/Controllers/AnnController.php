@@ -7,6 +7,8 @@ use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
 use App\Mail\SendMailAfterRes;
+use App\Mail\sMail;
+use App\Mail\userData;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +52,7 @@ class AnnController extends Controller
                 array_push($avRooms, $item->roomNum);
             }
 
-            return view('pages.selAnn', compact('dorm', 'dates', 'rooms'));
+            return view('pages.selAnn', compact('dorm', 'dates', 'allRooms'));
 
         }else{
 
@@ -260,23 +262,58 @@ class AnnController extends Controller
         Reservation::create([
             'user_id' => $request->user()->id,
             'room_id' => $roomId,
-            'arrDate' => $request->date_start,
-            'depDate' => $request->date_end,
+            'arrDate' => $request->date_start_form,
+            'depDate' => $request->date_end_form,
         ]);
+
+        $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'postalCode' => 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'hNum' => 'required',
+        ]);
+
+        $roomNum = Room::where('id', $roomId)->pluck('roomNum');
+        $subject = "Rezerwacja pokoju $roomNum";
+
+        $maildata = array(
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'email' => $request->email,
+            'phone' => $request->phone,
+            'postalCode' => $request->postalCode,
+            'city' => $request->city,
+            'street' => $request->street,
+            'hNum' => $request->hNum,
+            'subject' => $subject,
+            );
 
         Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
 
-        return back();
-
         $userEmail = auth()->user()->email;
 
-        dd($userEmail);
-        $res = Reservation::where('user_id', auth()->user()->id)->orderBy('id', 'desc')->pluck('announcement_id')->first();
-        $ann = Dormitory::where('id', $res)->orderBy('id', 'desc')->pluck('userID')->first();
-        $owner = User::where('id', $ann)->pluck('email');
+        $dorm = Dormitory::find(1);
+        $ownerEmail = $dorm->user->email;
 
         Mail::to($userEmail)->send(new SendMailAfterRes());
-        Mail::to($owner)->send(new SendMailAfterRes());
+        Mail::to($ownerEmail)->send(new userData($maildata));
+
+        return redirect(route('myres'));
+    }
+
+    public function guestReservation(Request $request){
+        $roomId = (int)$request->guestRoomId;
+
+        Reservation::create([
+            'user_id' => $request->user()->id,
+            'room_id' => $roomId,
+            'arrDate' => $request->date_start,
+            'depDate' => $request->date_end,
+        ]);
 
         return redirect(route('myres'));
     }
@@ -285,5 +322,32 @@ class AnnController extends Controller
         $user = auth()->user()->id;
 
         return view('pages.crAnn', compact('user'));
+    }
+
+    public function contact(){
+        return view('pages.contact');
+    }
+
+    public function contactForm(Request $request){
+        $ownerID = Dormitory::find(1);
+
+        $ownerEmail = $ownerID->user->email;
+
+        $request->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'subject' => 'required',
+            'message' => 'required',
+        ]);
+        
+        $maildata = array(
+            'name' => $request->name,
+            'email' => $request->email,
+            'subject' => $request->subject,
+            'message' => $request->message,
+            );
+
+        Mail::to($ownerEmail)->send(new sMail($maildata));
+        return back();
     }
 }

@@ -26,6 +26,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::controller(AnnController::class)->group(function() {
         Route::post('/dorm/roomRes/{id}', 'reservation')->name('res');
+        Route::post('/dorm/guestRoomRes/{id}', 'guestReservation')->name('guestRes');
         // Route::get('/pages/selAnn/{id}/fetch-res', 'fetchRes')->name('fRes');
     });
 
@@ -82,6 +83,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::controller(AnnController::class)->group(function() {
     Route::get('/', 'index')->name('ann');
     Route::get('/dorm', 'dormitory')->name('dorm');
+    Route::get('/contact', 'contact')->name('contact');
+    Route::post('/contact/sendMail', 'contactForm')->name('contactForm');
 });
 
 Route::get('/main', [MainController::class, 'index'])->name('main');

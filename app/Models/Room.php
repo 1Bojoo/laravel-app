@@ -9,7 +9,7 @@ class Room extends Model
 {
     protected $table = 'rooms';
 
-    protected $fillable = ['annID', 'roomNum', 'floor', 'isOwned'];
+    protected $fillable = ['dormId', 'roomNum', 'floor', 'isOwned'];
 
     public function announcement(){
         return $this->belongsTo(Announcement::class);
@@ -17,9 +17,5 @@ class Room extends Model
 
     public function reservation(){
         return $this->hasMany(Reservation::class);
-    }
-
-    public function first_reservation(){
-        return $this->hasOne(Reservation::class)->oldestOfMany();
     }
 }

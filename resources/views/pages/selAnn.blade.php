@@ -119,9 +119,9 @@
 
                             @if($item->floor > 0)
 
-                                @if (is_null($item->first_reservation))
+                                @if ($item->reservation->isEmpty())
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
-                                @elseif((\Carbon\Carbon::parse($item->first_reservation->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->first_reservation->depDate) > \Carbon\Carbon::parse("2023-06-30")))
+                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2023-06-30")))
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
                                 @endif
 
@@ -141,9 +141,9 @@
                         @foreach ($allRooms as $item)
 
                             @if($item->floor > 0)
-                                @if (is_null($item->first_reservation))
+                                @if ($item->reservation->isEmpty())
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
-                                @elseif((\Carbon\Carbon::parse($item->first_reservation->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->first_reservation->depDate) > \Carbon\Carbon::parse("2022-02-28")))
+                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2022-02-28")))
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
                                 @endif
                             @endif
@@ -156,9 +156,9 @@
                         @foreach ($allRooms as $item)
 
                             @if($item->floor > 0)
-                                @if (is_null($item->first_reservation))
+                                @if ($item->reservation->isEmpty())
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
-                                @elseif((\Carbon\Carbon::parse($item->first_reservation->arrDate) < \Carbon\Carbon::parse("2023-03-01")) && (\Carbon\Carbon::parse($item->first_reservation->depDate) > \Carbon\Carbon::parse("2023-06-30")))
+                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2023-03-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2023-06-30")))
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
                                 @endif
                             @endif
@@ -178,37 +178,157 @@
                     </select>
                 </div>
 
-                <form action="{{route("res", $dorm->id)}}" method="post" enctype="multipart/form-data" class="d-flex flex-column align-items-center">
+                <form action="{{route("guestRes", $dorm->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
 
-                    <div class="w-50">
-                        <div class="resForm" hidden>
-                            <div class="form-group date mb-2 d-flex flex-row">
-                                <input type="hidden" name="dormId" value={{$dorm->id}}>
-                                <input type="hidden" name="roomId" id="room_id" value="">
-                                <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
-                                <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
-                                    <i class="bi bi-calendar"></i>
+                    <input type="hidden" name="guestRoomId" id="guest_room_id" value="">
+
+                    <div class="d-flex flex-column align-items-center">
+                        <div class="w-50 ">
+                            <div class="resForm" hidden>
+                                <div class="form-group date mb-2 d-flex flex-row">
+                                    <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
+                                    <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
+                                        <i class="bi bi-calendar"></i>
+                                    </div>
                                 </div>
+                                <div class="from-group date d-flex flex-row">
+                                    <input type="text" placeholder="Do" name="date_end" id="endDate" class="form-control">
+                                    <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
+                                        <i class="bi bi-calendar"></i>
+                                    </div>
+                                </div><br>
                             </div>
-                            <div class="from-group date d-flex flex-row">
-                                <input type="text" placeholder="Do" name="date_end" id="endDate" class="form-control">
-                                <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
-                                    <i class="bi bi-calendar"></i>
-                                </div>
-                            </div><br>
                         </div>
                     </div>
 
-                    <button class="btn btn-primary w-50 resButton" hidden>Zarezerwuj</button>
+                    <button type="submit" class="btn btn-primary guestRoomRes" hidden>
+                        Zarezerwuj
+                    </button>
+                    
                 </form>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cofnij</button>
+                <button type="button" class="btn btn-primary resButton" data-bs-toggle="modal" data-bs-target="#staticBackdropSendForm" hidden>Dalej</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cofnij</button>
             </div>
           </div>
         </div>
       </div>
+
+      <div class="modal fade" id="staticBackdropSendForm" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="staticBackdropLabel">Uzupełnij swoje dane</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="POST" action="{{ route("res", $dorm->id) }}">
+                    @csrf
+
+                    <input type="hidden" name="dormId" value={{$dorm->id}}>
+                    <input type="hidden" name="roomId" id="room_id" value="">
+                    <input type="hidden" placeholder="Od" name="date_start_form" id="startDateForm" class="form-control">
+                    <input type="hidden" placeholder="Do" name="date_end_form" id="endDateForm" class="form-control">
+  
+                    <div class="form-outline form-white input-group mb-2">
+                      <span class="input-group-text" id="basic-addon1">Imię: </span>
+                      <input id="firstname" type="text" class="form-control form-control-lg @error('firstname') is-invalid @enderror" name="firstname" value="{{ Auth::user()->firstname }}" required autocomplete="firstname" autofocus>
+  
+                      @error('firstname')
+                        <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+  
+                    <div class="form-outline form-white input-group mb-2">
+                      <span class="input-group-text" id="basic-addon1">Nazwisko: </span>
+                      <input id="lastname" type="text" class="form-control form-control-lg @error('lastname') is-invalid @enderror" name="lastname" value="{{ Auth::user()->lastname }}" required autocomplete="lastname" autofocus>
+  
+                      @error('lastname')
+                        <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+  
+                    <div class="form-outline form-white input-group mb-2">
+                      <span class="input-group-text" id="basic-addon1">Email: </span>
+                      <input id="email" type="text" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ Auth::user()->email }}" required autocomplete="email" autofocus>
+  
+                      @error('email')
+                        <span class="invalid-feedback" role="alert">
+                        <strong>{{ $message }}</strong>
+                        </span>
+                      @enderror
+                    </div>
+
+                    <div class="form-outline form-white input-group mb-2">
+                        <span class="input-group-text" id="basic-addon1">Numer telefonu: </span>
+                        <input id="phone" type="text" class="form-control form-control-lg @error('phone') is-invalid @enderror" name="phone" value="{{ Auth::user()->phone }}" required autocomplete="phone" autofocus>
+    
+                        @error('phone')
+                          <span class="invalid-feedback" role="alert">
+                          <strong>{{ $message }}</strong>
+                          </span>
+                        @enderror
+                      </div>
+
+                    <div class="form-outline form-white input-group mb-2">
+                        <span class="input-group-text" id="basic-addon1">Kod pocztowy: </span>
+                        <input id="postalCode" type="text" class="form-control form-control-lg @error('postalCode') is-invalid @enderror" name="postalCode" value="{{ old('postalCode') }}" required autocomplete="postalCode" autofocus>
+    
+                        @error('postalCode')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-outline form-white input-group mb-2">
+                        <span class="input-group-text" id="basic-addon1">Miasto: </span>
+                        <input id="city" type="text" class="form-control form-control-lg @error('city') is-invalid @enderror" name="city" value="{{ old('city') }}" required autocomplete="city" autofocus>
+    
+                        @error('city')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-outline form-white input-group mb-2">
+                        <span class="input-group-text" id="basic-addon1">Ulica: </span>
+                        <input id="street" type="text" class="form-control form-control-lg @error('street') is-invalid @enderror" name="street" value="{{ old('street') }}" required autocomplete="street" autofocus>
+    
+                        @error('street')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+
+                    <div class="form-outline form-white input-group mb-2">
+                        <span class="input-group-text" id="basic-addon1">Numer domu / mieszkania: </span>
+                        <input id="hNum" type="text" class="form-control form-control-lg @error('hNum') is-invalid @enderror" name="hNum" value="{{ old('hNum') }}" required autocomplete="hNum" autofocus>
+    
+                        @error('hNum')
+                            <span class="invalid-feedback" role="alert">
+                            <strong>{{ $message }}</strong>
+                            </span>
+                        @enderror
+                    </div>
+  
+                    <button class="btn btn-primary">Zarezerwuj</button>
+                    </form>      
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+    </div>
 
       <div class="modal fade" id="staticBackdropGallery" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
@@ -284,13 +404,7 @@
 
         var dates = @json($dates); 
 
-        console.log(dates["1"].length);
-
-        dates.forEach(element => {
-            dates.forEach(function(row){
-                console.log(row);
-            });
-        });
+        var array = [];
 
         var currDate = new Date();
         mm = currDate.getMonth()+1;
@@ -325,6 +439,9 @@
                 $('#selAcadYear').attr('hidden', true);
                 $('#selAcadSem').attr('hidden', true);
                 $('#selRoomAcadYear').attr('hidden', true);
+                $('#selRoomGuest').attr('hidden', true);
+                $('#selRoomFirstSem').attr('hidden', true);
+                $('#selRoomSecondSem').attr('hidden', true);
                 $('.resForm').attr('hidden', true);
                 $('.resButton').attr('hidden', true);
                 $('#selAcadSem').val("cSem");
@@ -334,9 +451,15 @@
             else if(selRes == "acadYear"){
                 $('#selAcadSem').attr('hidden', true);
                 $('#selRoomAcadYear').removeAttr('hidden');
+                $('#selRoomGuest').attr('hidden', true);
+                $('#selRoomFirstSem').attr('hidden', true);
+                $('#selRoomSecondSem').attr('hidden', true);
+                
                 $("#selRoomAcadYear").change(function(){
 
-                    selRoom = $('#selRoom option:selected').val();
+                    selRoom = $('#selRoomAcadYear option:selected').val();
+
+                    console.log(selRoom);
 
                     if(selRoom != "cRoom"){
 
@@ -353,13 +476,17 @@
                                 $('.resButton').removeAttr('hidden');
                                     if(mm < 10 && mm > 6){
                                         $('#startDate').val("2022-10-01");
+                                        $('#startDateForm').val("2022-10-01");
                                         $('#endDate').val("2023-06-30");
+                                        $('#endDateForm').val("2023-06-30");
                                     }
                                     else{
                                         mm = mm = currDate.getMonth()+2;
                                         var Date = currDate.getFullYear() + "-" + mm + "-01";
                                         $('#startDate').val(Date);
+                                        $('#startDateForm').val(Date);
                                         $('#endDate').val("2023-06-30");
+                                        $('#endDateForm').val("2023-06-30");
                                     }
                                 }else{
                                     $('.resButton').attr('hidden', true);
@@ -375,6 +502,7 @@
                 $('.resForm').attr('hidden', true);
                 $('#selRoomAcadYear').attr('hidden', true);
                 $('#selAcadSem').removeAttr('hidden');
+                $('#selRoomGuest').attr('hidden', true);
 
                 if(mm > 2 && mm < 10){
                     $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
@@ -425,12 +553,16 @@
                     }
                     var Date = currDate.getFullYear() + "-" + mm + "-01";
                     $('#startDate').val(Date);
+                    $('#startDateForm').val(Date);
                     $('#endDate').val(endDate);
+                    $('#endDateForm').val(endDate);
 
                 })
             }else if(selRes == "selBooking"){
                 $('#startDate').val("");
+                $('#startDateForm').val("");
                 $('#endDate').val("");
+                $('#endDateForm').val("");
                 $('#selAcadSem').attr('hidden', true);
                 $('#selAcadYear').attr('hidden', true);
                 $('#selAcadSem').val("cSem");
@@ -441,31 +573,42 @@
                         selRoom = $('#selRoomGuest option:selected').val();
 
                         if(selRoom != "cRoom"){
-                            $('#room_id').val(selRoom);
+                            $('#guest_room_id').val(selRoom);
+
+                            console.log($('#guest_room_id').val());
+
+                            array = dates[selRoom];
+
+                            console.log(array);
+
                             $('.resForm').removeAttr('hidden');
+
+                            $('.guestRoomRes').removeAttr('hidden');
                         }
                 });
-
             }
         })
 
         $('#startDate').datepicker({
-            format: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
             startDate: new Date(),
             autoclose: true,
             clearBtn: true,
             todayBtn: true,
-            datesDisabled: dates
-        });
+            updateViewDate: false,
+            }).on('show', function(e){
+                    $('#startDate').datepicker('setDatesDisabled',array);
+            });
 
         $('#endDate').datepicker({
-            format: 'yyyy/mm/dd',
+            format: 'yyyy-mm-dd',
             startDate: new Date(),
             autoclose: true,
             clearBtn: true,
             todayBtn: true,
-            datesDisabled: dates
-        });
+            }).on('show', function(e){
+                $('#endDate').datepicker('setDatesDisabled',array);
+            });;
 
     </script>
 
