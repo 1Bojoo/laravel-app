@@ -15,6 +15,9 @@
                 </a>
             </div> --}}
             </div>
+            <div class="w-100 mt-1 mb-3 d-flex justify-content-center align-items-center">
+                <input class="form-control w-25" id="myInput" type="text" placeholder="Szukaj..">
+            </div>
             <table class="table">
                 <thead>
                 <tr>
@@ -29,7 +32,7 @@
                     <th scope="col">Akcje</th>
                 </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable">
                 @foreach($res as $item)
                 <tr>
                     <th scope="row">{{$item->id}}</th>
@@ -85,7 +88,18 @@
                 </tbody>
             </table>
         </div>
+@endsection
 
-        
+@section('script')
+
+    <script type="text/javascript">
+        $("#myInput").on("keyup", function() {
+            var value = $(this).val().toLowerCase();
+            console.log(value);
+            $("#myTable tr").filter(function() {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    </script>
 
 @endsection

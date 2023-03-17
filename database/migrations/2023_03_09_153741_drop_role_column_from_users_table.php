@@ -13,9 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('dormitory', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id')->nullable()->after('id');
-            $table->foreign('user_id')->references('id')->on('user');
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('role');
         });
     }
 
@@ -26,9 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('dormitory', function (Blueprint $table) {
-            $table->dropForeign('dormitory_user_id_foreign');
-            $table->dropColumn('user_id');
+        Schema::table('users', function (Blueprint $table) {
+            //
         });
     }
 };

@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Attachment;
 
 class SendMailAfterRes extends Mailable
 {
@@ -18,9 +19,9 @@ class SendMailAfterRes extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($mailData)
     {
-        //
+        $this->mailData = $mailData;
     }
 
     /**
@@ -31,7 +32,7 @@ class SendMailAfterRes extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Send Mail After Res',
+            subject: $this->mailData['subject'],
         );
     }
 
@@ -43,14 +44,20 @@ class SendMailAfterRes extends Mailable
     public function content()
     {
         return new Content(
-            view: 'pages.mail.SendMailAfterResView',
+            markdown: 'pages.mail.SendMailAfterResView',
+            with: [
+                    'roomNum' => $this->mailData['roomNum'],
+                    'arrDate' => $this->mailData['arrDate'],
+                    'depDate' => $this->mailData['depDate'],
+                    'url' => $this->mailData['url']
+                ],
         );
     }
 
     /**
      * Get the attachments for the message.
      *
-     * @return array
+     * @return \Illuminate\Mail\Mailables\Attachment[]
      */
     public function attachments()
     {

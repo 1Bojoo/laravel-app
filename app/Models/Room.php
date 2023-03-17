@@ -11,8 +11,8 @@ class Room extends Model
 
     protected $fillable = ['dormId', 'roomNum', 'floor', 'isOwned'];
 
-    public function announcement(){
-        return $this->belongsTo(Announcement::class);
+    public function dorm(){
+        return $this->belongsTo(Dormitory::class);
     }
 
     public function reservation(){

@@ -81,13 +81,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
 //WIDOK NIEZALOGOWANEGO UŻYTKOWNIKA
 
 Route::controller(AnnController::class)->group(function() {
-    Route::get('/', 'index')->name('ann');
+    Route::get('/', 'index')->name('main');
     Route::get('/dorm', 'dormitory')->name('dorm');
     Route::get('/contact', 'contact')->name('contact');
     Route::post('/contact/sendMail', 'contactForm')->name('contactForm');
 });
-
-Route::get('/main', [MainController::class, 'index'])->name('main');
 
 Route::post('/validateQR', [UserController::class, 'qrLogin'])->name('validateQR');
 

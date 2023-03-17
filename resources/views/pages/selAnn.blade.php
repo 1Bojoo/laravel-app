@@ -13,13 +13,18 @@
     <div class="ann-container p-3 d-flex justify-content-between" style="background-color: #F2F2F2">
         <div class="content w-74 p-5 rounded" style="background-color: white; box-shadow: 0px 0px 10px -8px rgba(66, 68, 90, 1);">
             <h1>{{$dorm->name}}</h1>
-            <h5>{{$dorm->city}}, {{$dorm->province}}, {{$dorm->country}}</h5>
+            <h5> <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-geo-alt" viewBox="0 0 16 16">
+                    <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z"/>
+                    <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                </svg> 
+                {{$dorm->postalCode}} {{$dorm->city}}, ul. {{$dorm->street}} {{$dorm->hNum}}
+            </h5>
             <div class="ann-stats d-flex flex-row">
                 @if ($dorm->rating >= 1)
                     <p>{{$dorm->rating}}</p>
                 @endif
             </div>
-            <div class="ann-gallery rounded d-flex flex-wrap">
+            <div class="ann-gallery rounded d-flex flex-wrap mt-3">
 
                 @if($countImg < 4)
 
@@ -60,17 +65,19 @@
                 @endif
 
             </div>
-            <h3 >{{$dorm->desc}}</h3>
+            <p class="fs-5 mt-3 p-1">{{$dorm->desc}}</p>
         </div>
         <div class="reservation w-25 rounded ml-2 d-flex flex-column text-center" style="background-color: white; box-shadow: 0px 0px 10px -8px rgba(66, 68, 90, 1);">
-            <h4 class="p-3">Cena: {{$dorm->price}} zł / miesiąc</h4>
+            <h4 class="p-3">Cennik: </h4>
+            <span class="fs-5">Student - 390 zł / miesiąc</span>
+            <span class="fs-5">Gość - 40 zł / doba</span>
             @guest
-                <p>Rejestracja dostępna po zalogowaniu</p>
+                <p class="mt-2">Rejestracja dostępna po zalogowaniu</p>
             @else
-                <div class="d-flex flex-column text-center items-align-center justify-content-center">
-                    <button class="btn btn-primary w-70" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Zarezerwuj</button>
-                    <h4 class="mt-4">Sprawdź dostępność pokoi:</h4>
-                    <button class="btn btn-primary w-70 m-0 d-block mt-4" data-bs-toggle="modal" data-bs-target="#staticBackdropRoomAv">Pokoje</button>
+                <div class="d-flex flex-column align-items-center justify-content-center pt-4">
+                    <button class="btn btn-primary w-50" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Zarezerwuj</button>
+                    {{-- <h4 class="mt-5">Sprawdź dostępność pokoi:</h4>
+                    <button class="btn btn-primary w-50 m-0 d-block mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdropRoomAv">Pokoje</button> --}}
                 </div>
             @endguest
         </div>
@@ -103,9 +110,13 @@
                 <div>
                     <select id="selRes" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-lg example">
                         <option value="cDate">Wybierz okres rezerwacji</option>
-                        <option value="acadYear">Rok akademicki</option>
-                        <option value="acadSem">Semestr akademicki</option>
-                        <option value="selBooking">Wybrany okres</option>
+                        @canany(['isAdmin', 'isStudent'])
+                            <option value="acadYear">Rok akademicki</option>
+                            <option value="acadSem">Semestr akademicki</option>
+                        @endcanany
+                        @can('isGuest')
+                            <option value="selBooking">Wybrany okres</option>
+                        @endcan
                     </select>
 
                     <select id="selAcadYear" class="form-select form-select-md mb-3 mx-auto w-50" hidden>
@@ -186,6 +197,11 @@
                     <div class="d-flex flex-column align-items-center">
                         <div class="w-50 ">
                             <div class="resForm" hidden>
+                                {{-- <div class="input-group input-daterange">
+                                    <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
+                                    <div class="input-group-addon">to</div>
+                                    <input type="text" placeholder="Do" name="date_end" id="endDate" class="form-control">
+                                </div> --}}
                                 <div class="form-group date mb-2 d-flex flex-row">
                                     <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
                                     <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">
@@ -202,10 +218,11 @@
                         </div>
                     </div>
 
-                    <button type="submit" class="btn btn-primary guestRoomRes" hidden>
-                        Zarezerwuj
-                    </button>
-                    
+                    <div class="w-100 d-flex align-items-center justify-content-center">
+                        <button type="submit" class="btn btn-primary w-25 guestRoomRes" hidden>
+                            Zarezerwuj
+                        </button>
+                    </div>
                 </form>
             </div>
             <div class="modal-footer">
@@ -234,7 +251,7 @@
   
                     <div class="form-outline form-white input-group mb-2">
                       <span class="input-group-text" id="basic-addon1">Imię: </span>
-                      <input id="firstname" type="text" class="form-control form-control-lg @error('firstname') is-invalid @enderror" name="firstname" value="{{ Auth::user()->firstname }}" required autocomplete="firstname" autofocus>
+                      <input id="firstname" type="text" class="form-control form-control-lg @error('firstname') is-invalid @enderror" name="firstname" value="{{ Auth::user()->firstname ?? '' }}" required autocomplete="firstname" autofocus>
   
                       @error('firstname')
                         <span class="invalid-feedback" role="alert">
@@ -245,7 +262,7 @@
   
                     <div class="form-outline form-white input-group mb-2">
                       <span class="input-group-text" id="basic-addon1">Nazwisko: </span>
-                      <input id="lastname" type="text" class="form-control form-control-lg @error('lastname') is-invalid @enderror" name="lastname" value="{{ Auth::user()->lastname }}" required autocomplete="lastname" autofocus>
+                      <input id="lastname" type="text" class="form-control form-control-lg @error('lastname') is-invalid @enderror" name="lastname" value="{{ Auth::user()->lastname ?? ''}}" required autocomplete="lastname" autofocus>
   
                       @error('lastname')
                         <span class="invalid-feedback" role="alert">
@@ -256,7 +273,7 @@
   
                     <div class="form-outline form-white input-group mb-2">
                       <span class="input-group-text" id="basic-addon1">Email: </span>
-                      <input id="email" type="text" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ Auth::user()->email }}" required autocomplete="email" autofocus>
+                      <input id="email" type="text" class="form-control form-control-lg @error('email') is-invalid @enderror" name="email" value="{{ Auth::user()->email ?? ''}}" required autocomplete="email" autofocus>
   
                       @error('email')
                         <span class="invalid-feedback" role="alert">
@@ -267,7 +284,7 @@
 
                     <div class="form-outline form-white input-group mb-2">
                         <span class="input-group-text" id="basic-addon1">Numer telefonu: </span>
-                        <input id="phone" type="text" class="form-control form-control-lg @error('phone') is-invalid @enderror" name="phone" value="{{ Auth::user()->phone }}" required autocomplete="phone" autofocus>
+                        <input id="phone" type="text" class="form-control form-control-lg @error('phone') is-invalid @enderror" name="phone" value="{{ Auth::user()->phone ?? ''}}" required autocomplete="phone" autofocus>
     
                         @error('phone')
                           <span class="invalid-feedback" role="alert">
@@ -349,18 +366,23 @@
 
                             @can('isAdmin')
 
-                            <a href="{{route('delImg', $loop->index)}}" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$dorm->id}}" data-imageid="{{$loop->index}}">X</a>
+                                <a href="{{route('delImg', $loop->index)}}" class="deleteImg btn btn-secondary text-decoration-none text-white bg-dark position-absolute" style="top: 5%; right: 3%" data-annid="{{$dorm->id}}" data-imageid="{{$loop->index}}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash3" viewBox="0 0 16 16">
+                                        <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z"/>
+                                      </svg>
+                                </a>
 
                             @endcan
 
                             {{-- <button type="button" class="deleteImg position-absolute top-0 start-100 translate-middle" data-annid="{{$dorm->id}}" data-imageid="{{$loop->index}}">X</button> --}}
                         </div>
                     @endforeach
+                </div>
 
-                        <div class="w-50">
-                            <button class="btn btn-primary w-50" data-bs-toggle="modal" data-bs-target="#staticBackdropAddImage">Dodaj zdjęcia</button>
-                        </div>
-
+                <div class="w-100 mt-3 text-center">
+                    @can('isAdmin')
+                        <button class="btn btn-primary w-25" data-bs-toggle="modal" data-bs-target="#staticBackdropAddImage">Dodaj zdjęcia</button>
+                    @endcan
                 </div>
                 
             </div>
@@ -450,59 +472,64 @@
             }
             else if(selRes == "acadYear"){
                 $('#selAcadSem').attr('hidden', true);
-                $('#selRoomAcadYear').removeAttr('hidden');
+                $('#selRoomAcadYear').attr('hidden', true);
+                $('#selAcadYear').removeAttr('hidden');
                 $('#selRoomGuest').attr('hidden', true);
                 $('#selRoomFirstSem').attr('hidden', true);
                 $('#selRoomSecondSem').attr('hidden', true);
-                
-                $("#selRoomAcadYear").change(function(){
 
-                    selRoom = $('#selRoomAcadYear option:selected').val();
+                $("#selAcadYear").change(function(){
 
-                    console.log(selRoom);
+                    selAcadYear = $('#selAcadYear option:selected').val();
+                    console.log(selAcadYear);
 
-                    if(selRoom != "cRoom"){
+                    if(selAcadYear != "cYear"){
+                            if(mm < 10 && mm > 6){
+                                $('#startDate').val("2022-10-01");
+                                $('#startDateForm').val("2022-10-01");
+                                $('#endDate').val("2023-06-30");
+                                $('#endDateForm').val("2023-06-30");
+                            }
+                            else{
+                                mm = mm = currDate.getMonth()+2;
+                                var Date = currDate.getFullYear() + "-" + mm + "-01";
+                                $('#startDate').val(Date);
+                                $('#startDateForm').val(Date);
+                                $('#endDate').val("2023-06-30");
+                                $('#endDateForm').val("2023-06-30");
+                            }
 
-                        $('#room_id').val(selRoom);
-                        console.log($('#room_id').val());
+                            $('#selRoomAcadYear').removeAttr('hidden');
+                                $("#selRoomAcadYear").change(function(){
+                                    selRoom = $('#selRoomAcadYear option:selected').val();
+                                    console.log(selRoom);
 
-                        $('#selAcadYear').removeAttr('hidden');
-                            $("#selAcadYear").change(function(){
-
-                                selAcadYear = $('#selAcadYear option:selected').val();
-                                console.log(selAcadYear);
-
-                                if(selAcadYear != "cYear"){
-                                $('.resButton').removeAttr('hidden');
-                                    if(mm < 10 && mm > 6){
-                                        $('#startDate').val("2022-10-01");
-                                        $('#startDateForm').val("2022-10-01");
-                                        $('#endDate').val("2023-06-30");
-                                        $('#endDateForm').val("2023-06-30");
+                                    if(selRoom != "cRoom"){
+                                        $('#room_id').val(selRoom);
+                                        console.log($('#room_id').val());
+                                        $('.resButton').removeAttr('hidden');
                                     }
                                     else{
-                                        mm = mm = currDate.getMonth()+2;
-                                        var Date = currDate.getFullYear() + "-" + mm + "-01";
-                                        $('#startDate').val(Date);
-                                        $('#startDateForm').val(Date);
-                                        $('#endDate').val("2023-06-30");
-                                        $('#endDateForm').val("2023-06-30");
+                                        $('.resButton').attr('hidden', true);
+                                        $('#room_id').val("cRoom");
                                     }
-                                }else{
-                                    $('.resButton').attr('hidden', true);
-                                }
                             });
-                    } 
-                    else{
-                        $('#selAcadYear').attr('hidden', true);
                     }
-                })
+                    else{
+                        $('.resButton').attr('hidden', true);
+                        $('#selRoomAcadYear').attr('hidden', true);
+                        $('#room_id').val("cRoom");
+                    }
+
+                });
+                
             }else if(selRes == "acadSem"){
                 $('#selAcadYear').attr('hidden', true);
                 $('.resForm').attr('hidden', true);
                 $('#selRoomAcadYear').attr('hidden', true);
                 $('#selAcadSem').removeAttr('hidden');
                 $('#selRoomGuest').attr('hidden', true);
+                $('#selAcadSem option:selected').val("cSem");
 
                 if(mm > 2 && mm < 10){
                     $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
@@ -528,9 +555,13 @@
                                 $('#room_id').val(selRoom);
                                 $('.resButton').removeAttr('hidden');
                             }
+                            else{
+                                $('.resButton').attr('hidden', true);
+                                $('#room_id').val("cRoom");
+                            }
                         });
                     }
-                    else{
+                    else if(selAcadSem == "secondSem"){
                         if(mm <= 2 && mm >= 6){
                             mm = "02";
                         }
@@ -549,7 +580,18 @@
                                 $('#room_id').val(selRoom);
                                 $('.resButton').removeAttr('hidden');
                             }
+                            else{
+                                $('.resButton').attr('hidden', true);
+                                $('#room_id').val("cRoom");
+                            }
                         });
+                    }
+                    else{
+                        $('#selRoomFirstSem').attr('hidden', true);
+                        $('#selRoomSecondSem').attr('hidden', true);
+                        $('#room_id').val("cRoom");
+                        $('#selAcadSem').val("cSem");
+                        $('.resButton').attr('hidden', true);
                     }
                     var Date = currDate.getFullYear() + "-" + mm + "-01";
                     $('#startDate').val(Date);
@@ -585,6 +627,10 @@
 
                             $('.guestRoomRes').removeAttr('hidden');
                         }
+                        else{
+                            $('.resForm').attr('hidden', true);
+                            $('.guestRoomRes').attr('hidden', true);
+                        }
                 });
             }
         })
@@ -608,7 +654,7 @@
             todayBtn: true,
             }).on('show', function(e){
                 $('#endDate').datepicker('setDatesDisabled',array);
-            });;
+            });
 
     </script>
 

@@ -10,10 +10,18 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts/Styles -->
+    <link rel="stylesheet" href="{{ url('/assets/style.css') }}">
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation&display=swap" rel="stylesheet">
 
     <!-- Scripts -->
     <script
@@ -25,19 +33,13 @@
         integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c="
         crossorigin="anonymous">
     </script>
-    <script 
-        src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js" 
-        integrity="sha512-T/tUfKSV1bihCnd+MxKD0Hm1uBBroVYBOYSk1knyvQ9VyZJpc/ALb4P0r6ubwVPSGB2GvjeoMAJJImBG12TiaQ==" 
-        crossorigin="anonymous" 
-        referrerpolicy="no-referrer">
-    </script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <a class="navbar-brand ps-3" href="{{ url('/dorm') }}">
+                <a class="navbar-brand ps-3" href="{{ url('/') }}">
                     <strong>Akademik <i class="bi bi-node-plus-fill"></i></strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -131,34 +133,9 @@
                 @endforeach
             </div>
         @endif
-        <main class="container">
+        <main class="container-fluid p-0">
             @yield('content')
         </main>
     </div>
-    @yield('script')
-        <script type="text/javascript">          
-
-            $('.genQR').click(function() {
-
-                var pass = $('#pass').val();
-
-                $.ajax({
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    method: 'POST',
-                    url: "{{ route('generateQR') }}",
-                    data: {
-                        pass: pass, 
-                    },
-                    success: function(c){
-                        window.location.href = window.location.href;
-                    },
-                    error: function(ee){
-                        console.log(ee);
-                    }
-                })
-            });
-        </script>
 </body>
 </html>

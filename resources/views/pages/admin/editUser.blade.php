@@ -43,13 +43,17 @@
                             <label for="role" class="col-md-4 col-form-label text-md-end">{{ __('role') }}</label>
 
                             <div class="col-md-6">
-                                <input id="role" type="text" class="form-control @error('role') is-invalid @enderror" name="role" value="{{ $user->role }}" required autocomplete="role" autofocus>
-
-                                @error('role')
-                                    <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
-                                    </span>
-                                @enderror
+                                <select class="form-select" id="role" name="role">
+                                    @if ($user->role == "guest")
+                                        <option value="{{$user->role}}">Gość</option>
+                                        <option value="student">Student</option>
+                                    @elseif ($user->role == "student")
+                                        <option value="{{$user->role}}">Student</option>
+                                        <option value="guest">Gość</option>
+                                    @elseif ($user->role == "admin")
+                                        <option value="{{$user->role}}">Admin</option>
+                                    @endif
+                                </select>
                             </div>
                         </div>
 
@@ -66,4 +70,9 @@
         </div>
     </div>
 </div>
+@endsection
+@section('script')
+    <script type="text/javascript">
+
+    </script>
 @endsection

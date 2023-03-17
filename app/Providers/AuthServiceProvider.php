@@ -33,7 +33,8 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         $this->defineUserRoleGate('isAdmin', UserRole::ADMIN);
-        $this->defineUserRoleGate('isUser', UserRole::USER);
+        $this->defineUserRoleGate('isStudent', UserRole::STUDENT);
+        $this->defineUserRoleGate('isGuest', UserRole::GUEST);
 
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new MailMessage)

@@ -18,9 +18,8 @@ use Auth;
 class AnnController extends Controller
 {
     public function index() {
-        $dorm = Dormitory::all();
 
-        return view('pages.ann', compact('dorm'));
+        return view('pages.main');
     }
 
     public function dormitory() {
@@ -279,6 +278,7 @@ class AnnController extends Controller
 
         $roomNum = Room::where('id', $roomId)->pluck('roomNum');
         $subject = "Rezerwacja pokoju $roomNum";
+        $url = route('myres');
 
         $maildata = array(
             'firstname' => $request->firstname,
@@ -292,6 +292,14 @@ class AnnController extends Controller
             'subject' => $subject,
             );
 
+        $userMailData = array(
+            'subject' => $subject,
+            'roomNum' => $roomNum,
+            'arrDate' => $request->date_start_form,
+            'depDate' => $request->date_end_form,
+            'url' => $url
+        );
+
         Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
 
         $userEmail = auth()->user()->email;
@@ -299,7 +307,7 @@ class AnnController extends Controller
         $dorm = Dormitory::find(1);
         $ownerEmail = $dorm->user->email;
 
-        Mail::to($userEmail)->send(new SendMailAfterRes());
+        Mail::to($userEmail)->send(new SendMailAfterRes($userMailData));
         Mail::to($ownerEmail)->send(new userData($maildata));
 
         return redirect(route('myres'));

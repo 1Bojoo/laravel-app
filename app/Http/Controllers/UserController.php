@@ -57,6 +57,7 @@ class UserController extends Controller
 
     public function qrLogin(Request $request){
         $qr = $request->qr_code;
+
         $qrData = explode('|', $qr);
 
         $credentials = ['email'=>$qrData[0], 'password'=>$qrData[1]];
@@ -64,7 +65,7 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            return redirect()->intended('/dorm');
         }
         else{
             return redirect('/login')->with('message', 'Błędny kod QR');

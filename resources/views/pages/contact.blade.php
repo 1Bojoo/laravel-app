@@ -7,7 +7,7 @@
     <div class="d-flex flex-row mt-3 p-3">
         <div class="w-75 d-flex flex-row">
             <div class="w-50"> 
-                <p class="fs-2">Kontakt</p>
+                <p class="fs-2">Kontakt: </p>
                 <p class="fs-5">
                     <span class="fs-3">Administracja: </span><br>
                     Tadeusz Kowalski - tad.kow@akademik.pl <br>
@@ -17,7 +17,7 @@
                 </p>
             </div>
             <div class="w-50">
-                <p class="fs-2">Adres</p>
+                <p class="fs-2">Adres: </p>
                 <p class="fs-5">
                     Akademik "Testowy" nr 1 <br>
                     42-218 Częstochowa <br>
