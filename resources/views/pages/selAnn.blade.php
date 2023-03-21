@@ -58,28 +58,72 @@
                         class="w-100 p-1 rounded" 
                         alt="Zdjecie">
 
-                        <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white">Galeria zdjęć</p>
+                        @if($countImg > 4)
+                            <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white">+{{$countImg - 4}}</p>
+                        @endif
 
                     </button>
 
                 @endif
 
             </div>
-            <p class="fs-5 mt-3 p-1">{{$dorm->desc}}</p>
+            <p 
+                class="fs-5 mt-3 p-1"
+                @can('isAdmin')
+                    contenteditable="true"
+                @endcan
+            >
+                Miejsce na opis
+            </p>
         </div>
         <div class="reservation w-25 rounded ml-2 d-flex flex-column text-center" style="background-color: white; box-shadow: 0px 0px 10px -8px rgba(66, 68, 90, 1);">
-            <h4 class="p-3">Cennik: </h4>
-            <span class="fs-5">Student - 390 zł / miesiąc</span>
-            <span class="fs-5">Gość - 40 zł / doba</span>
-            @guest
-                <p class="mt-2">Rejestracja dostępna po zalogowaniu</p>
-            @else
-                <div class="d-flex flex-column align-items-center justify-content-center pt-4">
-                    <button class="btn btn-primary w-50" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Zarezerwuj</button>
-                    {{-- <h4 class="mt-5">Sprawdź dostępność pokoi:</h4>
-                    <button class="btn btn-primary w-50 m-0 d-block mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdropRoomAv">Pokoje</button> --}}
-                </div>
-            @endguest
+            <div class="d-flex flex-column">
+                <h4 class="p-3">Cennik: </h4>
+                <span class="fs-5">Student - 390 zł / miesiąc</span>
+                <span class="fs-5">Gość - 40 zł / doba</span>
+                @guest
+                    <p class="mt-2">Rejestracja dostępna po zalogowaniu</p>
+                @else
+                    <div class="d-flex flex-column align-items-center justify-content-center pt-4">
+                        <button class="btn btn-primary w-50" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Zarezerwuj</button>
+                        {{-- <h4 class="mt-5">Sprawdź dostępność pokoi:</h4>
+                        <button class="btn btn-primary w-50 m-0 d-block mt-3" data-bs-toggle="modal" data-bs-target="#staticBackdropRoomAv">Pokoje</button> --}}
+                    </div>
+                @endguest
+            </div>
+            <div class="d-flex flex-column mt-5">
+                <h4 class="p-3">Wyposażenie:</h4>
+                    <div class="d-flex align-items-center ms-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                        </svg>
+                        <p class="fs-5 ps-2 m-0">Łóżko</p>
+                    </div>
+                    <div class="d-flex align-items-center ms-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                        </svg>
+                        <p class="fs-5 ps-2 m-0">Pościel (Opcjonalnie)</p>
+                    </div>
+                    <div class="d-flex align-items-center ms-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                        </svg>
+                        <p class="fs-5 ps-2 m-0">Biurko</p>
+                    </div>
+                    <div class="d-flex align-items-center ms-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                        </svg>
+                        <p class="fs-5 ps-2 m-0">Szafa</p>
+                    </div>
+                    <div class="d-flex align-items-center ms-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-dot" viewBox="0 0 16 16">
+                            <path d="M8 9.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
+                        </svg>
+                        <p class="fs-5 ps-2 m-0">Lodówka</p>
+                    </div>
+            </div>
         </div>
     </div>
 
@@ -113,6 +157,7 @@
                         @canany(['isAdmin', 'isStudent'])
                             <option value="acadYear">Rok akademicki</option>
                             <option value="acadSem">Semestr akademicki</option>
+                            <option value="selBooking">Wybrany okres</option>
                         @endcanany
                         @can('isGuest')
                             <option value="selBooking">Wybrany okres</option>
@@ -469,14 +514,18 @@
                 $('#selAcadSem').val("cSem");
                 $('#selAcadYear').val("cYear");
                 $('#selRoomAcadYear').val("cRoom");
+                $('.guestRoomRes').attr('hidden', true);
             }
             else if(selRes == "acadYear"){
                 $('#selAcadSem').attr('hidden', true);
                 $('#selRoomAcadYear').attr('hidden', true);
                 $('#selAcadYear').removeAttr('hidden');
                 $('#selRoomGuest').attr('hidden', true);
+                $('.resForm').attr('hidden', true);
                 $('#selRoomFirstSem').attr('hidden', true);
                 $('#selRoomSecondSem').attr('hidden', true);
+                $('.guestRoomRes').attr('hidden', true);
+                $('.resButton').attr('hidden', true);
 
                 $("#selAcadYear").change(function(){
 
@@ -529,7 +578,9 @@
                 $('#selRoomAcadYear').attr('hidden', true);
                 $('#selAcadSem').removeAttr('hidden');
                 $('#selRoomGuest').attr('hidden', true);
+                $('.guestRoomRes').attr('hidden', true);
                 $('#selAcadSem option:selected').val("cSem");
+                $('.resButton').attr('hidden', true);
 
                 if(mm > 2 && mm < 10){
                     $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
@@ -607,8 +658,12 @@
                 $('#endDateForm').val("");
                 $('#selAcadSem').attr('hidden', true);
                 $('#selAcadYear').attr('hidden', true);
+                $('#selRoomAcadYear').attr('hidden', true);
+                $('#selRoomFirstSem').attr('hidden', true);
+                $('#selRoomSecondSem').attr('hidden', true);
                 $('#selAcadSem').val("cSem");
                 $('#selAcadYear').val("cYear");
+                $('.resButton').attr('hidden', true);
 
                 $('#selRoomGuest').removeAttr('hidden');
                     $("#selRoomGuest").change(function(){

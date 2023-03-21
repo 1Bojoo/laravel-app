@@ -52,16 +52,26 @@
   <script type="text/javascript">
     $(function() {
       $('.delete').click(function() {
-        $.ajax({
-          method: "DELETE",
-          url: "{{route('users')}}/" + $(this).data('id'),
-          data: {_token: '{{csrf_token()}}'}
-        })
-        .done(function(response) {
-          window.location.reload();
-        })
-        .fail(function(response) {
-          alert("ERROR");
+        Swal.fire({
+          title: "Czy na pewno chcesz usunąć rekord?",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: 'Tak',
+          cancelButtonText: 'Nie'
+        }).then((result) => {
+          if(result.value){
+            $.ajax({
+              method: "DELETE",
+              url: "{{route('users')}}/" + $(this).data('id'),
+              data: {_token: '{{csrf_token()}}'}
+            })
+            .done(function(response) {
+              window.location.reload();
+            })
+            .fail(function(response) {
+              alert("ERROR");
+            })
+          }
         })
       });
     });

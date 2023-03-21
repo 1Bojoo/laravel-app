@@ -18,7 +18,10 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
     />
-
+    <link href="
+        https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css
+    " rel="stylesheet">
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Edu+NSW+ACT+Foundation&display=swap" rel="stylesheet">
@@ -41,11 +44,14 @@
         integrity="sha256-xLD7nhI62fcsEZK2/v8LsBcb4lG7dgULkuXoXB/j91c="
         crossorigin="anonymous">
     </script>
+    <script src="
+        https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
+    "></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top shadow-sm">
             <div class="container">
                 <a class="navbar-brand ps-3" href="{{ url('/') }}">
                     <strong>Akademik <i class="bi bi-node-plus-fill"></i></strong>
@@ -64,23 +70,29 @@
                     <ul class="navbar-nav ms-auto pd-3">
                         <!-- Authentication Links -->
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rules') }}">Regulamin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('news') }}">Aktualności</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('contact') }}">Kontakt</a>
                         </li>
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <li class="nav-item fw-bold">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Logowanie') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <li class="nav-item fw-bold">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Rejestracja') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 

@@ -41,86 +41,11 @@
       </div>
     </div>
 
-    <div class="container text-center my-3">
-      <div class="row mx-auto my-auto justify-content-center">
-        <div id="recipeCarousel" class="carousel slide" data-bs-ride="carousel">
-          <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-img">
-                    <img src="https://via.placeholder.com/700x500.png/CB997E/333333?text=1" class="img-fluid">
-                  </div>
-                  <div class="card-img-overlay">Slide 1</div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-img">
-                    <img src="https://via.placeholder.com/700x500.png/DDBEA9/333333?text=2" class="img-fluid">
-                  </div>
-                  <div class="card-img-overlay">Slide 2</div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-img">
-                    <img src="https://via.placeholder.com/700x500.png/FFE8D6/333333?text=3" class="img-fluid">
-                  </div>
-                  <div class="card-img-overlay">Slide 3</div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-img">
-                    <img src="https://via.placeholder.com/700x500.png/B7B7A4/333333?text=4" class="img-fluid">
-                  </div>
-                  <div class="card-img-overlay">Slide 4</div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-img">
-                    <img src="https://via.placeholder.com/700x500.png/A5A58D/333333?text=5" class="img-fluid">
-                  </div>
-                  <div class="card-img-overlay">Slide 5</div>
-                </div>
-              </div>
-            </div>
-            <div class="carousel-item">
-              <div class="col-md-3">
-                <div class="card">
-                  <div class="card-img">
-                    <img src="https://via.placeholder.com/700x500.png/6B705C/eeeeee?text=6" class="img-fluid">
-                  </div>
-                  <div class="card-img-overlay">Slide 6</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <a class="carousel-control-prev bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-          </a>
-          <a class="carousel-control-next bg-transparent w-aut" href="#recipeCarousel" role="button" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          </a>
-        </div>
-      </div>		
-    </div>
-
     <div class="vh-100 d-flex align-items-center" id="cards">
       <div class="container" style="font-family: 'Kaushan Script', cursive;">
         <div class="row align-items-center">
           <div class="col-4 d-flex justify-content-center">
-              <div class="card align-items-center text-center" style="width: 19rem; border: none;">
+              <div class="card cardMain align-items-center text-center" style="width: 19rem; border: none;">
                 <div class="card-body">
                   <h2 class="card-title pt-5">REGULAMIN</h2>
                 </div>
@@ -129,11 +54,11 @@
                   <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z"/>
                   <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z"/>
                 </svg>
-                <a href="" class="text-decoration-none text-black stretched-link"></a>
+                <a href="{{route('rules')}}" class="text-decoration-none text-black stretched-link"></a>
               </div>
           </div>
           <div class="col-4 d-flex justify-content-center">
-              <div class="card align-items-center text-center" style="width: 19rem; border: none;">
+              <div class="card cardMain align-items-center text-center" style="width: 19rem; border: none;">
                 <div class="card-body">
                   <h3 class="card-title pt-5">AKTUALNOŚCI</h3>
                 </div>
@@ -141,11 +66,11 @@
                   <path d="M1.5 0A1.5 1.5 0 0 0 0 1.5V13a1 1 0 0 0 1 1V1.5a.5.5 0 0 1 .5-.5H14a1 1 0 0 0-1-1H1.5z"/>
                   <path d="M3.5 2A1.5 1.5 0 0 0 2 3.5v11A1.5 1.5 0 0 0 3.5 16h6.086a1.5 1.5 0 0 0 1.06-.44l4.915-4.914A1.5 1.5 0 0 0 16 9.586V3.5A1.5 1.5 0 0 0 14.5 2h-11zM3 3.5a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 .5.5V9h-4.5A1.5 1.5 0 0 0 9 10.5V15H3.5a.5.5 0 0 1-.5-.5v-11zm7 11.293V10.5a.5.5 0 0 1 .5-.5h4.293L10 14.793z"/>
                 </svg>
-                <a href="" class="text-decoration-none text-black stretched-link"></a>
+                <a href="{{route('news')}}" class="text-decoration-none text-black stretched-link"></a>
               </div>
           </div>
           <div class="col-4 d-flex justify-content-center">
-              <div class="card align-items-center text-center" style="width: 19rem; border: none;">
+              <div class="card cardMain align-items-center text-center" style="width: 19rem; border: none;">
                 <div class="card-body">
                   <h3 class="card-title pt-5">KONTAKT</h3>
                 </div>
@@ -163,11 +88,18 @@
 
   <!-- FOOTER -->
   <footer class="text-center text-white h-50" style="background-color: #202020 !important;">
-    <div class="container p-4 pb-0">
-      <h3 class="pb-3" style="font-family: 'Kaushan Script', cursive;">Znajdziesz nas tutaj</h3>
-      <section class="pb-3">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10081.538851810197!2d19.1096335!3d50.8240376!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4710b680726ea9c5%3A0x7597e2e83862fcfb!2sDom%20Studencki%20nr%207%20%22Herkules%22!5e0!3m2!1spl!2spl!4v1678965721896!5m2!1spl!2spl" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </section>
+    <div class="container pb-0 d-flex justify-content-evenly">
+      <div class="d-flex flex-column pt-4">
+        <h3 class="pb-3" style="font-family: 'Kaushan Script', cursive;">Znajdziesz nas tutaj</h3>
+        <section class="pb-3">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10081.538851810197!2d19.1096335!3d50.8240376!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4710b680726ea9c5%3A0x7597e2e83862fcfb!2sDom%20Studencki%20nr%207%20%22Herkules%22!5e0!3m2!1spl!2spl!4v1678965721896!5m2!1spl!2spl" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </section>
+      </div>
+      <div class="d-flex flex-column justify-content-center" style="font-family: 'Kaushan Script', cursive;">
+        <h4>Godziny otwarcia:</h4>
+        <p class="fs-4 m-0">Poniedziałek - Piątek: 7:00 - 15:00</p>
+        <p class="fs-4 m-0">Sobota: 8:00 - 12:00</p>
+      </div>
     </div>
     <div class="text-center p-3" style="background-color: #181818;">
       © 2023 Copyright:
@@ -181,22 +113,6 @@
 @section('script')
 
   <script type="text/javascript">
-
-  let items = document.querySelectorAll('.carousel .carousel-item')
-
-  items.forEach((el) => {
-    const minPerSlide = 4
-    let next = el.nextElementSibling
-    for (var i=1; i<minPerSlide; i++) {
-      if (!next) {
-          // wrap carousel by using first child
-          next = items[0]
-      }
-      let cloneChild = next.cloneNode(true)
-      el.appendChild(cloneChild.children[0])
-      next = next.nextElementSibling
-    }
-  })
 
   </script>
 

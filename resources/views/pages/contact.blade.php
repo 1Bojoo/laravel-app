@@ -4,14 +4,14 @@
 
 @section('content')
 
-    <div class="d-flex flex-row mt-3 p-3">
+    {{-- <div class="d-flex flex-row mt-3 p-3">
         <div class="w-75 d-flex flex-row">
             <div class="w-50"> 
                 <p class="fs-2">Kontakt: </p>
                 <p class="fs-5">
                     <span class="fs-3">Administracja: </span><br>
                     Tadeusz Kowalski - tad.kow@akademik.pl <br>
-                    Ilona Warszawska - ilo.war@akademik.pl <br>
+                    Ilona Warszawska - ilo.war@akademik.pl <br><br>
                     <span class="fs-3">Telefon: </span><br>
                     111 222 333<br>
                 </p>
@@ -28,6 +28,45 @@
         <div class="w-25 text-center">
             <p class="fs-2">Formularz kontaktowy</p>
             <button class="btn btn-success mt-3 w-50" data-bs-toggle="modal" data-bs-target="#conModal"> Kontakt</button>
+        </div>
+    </div> --}}
+
+    <div class="container mt-5">
+        <div class="row row-cols-3 align-items-center">
+            <div class="col-4 d-flex justify-content-center">
+                <div class="card border-0" style="width: 25rem; height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
+                    <div class="card-body">
+                      <h5 class="card-title text-center p-2 fs-2">Kontakt: </h5>
+                      <p class="card-text text-center fs-5">
+                        <span class="fs-3">Administracja: </span><br>
+                        Tadeusz Kowalski - tad.kow@akademik.pl <br>
+                        Ilona Warszawska - ilo.war@akademik.pl <br><br>
+                        <span class="fs-3">Telefon: </span><br>
+                        111 222 333<br>
+                      </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 d-flex justify-content-center">
+                <div class="card border-0" style="width: 25rem; height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
+                    <div class="card-body">
+                      <h5 class="card-title text-center p-2 fs-2">Adres: </h5>
+                      <p class="card-text text-center fs-5">
+                        Akademik "Testowy" nr 1 <br>
+                        42-218 Częstochowa <br>
+                        ul. Sowińskiego 40/48
+                      </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 d-flex justify-content-center">
+                <div class="card border-0" style="width: 25rem; height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
+                    <div class="card-body text-center align-items-center">
+                      <h5 class="card-title text-center p-2 fs-2">Formularz kontaktowy</h5>
+                      <button class="btn btn-success mt-3 w-50" data-bs-toggle="modal" data-bs-target="#conModal"> Kontakt</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

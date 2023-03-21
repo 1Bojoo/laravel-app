@@ -47,7 +47,7 @@ class AdminController extends Controller
     }
 
     public function res() {
-        $res = Reservation::all();
+        $res = Reservation::paginate(10);
 
         return view('pages.admin.userRes', compact('res'));
     }
@@ -82,7 +82,7 @@ class AdminController extends Controller
     }
 
     public function users() {
-        $users = User::all();
+        $users = User::paginate(10);
 
         return view('pages.admin.userAd', compact('users'));
     }
@@ -96,7 +96,6 @@ class AdminController extends Controller
         ]);
     }
     
-
     public function destroyAnn(Dormitory $dorm) {
         $dorm->delete();
     }

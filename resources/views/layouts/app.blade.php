@@ -14,6 +14,9 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" integrity="sha512-mSYUmp1HYZDFaVKK//63EcZq4iFWFjxSL+Z3T/aCt4IO9Cejm03q3NKKYN6pFQzY0SBOr8h+eCIAZHPXcpZaNw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="
+        https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.min.css
+    " rel="stylesheet">
 
     <!-- Scripts -->
     <script
@@ -31,6 +34,9 @@
         crossorigin="anonymous" 
         referrerpolicy="no-referrer">
     </script>
+    <script src="
+        https://cdn.jsdelivr.net/npm/sweetalert2@11.7.3/dist/sweetalert2.all.min.js
+    "></script>
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
@@ -54,23 +60,29 @@
                     <ul class="navbar-nav ms-auto pd-3">
                         <!-- Authentication Links -->
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('rules') }}">Regulamin</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('news') }}">Aktualności</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('contact') }}">Kontakt</a>
                         </li>
                         @guest
                             @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                <li class="nav-item fw-bold">
+                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Logowanie') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                <li class="nav-item fw-bold">
+                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Rejestracja') }}</a>
                                 </li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 

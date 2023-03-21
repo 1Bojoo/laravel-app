@@ -71,8 +71,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/dorm/img/{imageID}', [AnnController::class, 'delImage'])->name('delImg');
         Route::post('/dorm/img', [AnnController::class, 'addImage'])->name('addImage');
+
         Route::get('/pages/crAnn', [AnnController::class, 'create'])->name('crann');
         Route::post('/pages/crAnn', [AnnController::class, 'store']);
+
+        Route::get('/news/{id}', [AnnController::class, 'deleteNews'])->name('delNews');
+        Route::post('/news/addNews', [AnnController::class, 'addNews'])->name('addNews');
 
     });
     
@@ -84,6 +88,8 @@ Route::controller(AnnController::class)->group(function() {
     Route::get('/', 'index')->name('main');
     Route::get('/dorm', 'dormitory')->name('dorm');
     Route::get('/contact', 'contact')->name('contact');
+    Route::get('/rules', 'rules')->name('rules');
+    Route::get('/news', 'news')->name('news');
     Route::post('/contact/sendMail', 'contactForm')->name('contactForm');
 });
 

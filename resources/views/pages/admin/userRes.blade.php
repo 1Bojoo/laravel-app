@@ -44,7 +44,7 @@
                     <td>{{$item->arrDate}}</td>
                     <td>{{$item->depDate}}</td>
                     <td>
-                        <a href="{{route('deleteRes', $item->id)}}" class="btn btn-danger">Usuń</a>
+                        <a href="{{route('deleteRes', $item->id)}}" class="btn btn-danger" onclick="confirmation(event)">Usuń</a>
                         {{-- <a href="{{route('editRes', $item->id)}}" class="btn btn-warning">Edytuj</a> --}}
                         <button class="editRes btn btn-warning w-50" data-bs-toggle="modal" data-bs-target="#staticBackdropEditRes">Edytuj</button>
 
@@ -87,6 +87,7 @@
                 @endforeach
                 </tbody>
             </table>
+            {{ $res->links() }}
         </div>
 @endsection
 
@@ -100,6 +101,24 @@
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
             });
         });
+
+        function confirmation(e){
+            e.preventDefault();
+
+            var url = e.currentTarget.getAttribute('href');
+
+            Swal.fire({
+                title: "Czy na pewno chcesz usunąć rekord?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: 'Tak',
+                cancelButtonText: 'Nie'
+            }).then((result) => {
+                if(result.value){
+                    window.location.href = url;
+                }
+            })
+        }
     </script>
 
 @endsection

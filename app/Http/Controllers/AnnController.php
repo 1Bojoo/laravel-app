@@ -6,6 +6,7 @@ use App\Models\Dormitory;
 use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
+use App\Models\News;
 use App\Mail\SendMailAfterRes;
 use App\Mail\sMail;
 use App\Mail\userData;
@@ -334,6 +335,33 @@ class AnnController extends Controller
 
     public function contact(){
         return view('pages.contact');
+    }
+
+    public function rules(){
+        return view('pages.rules');
+    }
+
+    public function news(){
+        $news = News::orderBy('id', 'DESC')->get();
+
+        return view('pages.news', compact('news'));
+    }
+
+    public function addNews(Request $request){
+
+        News::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'date' => $request->date
+        ]);
+
+        return back();
+    }
+
+    public function deleteNews($newsID){
+        News::where('id', $newsID)->delete();
+
+        return back();
     }
 
     public function contactForm(Request $request){
