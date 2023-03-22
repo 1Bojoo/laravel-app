@@ -35,8 +35,8 @@
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+    {{-- <div id="app"> --}}
+        {{-- <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm sticky-top">
             <div class="container">
                 <a class="navbar-brand ps-3" href="{{ url('/dorm') }}">
                     <strong>Akademik <i class="bi bi-node-plus-fill"></i></strong>
@@ -103,7 +103,7 @@
                     </ul>
                 </div>
             </div>
-        </nav>
+        </nav> --}}
 
         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -138,9 +138,66 @@
                 @endforeach
             </div>
         @endif
-        <main class="container-fluid p-0">
+
+        <div class="container-fluid">
+
+            <div class="row vh-100">
+
+                <div class="col-2 px-0">
+
+                    <div class="bg-dark vh-100 d-flex flex-column text-center fixed-top" style="width: 15vw">
+                        <a class="ps-3 text-decoration-none text-white fs-4 mt-5" href="{{ url('/dorm') }}">
+                            <strong>Akademik <i class="bi bi-node-plus-fill"></i></strong>
+                        </a>
+                        <a class="pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" style="margin-top: 50% !important;" href="{{route('users')}}">Użytkownicy</a>
+                        <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('roomMan')}}">Pokoje</a>
+                        <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('manRes')}}">Rezerwacje</a>
+
+                        <div class="mt-auto py-3">
+                            <li class="dropdown-center text-white list-unstyled">
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                    {{ Auth::user()->name }}
+                                </a>
+    
+                                <div class="dropdown-menu dropdown-menu-right me-5" aria-labelledby="navbarDropdown">
+                                    @can('isAdmin')
+                                    <a class="dropdown-item" href="{{route('manPanel')}}">Panel Zarządzania</a>
+                                    <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
+                                    @endcan
+                                    <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
+                                    <a class="dropdown-item" href="" data-bs-toggle="modal" data-bs-target="#exampleModal">Wygeneruj kod QR</a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                                    document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+    
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </div>
+                            </li>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-10">
+
+                    <div class="vh-100 text-center">
+                        @yield('content')
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+        
+        {{-- <main class="container-fluid p-0">
             <div class="d-flex flex-row">
-                <div class="bg-dark vh-100 d-flex flex-column text-center sticky-top" style="width: 15vw">
+                <div class="bg-dark vh-100 d-flex flex-column text-center" style="width: 15vw">
                     <a class="mt-5 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('users')}}">Użytkownicy</a>
                     <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('roomMan')}}">Pokoje</a>
                     <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('manRes')}}">Rezerwacje</a>
@@ -149,8 +206,8 @@
                     @yield('content')
                 </div>
             </div>
-        </main>
-    </div>
+        </main> --}}
+    {{-- </div> --}}
     @yield('script')
 </body>
 </html>

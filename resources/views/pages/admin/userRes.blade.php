@@ -87,7 +87,6 @@
                 @endforeach
                 </tbody>
             </table>
-            {{ $res->links() }}
         </div>
 @endsection
 
