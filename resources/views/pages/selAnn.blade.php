@@ -29,9 +29,9 @@
                 @if($countImg < 4)
 
                     @foreach(array_slice($images, 0, $countImg-1) as $img)
-                    <img src="{{URL::to($img)}}"
-                    class="w-50 p-1 rounded" 
-                    alt="Zdjecie">
+                        <img src="{{URL::to($img)}}"
+                        class="w-50 p-1 rounded" 
+                        alt="Zdjecie">
                     @endforeach
 
                     <button type="button" class="btn w-50 border border-0 p-0 position-relative" data-bs-toggle="modal" data-bs-target="#staticBackdropGallery">

@@ -34,7 +34,15 @@
                   <th scope="row">{{$user->id}}</th>
                   <td>{{$user->name}}</td>
                   <td>{{$user->email}}</td>
-                  <td>{{$user->role}}</td>
+                  <td>
+                    @if($user->role == 'guest')
+                      Gość
+                    @elseif($user->role == 'student')
+                      Student
+                    @else
+                      Admin
+                    @endif
+                  </td>
                   <td>
                     <a href="{{route('editUser', $user->id)}}">
                       <button type="button" class="edit btn btn-warning">Edytuj</button>

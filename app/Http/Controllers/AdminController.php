@@ -8,11 +8,23 @@ use App\Models\User;
 use App\Models\Reservation;
 use App\Models\Room;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\mailAfterEditRole;
+
 class AdminController extends Controller
 {
 
-    public function manPanel(){
-        return view('pages.admin.managementPanel');
+    public function stats(){
+
+        $rooms = Room::all();
+
+        $freeRooms = Room::where('isOwned', 0)->get();
+
+        $occRooms = Room::where('isOwned', 1)->whereNotNull('userID')->get();
+
+        $offRooms = Room::where('isOwned', 1)->whereNull('userID')->get();
+
+        return view('pages.admin.statsPanel', compact('rooms', 'freeRooms', 'occRooms', 'offRooms'));
     }
 
     public function dorm() {
@@ -38,12 +50,6 @@ class AdminController extends Controller
         }
 
         return back();
-    }
-
-    public function addRoom() {
-        for($i = 1; $i<20; $i++){
-
-        }
     }
 
     public function res() {
@@ -95,10 +101,6 @@ class AdminController extends Controller
             'status' => 'success'
         ]);
     }
-    
-    public function destroyAnn(Dormitory $dorm) {
-        $dorm->delete();
-    }
 
     public function create() {
         return view('pages.admin.createUser');
@@ -117,6 +119,16 @@ class AdminController extends Controller
     public function update(Request $request, User $user){
         $user->fill($request->all());
         $user->save();
+
+        if($request->role == 'student'){
+            $url = route('dorm');
+            $maildata = array(
+                'url' => $url
+            );
+        }
+
+        Mail::to($user->email)->send(new mailAfterEditRole($maildata));
+
         return redirect(route('users'));
     }
 }

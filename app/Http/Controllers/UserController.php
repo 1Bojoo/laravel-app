@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\DB;
 use App\Models\Announcement;
 use App\Models\User;
+use App\Models\Room;
 use App\Models\Reservation;
 use Auth;
 use App\Providers\RouteServiceProvider;
@@ -33,25 +34,39 @@ class UserController extends Controller
         return view('pages.user.userRes', compact('res'));
     }
 
-    public function destroyAnn($id){
-        $annID = Announcement::where('id', $id)->pluck('id');
-        Reservation::where('announcement_id', $annID)->delete();
-        Announcement::where('id', $id)->delete();
-        return redirect(route('myann'));
-    }
-
-    public function editAnn(Announcement $ann){
-        return view('pages/user/userAnnEdit', compact('ann'));
-    }
-
-    public function updateAnn(Request $request, Announcement $ann){
-        $ann->fill($request->all());
-        $ann->save();
-        return redirect(route('myann'));
-    }
-
     public function destroyRes($id){
-        Reservation::where('id', $id)->delete();
+
+        $res = Reservation::where('id', $id)->first();
+
+        $room = Room::where('id', $res->room->id)->first();
+
+        if($room->reservation->count() > 1){
+
+            if($room->userID == $res->user_id){
+
+                $a = $room->reservation->where('user_id', '!=', $res->user_id)->first();
+
+                Room::where('id', $res->room->id)->update(['userID' => $a->user_id]);
+
+                Reservation::where('id', $id)->delete();
+
+            }else{
+
+                dd($room);
+                
+                Reservation::where('id', $id)->delete();
+
+            }
+
+        }else{
+
+            dd($room);
+
+            Room::where('id', $res->room->id)->update(['isOwned' => false,'userID' => null]);
+
+            Reservation::where('id', $id)->delete();
+        }
+
         return redirect(route('myres'));
     }
 
@@ -79,9 +94,15 @@ class UserController extends Controller
         $userHashedPass = auth()->user()->password;
 
         if(Hash::check($userPass, $userHashedPass)){
-            $qrcode = QrCode::size(500)->margin(1)->format('png')->generate($data, '../public/qrcodes/qrcode.png');
-            $pathToImage = '../public/qrcodes/qrcode.png';
-            Mail::to($userEmail)->send(new sendQR($pathToImage));
+            $qrcode = QrCode::size(500)->margin(1)->format('png')->generate($data, "../public/qrcodes/".auth()->user()->name."QR.png");
+
+            $pathToImage = "../public/qrcodes/".auth()->user()->name."QR.png";
+
+            $maildata = array(
+                'path' => $pathToImage
+            );
+
+            Mail::to($userEmail)->send(new sendQR($maildata));
             return response('Udało się!');
         }
         else{

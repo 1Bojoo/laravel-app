@@ -10,7 +10,7 @@ use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Mail\Mailables\Attachment;
 
-class sendQR extends Mailable
+class mailAfterEditRole extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -19,9 +19,9 @@ class sendQR extends Mailable
      *
      * @return void
      */
-    public function __construct($maildata)
+    public function __construct($mailData)
     {
-        $this->maildata = $maildata;
+        $this->mailData = $mailData;
     }
 
     /**
@@ -32,7 +32,7 @@ class sendQR extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Twój QR kod',
+            subject: 'Zmiana Twojego statusu',
         );
     }
 
@@ -44,19 +44,20 @@ class sendQR extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.sendQR',
+            markdown: 'pages.mail.mailAfterEditRole',
+            with: [
+                'url' => $this->mailData['url']
+            ]
         );
     }
 
     /**
      * Get the attachments for the message.
      *
-     * @return \Illuminate\Mail\Mailables\Attachment[]
+     * @return array
      */
     public function attachments()
     {
-        return [
-            Attachment::fromPath($this->maildata['path']),
-        ];
+        return [];
     }
 }

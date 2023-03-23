@@ -75,7 +75,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('news') }}">Aktualności</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item me-5">
                             <a class="nav-link" href="{{ route('contact') }}">Kontakt</a>
                         </li>
                         @guest
@@ -98,7 +98,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right me-5" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
-                                        <a class="dropdown-item" href="{{route('manPanel')}}">Panel Zarządzania</a>
+                                        <a class="dropdown-item" href="{{route('manStats')}}">Panel Zarządzania</a>
                                         <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     @endcan
                                     <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
@@ -106,7 +106,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Wyloguj się') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

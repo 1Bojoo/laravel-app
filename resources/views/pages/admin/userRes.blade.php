@@ -46,10 +46,10 @@
                     <td>
                         <a href="{{route('deleteRes', $item->id)}}" class="btn btn-danger" onclick="confirmation(event)">Usuń</a>
                         {{-- <a href="{{route('editRes', $item->id)}}" class="btn btn-warning">Edytuj</a> --}}
-                        <button class="editRes btn btn-warning w-50" data-bs-toggle="modal" data-bs-target="#staticBackdropEditRes">Edytuj</button>
+                        <button class="editRes btn btn-warning w-50" data-bs-toggle="modal" data-bs-target="#staticBackdropEditRes{{$item->id}}">Edytuj</button>
 
 
-                        <div class="modal fade" id="staticBackdropEditRes" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade" id="staticBackdropEditRes{{$item->id}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">

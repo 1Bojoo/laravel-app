@@ -105,7 +105,7 @@
             </div>
         </nav> --}}
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        {{-- <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -129,7 +129,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> --}}
 
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -146,10 +146,11 @@
                 <div class="col-2 px-0">
 
                     <div class="bg-dark vh-100 d-flex flex-column text-center fixed-top" style="width: 15vw">
-                        <a class="ps-3 text-decoration-none text-white fs-4 mt-5" href="{{ url('/dorm') }}">
+                        <a class="ps-3 text-decoration-none text-white fs-4 mt-5" href="{{ url('/') }}">
                             <strong>Akademik <i class="bi bi-node-plus-fill"></i></strong>
                         </a>
-                        <a class="pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" style="margin-top: 50% !important;" href="{{route('users')}}">Użytkownicy</a>
+                        <a class="pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" style="margin-top: 50% !important;" href="{{route('manStats')}}">Statystyki</a>
+                        <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('users')}}">Użytkownicy</a>
                         <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('roomMan')}}">Pokoje</a>
                         <a class="mt-1 pt-4 pb-4 fs-6 border-top border-bottom border-white text-white text-decoration-none" href="{{route('manRes')}}">Rezerwacje</a>
 
@@ -161,7 +162,7 @@
     
                                 <div class="dropdown-menu dropdown-menu-right me-5" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
-                                    <a class="dropdown-item" href="{{route('manPanel')}}">Panel Zarządzania</a>
+                                    <a class="dropdown-item" href="{{route('manStats')}}">Panel Zarządzania</a>
                                     <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     @endcan
                                     <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
@@ -169,7 +170,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Wyloguj się') }}
                                     </a>
     
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

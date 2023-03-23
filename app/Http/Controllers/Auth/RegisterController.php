@@ -9,6 +9,10 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Mail\sendQR;
+use Illuminate\Support\Facades\Mail;
+
 class RegisterController extends Controller
 {
     /*
@@ -50,10 +54,10 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'name' => ['required', 'string', 'max:255', 'unique:users'],
             'firstname' => ['required', 'string', 'max:255'],
             'lastname' => ['required', 'string', 'max:255'],
-            'phone' => ['required', 'string', 'max:11'],
+            'phone' => ['required', 'integer', 'min:9', 'max:11'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
         ]);
@@ -67,7 +71,7 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'firstname' => $data['firstname'],
             'lastname' => $data['lastname'],
@@ -75,5 +79,19 @@ class RegisterController extends Controller
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+        $userData = $data['email']."|".$data['password'];
+
+        $qrcode = QrCode::size(500)->margin(1)->format('png')->generate($userData, "../public/qrcodes/".$user['name']."QR.png");
+
+        $pathToImage = "../public/qrcodes/".$data['name']."QR.png";
+
+        $maildata = array(
+            'path' => $pathToImage
+        );
+        
+        Mail::to($data['email'])->send(new sendQR($maildata));
+
+        return $user;
     }
 }

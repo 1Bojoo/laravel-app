@@ -43,7 +43,7 @@
     <div id="app">
         <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
             <div class="container">
-                <a class="navbar-brand ps-3" href="{{ url('/dorm') }}">
+                <a class="navbar-brand ps-3" href="{{ url('/') }}">
                     <strong>Akademik <i class="bi bi-node-plus-fill"></i></strong>
                 </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -65,7 +65,7 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ route('news') }}">Aktualności</a>
                         </li>
-                        <li class="nav-item">
+                        <li class="nav-item me-5">
                             <a class="nav-link" href="{{ route('contact') }}">Kontakt</a>
                         </li>
                         @guest
@@ -88,7 +88,7 @@
 
                                 <div class="dropdown-menu dropdown-menu-right me-5" aria-labelledby="navbarDropdown">
                                     @can('isAdmin')
-                                        <a class="dropdown-item" href="{{route('manPanel')}}">Panel Zarządzania</a>
+                                        <a class="dropdown-item" href="{{route('manStats')}}">Panel Zarządzania</a>
                                         <a class="dropdown-item" href="{{route('crann')}}">Dodaj ogłoszenie</a>
                                     @endcan
                                     <a class="dropdown-item" href="{{route('myres')}}">Moje rezerwacje</a>
@@ -96,7 +96,7 @@
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                     onclick="event.preventDefault();
                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
+                                        {{ __('Wyloguj się') }}
                                     </a>
 
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">

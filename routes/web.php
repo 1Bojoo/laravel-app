@@ -48,7 +48,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware(['can:isAdmin'])->group(function () {
         Route::controller(AdminController::class)->group(function() {
-            Route::get('/managementPanel', 'manPanel')->name('manPanel');
+            Route::get('/managementPanel/stats', 'stats')->name('manStats');
             Route::get('/managementPanel/userRes', 'res')->name('manRes');
             Route::get('/managementPanel/userRes/delete/{roomID}', 'deleteRes')->name('deleteRes');
             Route::post('/managementPanel/userRes/edit/{resID}', 'editRes')->name('editRes');

@@ -209,55 +209,26 @@ class AnnController extends Controller
         return back();
     }
 
-    public function store(Request $request) {
-        $request->validate([
-            'name' => 'required',
-            'desc' => 'required',
-            'price' => 'required',
-            'country' => 'required',
-            'city' => 'required',
-            'province' => 'required',
-            'street' => 'required',
-            'hNum' => 'required',
-            'postalCode' => 'required',
-
-        ]);
-
-        $image = array();
-
-        if($request->hasFile('image')){
-            $files = $request->file('image');
-            foreach($files as $file){
-                $image_name = md5(rand(1000,10000));
-                $ext = strtolower($file->getClientOriginalExtension());
-                $image_full_name = $image_name.'.'.$ext;
-                $image_url = 'storage/images/'.$image_full_name;
-
-                $file->storeAs('images', $image_full_name);
-
-                $image[] = $image_url;
-            }
-        }
-
-        Dormitory::create([
-            'image' => implode('|', $image),
-            'name' => $request->name,
-            'desc' => $request->desc,
-            'price' => $request->price,
-            'country' => $request->country,
-            'city' => $request->city,
-            'province' => $request->province,
-            'street' => $request->street,
-            'hNum' => $request->hNum,
-            'postalCode' => $request->postalCode,
-        ]);
-
-        return redirect('/');
-    }
-
     public function reservation(Request $request){
 
         $roomId = (int)$request->roomId;
+
+        $checkRoom = Room::where('id', $roomId)->get();
+
+        $request->validate([
+            'firstname' => 'required',
+            'lastname' => 'required',
+            'email' => 'required',
+            'phone' => 'required',
+            'postalCode' => 'required|regex:/^\d{2}-\d{3}$/',
+            'city' => 'required',
+            'street' => 'required',
+            'hNum' => 'required|max:5|string',
+        ]);
+
+        if($checkRoom->reservation->isEmpty()){
+            Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
+        }
 
         Reservation::create([
             'user_id' => $request->user()->id,
@@ -266,16 +237,6 @@ class AnnController extends Controller
             'depDate' => $request->date_end_form,
         ]);
 
-        $request->validate([
-            'firstname' => 'required',
-            'lastname' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
-            'postalCode' => 'required',
-            'city' => 'required',
-            'street' => 'required',
-            'hNum' => 'required',
-        ]);
 
         $roomNum = Room::where('id', $roomId)->pluck('roomNum');
         $subject = "Rezerwacja pokoju $roomNum";
@@ -301,7 +262,7 @@ class AnnController extends Controller
             'url' => $url
         );
 
-        Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
+        // Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
 
         $userEmail = auth()->user()->email;
 
@@ -325,12 +286,6 @@ class AnnController extends Controller
         ]);
 
         return redirect(route('myres'));
-    }
-
-    public function create(){
-        $user = auth()->user()->id;
-
-        return view('pages.crAnn', compact('user'));
     }
 
     public function contact(){
