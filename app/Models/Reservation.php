@@ -20,4 +20,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(Room::class)->orderBy('roomNum');
     }
+
+    public function bedclothes()
+    {
+        return $this->hasOne(RoomBedClothes::class);
+    }
 }

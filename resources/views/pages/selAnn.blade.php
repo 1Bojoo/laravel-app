@@ -234,6 +234,28 @@
                     </select>
                 </div>
 
+                <div class="checkbox w-100 d-flex flex-row align-items-center justify-content-center" hidden>
+                    <div class="checkbox px-1" hidden>
+                        <label for="pillow">Poduszka</label>
+                        <input type="checkbox" name="pillow" id="pillow" value="1">
+                    </div>
+                    
+                    <div class="checkbox px-1" hidden>
+                        <label for="duvet">Kołdra</label>
+                        <input type="checkbox" name="duvet" id="duvet" value="1">
+                    </div>
+
+                    <div class="checkbox px-1" hidden>
+                        <label for="bedsheet">Prześcieradło</label>
+                        <input type="checkbox" name="bedsheet" id="bedsheet" value="1">
+                    </div>
+
+                    <div class="checkbox px-1" hidden>
+                        <label for="bedclothes">Pościel</label>
+                        <input type="checkbox" name="bedclothes" id="bedclothes" value="1">
+                    </div>
+                </div>
+
                 <form action="{{route("guestRes", $dorm->id)}}" method="post" enctype="multipart/form-data">
                     @csrf
 
@@ -291,6 +313,10 @@
 
                     <input type="hidden" name="dormId" value={{$dorm->id}}>
                     <input type="hidden" name="roomId" id="room_id" value="">
+                    <input type="hidden" name="pillowVal" id="pillowVal" value="0">
+                    <input type="hidden" name="duvetVal" id="duvetVal" value="0">
+                    <input type="hidden" name="bedsheetVal" id="bedsheetVal" value="0">
+                    <input type="hidden" name="bedclothesVal" id="bedclothesVal" value="0">
                     <input type="hidden" placeholder="Od" name="date_start_form" id="startDateForm" class="form-control">
                     <input type="hidden" placeholder="Do" name="date_end_form" id="endDateForm" class="form-control">
   
@@ -515,6 +541,7 @@
                 $('#selAcadYear').val("cYear");
                 $('#selRoomAcadYear').val("cRoom");
                 $('.guestRoomRes').attr('hidden', true);
+                $('.checkbox').attr('hidden', true);
             }
             else if(selRes == "acadYear"){
                 $('#selAcadSem').attr('hidden', true);
@@ -526,6 +553,7 @@
                 $('#selRoomSecondSem').attr('hidden', true);
                 $('.guestRoomRes').attr('hidden', true);
                 $('.resButton').attr('hidden', true);
+                $('.checkbox').attr('hidden', true);
 
                 $("#selAcadYear").change(function(){
 
@@ -549,6 +577,7 @@
                             }
 
                             $('#selRoomAcadYear').removeAttr('hidden');
+                            $('.checkbox').removeAttr('hidden');
                                 $("#selRoomAcadYear").change(function(){
                                     selRoom = $('#selRoomAcadYear option:selected').val();
                                     console.log(selRoom);
@@ -567,6 +596,7 @@
                     else{
                         $('.resButton').attr('hidden', true);
                         $('#selRoomAcadYear').attr('hidden', true);
+                        $('.checkbox').attr('hidden', true);
                         $('#room_id').val("cRoom");
                     }
 
@@ -581,6 +611,7 @@
                 $('.guestRoomRes').attr('hidden', true);
                 $('#selAcadSem option:selected').val("cSem");
                 $('.resButton').attr('hidden', true);
+                $('.checkbox').attr('hidden', true);
 
                 if(mm > 2 && mm < 10){
                     $('#selAcadSem option[value="firstSem"]').attr('hidden', true);
@@ -599,6 +630,7 @@
                         }
                         endDate = "2023-02-28";
                         $('#selRoomFirstSem').removeAttr('hidden');
+                        $('.checkbox').removeAttr('hidden');
                         $("#selRoomFirstSem").change(function(){
                             selRoom = $('#selRoomFirstSem option:selected').val();
 
@@ -624,6 +656,7 @@
                         }
                         endDate = "2023-06-30"
                         $('#selRoomSecondSem').removeAttr('hidden');
+                        $('.checkbox').removeAttr('hidden');
                         $("#selRoomSecondSem").change(function(){
                             selRoom = $('#selRoomSecondSem option:selected').val();
 
@@ -640,6 +673,7 @@
                     else{
                         $('#selRoomFirstSem').attr('hidden', true);
                         $('#selRoomSecondSem').attr('hidden', true);
+                        $('.checkbox').attr('hidden', true);
                         $('#room_id').val("cRoom");
                         $('#selAcadSem').val("cSem");
                         $('.resButton').attr('hidden', true);
@@ -664,6 +698,7 @@
                 $('#selAcadSem').val("cSem");
                 $('#selAcadYear').val("cYear");
                 $('.resButton').attr('hidden', true);
+                $('.checkbox').attr('hidden', true);
 
                 $('#selRoomGuest').removeAttr('hidden');
                     $("#selRoomGuest").change(function(){
@@ -674,7 +709,7 @@
 
                             console.log($('#guest_room_id').val());
 
-                            array = dates[selRoom];
+                            array = dates[selRoom-1];
 
                             console.log(array);
 
@@ -689,6 +724,38 @@
                 });
             }
         })
+
+        checkBoxPillow = document.getElementById('pillow').addEventListener('click', event => {
+            if(event.target.checked) {
+                $('#pillowVal').val(event.target.value);
+            }else{
+                $('#pillowVal').val("0");
+            }
+        });
+
+        checkBoxDuvet = document.getElementById('duvet').addEventListener('click', event => {
+            if(event.target.checked) {
+                $('#duvetVal').val(event.target.value);
+            }else{
+                $('#duvetVal').val("0");
+            }
+        });
+
+        checkBoxBedSh = document.getElementById('bedsheet').addEventListener('click', event => {
+            if(event.target.checked) {
+                $('#bedsheetVal').val(event.target.value);
+            }else{
+                $('#bedsheetVal').val("0");
+            }
+        });
+
+        checkBoxBedCl = document.getElementById('bedclothes').addEventListener('click', event => {
+            if(event.target.checked) {
+                $('#bedclothesVal').val(event.target.value);
+            }else{
+                $('#bedclothesVal').val("0");
+            }
+        });
 
         $('#startDate').datepicker({
             format: 'yyyy-mm-dd',

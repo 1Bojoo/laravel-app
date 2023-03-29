@@ -7,6 +7,8 @@ use App\Models\Reservation;
 use App\Models\Room;
 use App\Models\User;
 use App\Models\News;
+use App\Models\Storage;
+use App\Models\RoomBedClothes;
 use App\Mail\SendMailAfterRes;
 use App\Mail\sMail;
 use App\Mail\userData;
@@ -62,7 +64,7 @@ class AnnController extends Controller
 
             foreach($guestRooms as $item){
                 $dates[$item->roomNum] = $item->roomNum;
-                if(!is_null($item->reservation)){
+                if(!$item->reservation->isEmpty()){
                     foreach($item->reservation as $res){
                         
                         $stDate = $res->arrDate;
@@ -78,6 +80,7 @@ class AnnController extends Controller
                     }
                 }
                 $dates[$item->roomNum] = $array;
+
                 $array = [];
             }
 
@@ -211,9 +214,14 @@ class AnnController extends Controller
 
     public function reservation(Request $request){
 
+        $pillowVal = (int)$request->pillowVal;
+        $duvetVal = (int)$request->duvetVal;
+        $bedsheetVal = (int)$request->bedsheetVal;
+        $bedclothesVal = (int)$request->bedclothesVal;        
+
         $roomId = (int)$request->roomId;
 
-        $checkRoom = Room::where('id', $roomId)->get();
+        $checkRoom = Room::where('id', $roomId)->first();
 
         $request->validate([
             'firstname' => 'required',
@@ -237,6 +245,20 @@ class AnnController extends Controller
             'depDate' => $request->date_end_form,
         ]);
 
+        $res = Reservation::where('user_id', $request->user()->id)->orderBy('id', 'desc')->first();
+
+        Storage::decrement('pillow', $pillowVal);
+        Storage::decrement('duvet', $duvetVal);
+        Storage::decrement('bedsheet', $bedsheetVal);
+        Storage::decrement('bedclothes', $bedclothesVal);
+
+        RoomBedClothes::create([
+            'reservation_id' => $res->id,
+            'pillow' => $pillowVal,
+            'duvet' => $duvetVal,
+            'bedsheet' => $bedsheetVal,
+            'bedclothes' => $bedclothesVal
+        ]);
 
         $roomNum = Room::where('id', $roomId)->pluck('roomNum');
         $subject = "Rezerwacja pokoju $roomNum";
@@ -262,8 +284,6 @@ class AnnController extends Controller
             'url' => $url
         );
 
-        // Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
-
         $userEmail = auth()->user()->email;
 
         $dorm = Dormitory::find(1);
@@ -278,11 +298,32 @@ class AnnController extends Controller
     public function guestReservation(Request $request){
         $roomId = (int)$request->guestRoomId;
 
+        $checkRoom = Room::where('id', $roomId)->first();
+
+        if($checkRoom->reservation->isEmpty()){
+            Room::where('id', $roomId)->update(['userID' => $request->user()->id, 'isOwned' => true]);
+        }
+
         Reservation::create([
             'user_id' => $request->user()->id,
             'room_id' => $roomId,
             'arrDate' => $request->date_start,
             'depDate' => $request->date_end,
+        ]);
+
+        $res = Reservation::where('user_id', $request->user()->id)->orderBy('id', 'desc')->first();
+
+        Storage::decrement('pillow', 1);
+        Storage::decrement('duvet', 1);
+        Storage::decrement('bedsheet', 1);
+        Storage::decrement('bedclothes', 1);
+
+        RoomBedClothes::create([
+            'reservation_id' => $res->id,
+            'pillow' => 1,
+            'duvet' => 1,
+            'bedsheet' => 1,
+            'bedclothes' => 1
         ]);
 
         return redirect(route('myres'));

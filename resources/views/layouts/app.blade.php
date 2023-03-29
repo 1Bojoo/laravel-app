@@ -60,6 +60,9 @@
                     <ul class="navbar-nav ms-auto pd-3">
                         <!-- Authentication Links -->
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dorm') }}">Zarezerwuj</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('rules') }}">Regulamin</a>
                         </li>
                         <li class="nav-item">
@@ -164,10 +167,30 @@
                         pass: pass, 
                     },
                     success: function(c){
-                        window.location.href = window.location.href;
+                        if(c == 'fail'){
+                            Swal.fire({
+                                title: "Błędne hasło",
+                                icon: "error",
+                                confirmButtonText: 'Ok',
+                                }).then((result) => {
+                                    if(result.value){
+                                        $('#exampleModal').modal('hide');
+                                    }
+                                })
+                        }else{
+                            Swal.fire({
+                                title: "Kod QR został wysłany na maila",
+                                icon: "success",
+                                confirmButtonText: 'Ok',
+                                }).then((result) => {
+                                    if(result.value){
+                                        $('#exampleModal').modal('hide');
+                                    }
+                                })
+                        }
                     },
                     error: function(ee){
-                        console.log(ee);
+                        console.log("Coś poszło nie tak");
                     }
                 })
             });

@@ -27,6 +27,10 @@
                     <th scope="col">Piętro</th>
                     <th scope="col">Najemca</th>
                     <th scope="col">Status</th>
+                    {{-- <th scope="col">Poduszka</th>
+                    <th scope="col">Kołdra</th>
+                    <th scope="col">Prześcieradło</th>
+                    <th scope="col">Poszewki</th> --}}
                     <th scope="col">Akcje</th>
                 </tr>
                 </thead>
@@ -41,7 +45,7 @@
                     @else
                         <td>
                             @foreach ($item->reservation as $res)
-                                {{$res->user->firstname}} <br>
+                                {{$res->user->firstname}} {{$res->user->lastname}} <br>
                             @endforeach
                         </td>
                         {{-- <td>{{$item->reservation->user->firstname}} {{$item->reservation->user->lastname}}</td> --}}
@@ -53,6 +57,36 @@
                             Zajęty
                         @endif
                     </td>
+                    {{-- @if($item->bedclothes->isEmpty())
+                        <td>Nie</td>
+                        <td>Nie</td>
+                        <td>Nie</td>
+                        <td>Nie</td>
+                    @else
+                        @if($item->bedclothes[0]->pillow == 0)
+                            <td>Nie</td>
+                        @else
+                            <td>Tak</td>
+                        @endif
+
+                        @if($item->bedclothes[0]->duvet == 0)
+                            <td>Nie</td>
+                        @else
+                            <td>Tak</td>
+                        @endif
+
+                        @if($item->bedclothes[0]->bedsheet == 0)
+                            <td>Nie</td>
+                        @else
+                            <td>Tak</td>
+                        @endif
+
+                        @if($item->bedclothes[0]->bedclothes == 0)
+                            <td>Nie</td>
+                        @else
+                            <td>Tak</td>
+                        @endif
+                    @endif --}}
                     <td>
                         <a href="{{route('editRoom', $item->roomNum)}}" class="btn btn-primary">Edytuj status</a>
                     </td>

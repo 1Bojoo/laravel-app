@@ -18,4 +18,5 @@ class Room extends Model
     public function reservation(){
         return $this->hasMany(Reservation::class);
     }
+
 }

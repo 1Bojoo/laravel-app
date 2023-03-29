@@ -9,6 +9,8 @@ use App\Models\Announcement;
 use App\Models\User;
 use App\Models\Room;
 use App\Models\Reservation;
+use App\Models\RoomBedClothes;
+use App\Models\Storage;
 use Auth;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
@@ -48,21 +50,43 @@ class UserController extends Controller
 
                 Room::where('id', $res->room->id)->update(['userID' => $a->user_id]);
 
+                $b = RoomBedClothes::where('reservation_id', $res->id)->first();
+
+                Storage::increment('pillow', $b->pillow);
+                Storage::increment('duvet', $b->duvet);
+                Storage::increment('bedsheet', $b->bedsheet);
+                Storage::increment('bedclothes', $b->bedclothes);
+
+                RoomBedClothes::where('reservation_id', $res->id)->delete();
+
                 Reservation::where('id', $id)->delete();
 
             }else{
 
-                dd($room);
+                $b = RoomBedClothes::where('reservation_id', $res->id)->first();
+
+                Storage::increment('pillow', $b->pillow);
+                Storage::increment('duvet', $b->duvet);
+                Storage::increment('bedsheet', $b->bedsheet);
+                Storage::increment('bedclothes', $b->bedclothes);
+
+                RoomBedClothes::where('reservation_id', $res->room_id)->delete();
                 
                 Reservation::where('id', $id)->delete();
-
             }
 
         }else{
 
-            dd($room);
-
             Room::where('id', $res->room->id)->update(['isOwned' => false,'userID' => null]);
+
+            $b = RoomBedClothes::where('reservation_id', $res->id)->first();
+
+            Storage::increment('pillow', $b->pillow);
+            Storage::increment('duvet', $b->duvet);
+            Storage::increment('bedsheet', $b->bedsheet);
+            Storage::increment('bedclothes', $b->bedclothes);
+
+            RoomBedClothes::where('reservation_id', $res->id)->delete();
 
             Reservation::where('id', $id)->delete();
         }
@@ -103,10 +127,10 @@ class UserController extends Controller
             );
 
             Mail::to($userEmail)->send(new sendQR($maildata));
-            return response('Udało się!');
+            return response('ok');
         }
         else{
-            return response('Błędne hasło');
+            return response('fail');
         }
     }
 

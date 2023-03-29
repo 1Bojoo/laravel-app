@@ -9,7 +9,7 @@
           <div class="col-6 animate__animated animate__backInLeft animate__delay-1s text-start" style="font-family: 'Kaushan Script', cursive;">
             <p class="fs-1">
               <a href="" class="linkTrans text-decoration-none text-white">
-                Miejsce na coś
+                {{-- Miejsce na coś --}}
               </a>
             </p>
           </div>

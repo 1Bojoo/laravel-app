@@ -70,6 +70,9 @@
                     <ul class="navbar-nav ms-auto pd-3">
                         <!-- Authentication Links -->
                         <li class="nav-item">
+                            <a class="nav-link" href="{{ route('dorm') }}">Zarezerwuj</a>
+                        </li>
+                        <li class="nav-item">
                             <a class="nav-link" href="{{ route('rules') }}">Regulamin</a>
                         </li>
                         <li class="nav-item">
@@ -157,6 +160,50 @@
             @yield('content')
         </main>
         @yield('script')
+        <script type="text/javascript">          
+
+            $('.genQR').click(function() {
+
+                var pass = $('#pass').val();
+
+                $.ajax({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    method: 'POST',
+                    url: "{{ route('generateQR') }}",
+                    data: {
+                        pass: pass, 
+                    },
+                    success: function(c){
+                        if(c == 'fail'){
+                            Swal.fire({
+                                title: "Błędne hasło",
+                                icon: "error",
+                                confirmButtonText: 'Ok',
+                                }).then((result) => {
+                                    if(result.value){
+                                        $('#exampleModal').modal('hide');
+                                    }
+                                })
+                        }else{
+                            Swal.fire({
+                                title: "Kod QR został wysłany na maila",
+                                icon: "success",
+                                confirmButtonText: 'Ok',
+                                }).then((result) => {
+                                    if(result.value){
+                                        $('#exampleModal').modal('hide');
+                                    }
+                                })
+                        }
+                    },
+                    error: function(ee){
+                        console.log("Coś poszło nie tak");
+                    }
+                })
+            });
+        </script>
     </div>
 </body>
 </html>
