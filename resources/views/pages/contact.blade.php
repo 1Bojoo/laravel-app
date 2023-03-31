@@ -32,9 +32,9 @@
     </div> --}}
 
     <div class="container mt-5">
-        <div class="row row-cols-3 align-items-center">
-            <div class="col-4 d-flex justify-content-center">
-                <div class="card border-0" style="width: 25rem; height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
+        <div class="row align-items-center">
+            <div class="col-12 col-md-6 col-xl-4 p-2 d-flex justify-content-center">
+                <div class="card border-0" style="width: 25rem; min-height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
                     <div class="card-body">
                       <h5 class="card-title text-center p-2 fs-2">Kontakt: </h5>
                       <p class="card-text text-center fs-5">
@@ -47,8 +47,8 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 d-flex justify-content-center">
-                <div class="card border-0" style="width: 25rem; height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
+            <div class="col-12 col-md-6 col-xl-4 p-2 d-flex justify-content-center">
+                <div class="card border-0" style="width: 25rem; min-height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
                     <div class="card-body">
                       <h5 class="card-title text-center p-2 fs-2">Adres: </h5>
                       <p class="card-text text-center fs-5">
@@ -59,7 +59,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-4 d-flex justify-content-center">
+            <div class="col-12 col-md-6 col-xl-4 p-2 d-flex justify-content-center">
                 <div class="card border-0" style="width: 25rem; height: 18rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
                     <div class="card-body text-center align-items-center">
                       <h5 class="card-title text-center p-2 fs-2">Formularz kontaktowy</h5>

@@ -15,8 +15,8 @@
           </div>
           <div class="col-3"></div>
           <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-6 animate__animated animate__pulse animate__infinite animate__slow text-center" style="font-family: 'Roboto Slab', serif;">
+          <div class="col-1 col-xl-3"></div>
+          <div class="col-10 col-xl-6 animate__animated animate__pulse animate__infinite animate__slow text-center" style="font-family: 'Roboto Slab', serif;">
             <h1 style="font-size: 80px;">
               <b>AKADEMIK</b>
             </h1><br>
@@ -27,10 +27,10 @@
               </svg>
             </a>
           </div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-3"></div>
-          <div class="col-6 animate__animated animate__backInRight animate__delay-2s text-end" style="font-family: 'Kaushan Script', cursive;">
+          <div class="col-1 col-xl-3"></div>
+          <div class="col-1 col-xl-3"></div>
+          <div class="col-1 col-xl-3"></div>
+          <div class="col-10 col-xl-6 animate__animated animate__backInRight animate__delay-2s text-end" style="font-family: 'Kaushan Script', cursive;">
             <p class="fs-1">
               <a href="{{route('dorm')}}" class="linkTrans text-decoration-none text-white">
                 Zarezerwuj miejsce dla siebie
@@ -41,10 +41,10 @@
       </div>
     </div>
 
-    <div class="vh-100 d-flex align-items-center" id="cards">
+    <div class="vh-150 d-flex align-items-center" id="cards">
       <div class="container" style="font-family: 'Kaushan Script', cursive;">
         <div class="row align-items-center">
-          <div class="col-4 d-flex justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4 p-3 d-flex justify-content-center">
               <div class="card cardMain align-items-center text-center" style="width: 19rem; border: none;">
                 <div class="card-body">
                   <h2 class="card-title pt-5">REGULAMIN</h2>
@@ -57,7 +57,7 @@
                 <a href="{{route('rules')}}" class="text-decoration-none text-black stretched-link"></a>
               </div>
           </div>
-          <div class="col-4 d-flex justify-content-center">
+          <div class="col-12 col-md-6 col-lg-4 p-3 d-flex justify-content-center">
               <div class="card cardMain align-items-center text-center" style="width: 19rem; border: none;">
                 <div class="card-body">
                   <h3 class="card-title pt-5">AKTUALNOŚCI</h3>
@@ -69,7 +69,7 @@
                 <a href="{{route('news')}}" class="text-decoration-none text-black stretched-link"></a>
               </div>
           </div>
-          <div class="col-4 d-flex justify-content-center">
+          <div class="col-12 col-lg-4 p-3 d-flex justify-content-center">
               <div class="card cardMain align-items-center text-center" style="width: 19rem; border: none;">
                 <div class="card-body">
                   <h3 class="card-title pt-5">KONTAKT</h3>
@@ -88,22 +88,28 @@
 
   <!-- FOOTER -->
   <footer class="text-center text-white h-50" style="background-color: #202020 !important;">
-    <div class="container pb-0 d-flex justify-content-evenly">
-      <div class="d-flex flex-column pt-4">
-        <h3 class="pb-3" style="font-family: 'Kaushan Script', cursive;">Znajdziesz nas tutaj</h3>
-        <section class="pb-3">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10081.538851810197!2d19.1096335!3d50.8240376!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4710b680726ea9c5%3A0x7597e2e83862fcfb!2sDom%20Studencki%20nr%207%20%22Herkules%22!5e0!3m2!1spl!2spl!4v1678965721896!5m2!1spl!2spl" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </section>
+    <div class="row d-flex justify-content-center">
+      <div class="col-12 col-xl-4 p-3">
+        <div class="d-flex flex-column pt-4">
+          <h3 class="pb-3" style="font-family: 'Kaushan Script', cursive;">Znajdziesz nas tutaj</h3>
+          <section class="pb-3">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d10081.538851810197!2d19.1096335!3d50.8240376!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4710b680726ea9c5%3A0x7597e2e83862fcfb!2sDom%20Studencki%20nr%207%20%22Herkules%22!5e0!3m2!1spl!2spl!4v1678965721896!5m2!1spl!2spl" width="400" height="300" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+          </section>
+        </div>
       </div>
-      <div class="d-flex flex-column justify-content-center" style="font-family: 'Kaushan Script', cursive;">
-        <h4>Godziny otwarcia:</h4>
-        <p class="fs-4 m-0">Poniedziałek - Piątek: 7:00 - 15:00</p>
-        <p class="fs-4 m-0">Sobota: 8:00 - 12:00</p>
+      <div class="col-12 col-xl-4 pb-4 pb-xl-0 d-flex align-items-center justify-content-center">
+        <div class="d-flex flex-column justify-content-center" style="font-family: 'Kaushan Script', cursive;">
+          <h4>Godziny otwarcia biura:</h4>
+          <p class="fs-4 m-0">Poniedziałek - Piątek: 7:00 - 15:00</p>
+          <p class="fs-4 m-0">Sobota: 8:00 - 12:00</p>
+        </div>
       </div>
-    </div>
-    <div class="text-center p-3" style="background-color: #181818;">
-      © 2023 Copyright:
-      <a class="text-white" href="{{route('main')}}" style="text-decoration: none; font-weight: bold;">Akademik</a>
+      <div class="col-12">
+        <div class="text-center" style="background-color: #181818;">
+          © 2023 Copyright:
+          <a class="text-white" href="{{route('main')}}" style="text-decoration: none; font-weight: bold;">Akademik</a>
+        </div>
+      </div>
     </div>
   </footer>    
   <!-- FOOTER END-->  

@@ -16,7 +16,7 @@
     <div class="container mt-5">
         <div class="row row-cols-3 align-items-center">
             @foreach($news as $item)
-                <div class="col-4 d-flex justify-content-center mb-4">
+                <div class="col-12 col-md-6 col-xl-4 d-flex justify-content-center mb-4">
                     <div class="card border-0" style="width: 20rem; box-shadow: 0 6px 10px rgba(0,0,0,.08), 0 0 6px rgba(0,0,0,.05);">
                         <div class="card-body">
                         <h4 class="card-title text-center p-3">{{$item->title}}</h4>
