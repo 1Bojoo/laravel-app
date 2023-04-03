@@ -87,8 +87,8 @@
   </div>
 
   <!-- FOOTER -->
-  <footer class="text-center text-white h-50" style="background-color: #202020 !important;">
-    <div class="row d-flex justify-content-center">
+  <footer class="text-center text-white" style="background-color: #202020 !important;">
+    <div class="row m-0 d-flex justify-content-center">
       <div class="col-12 col-xl-4 p-3">
         <div class="d-flex flex-column pt-4">
           <h3 class="pb-3" style="font-family: 'Kaushan Script', cursive;">Znajdziesz nas tutaj</h3>
@@ -104,8 +104,8 @@
           <p class="fs-4 m-0">Sobota: 8:00 - 12:00</p>
         </div>
       </div>
-      <div class="col-12">
-        <div class="text-center" style="background-color: #181818;">
+      <div class="col-12 p-0">
+        <div class="text-center p-3" style="background-color: #181818;">
           © 2023 Copyright:
           <a class="text-white" href="{{route('main')}}" style="text-decoration: none; font-weight: bold;">Akademik</a>
         </div>

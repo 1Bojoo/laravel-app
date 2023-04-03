@@ -15,8 +15,10 @@ use App\Mail\userData;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 use Auth;
+
 
 class AnnController extends Controller
 {
@@ -365,12 +367,16 @@ class AnnController extends Controller
 
         $ownerEmail = $ownerID->user->email;
 
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
-            'email' => 'required',
+            'email' => ['required', 'string', 'email', 'max:255'],
             'subject' => 'required',
             'message' => 'required',
         ]);
+
+        if($validator->fails()){
+            return redirect('contact')->with('status', 'fail');
+        }
         
         $maildata = array(
             'name' => $request->name,
@@ -380,6 +386,7 @@ class AnnController extends Controller
             );
 
         Mail::to($ownerEmail)->send(new sMail($maildata));
-        return back();
+
+        return redirect('contact')->with('success', 'ok');
     }
 }

@@ -61,7 +61,7 @@
 
                             @error('phone')
                                 <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
+                                    <strong>Błędny numer telefonu</strong>
                                 </span>
                             @enderror
                         </div>
@@ -75,7 +75,7 @@
 
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
-                                        <strong>{{ $message }}</strong>
+                                        <strong>Błędny adres email</strong>
                                     </span>
                                 @enderror
                             </div>
@@ -105,9 +105,12 @@
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary me-3">
                                     {{ __('Zarejestruj') }}
                                 </button>
+
+                                Posiadasz już konto?
+                                <a href="{{route('login')}}">Zaloguj się</a>
                             </div>
                         </div>
                     </form>

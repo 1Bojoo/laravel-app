@@ -93,7 +93,13 @@
                             <div class="col-md-6">
                                 <div class="md-form mb-0">
                                     <label for="email" class="">Email</label>
-                                    <input type="text" id="email" name="email" class="form-control">
+                                    <input type="text" id="email" name="email" class="form-control @error('email') is-invalid @enderror">
+
+                                    @error('email')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>Błędny adres email</strong>
+                                    </span>
+                                @enderror
                                 </div>
                             </div>
         
@@ -129,5 +135,23 @@
           </div>
         </div>
     </div>
+
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                title: "Wiadomość została wysłana",
+                icon: "success",
+                confirmButtonText: 'Ok',
+            })
+        </script>
+    @elseif (session('status'))
+        <script>
+            Swal.fire({
+                title: "Coś poszło nie tak",
+                icon: "error",
+                confirmButtonText: 'Ok',
+            })
+        </script>
+    @endif
     
 @endsection

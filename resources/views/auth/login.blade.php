@@ -70,6 +70,15 @@
                                 @endif
                             </div>
                         </div>
+
+                        <div class="row mb-0 mt-3">
+                            <div class="col-md-8 offset-md-4">
+                                Nie masz konta?
+                                <a href="{{ route('register') }}">
+                                    {{ __('Zarejestruj się') }}
+                                </a>
+                            </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -78,24 +87,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal -->
-{{-- <div class="modal fade" id="staticBackdrop" data-bs-backdrop="modal" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">Logowanie za pomocą kodu QR</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-            
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cofnij</button>
-        </div>
-      </div>
-    </div>
-</div> --}}
 
 @endsection
 @section('script')

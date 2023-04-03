@@ -60,6 +60,8 @@
 
                         @if($countImg > 4)
                             <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white">+{{$countImg - 4}}</p>
+                        @else
+                            <p class="position-absolute top-50 start-50 translate-middle fs-3 text-white">Galeria zdjęć</p>
                         @endif
 
                     </button>
@@ -172,7 +174,7 @@
 
                     <select id="selAcadYear" class="form-select form-select-md mb-3 mx-auto w-50" hidden>
                         <option value="cYear">Wybierz rok akademicki</option>
-                        <option value="acadYear">2022/2023</option>
+                        <option value="acadYear">2023/2024</option>
                     </select>
 
                     <select id="selRoomAcadYear" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-ld example" hidden>
@@ -183,7 +185,7 @@
 
                                 @if ($item->reservation->isEmpty())
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
-                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2023-06-30")))
+                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2023-10-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2024-06-30")))
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
                                 @endif
 
@@ -194,8 +196,8 @@
 
                     <select id="selAcadSem" class="form-select form-select-md mb-3 mx-auto w-50" hidden>
                         <option value="cSem">Wybierz semestr</option>
-                        <option value="firstSem">2022/2023 (październik/luty)</option>
-                        <option value="secondSem">2022/2023 (luty/czerwiec)</option>
+                        <option value="firstSem">2023/2024 (październik/luty)</option>
+                        <option value="secondSem">2023/2024 (luty/czerwiec)</option>
                     </select>
 
                     <select id="selRoomFirstSem" class="form-select form-select-md mb-3 mx-auto w-50" aria-label=".form-select-ld example" hidden>
@@ -205,7 +207,7 @@
                             @if($item->floor > 0)
                                 @if ($item->reservation->isEmpty())
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
-                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2022-10-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2022-02-28")))
+                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2023-10-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2024-02-29")))
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
                                 @endif
                             @endif
@@ -220,7 +222,7 @@
                             @if($item->floor > 0)
                                 @if ($item->reservation->isEmpty())
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
-                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2023-03-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2023-06-30")))
+                                @elseif((\Carbon\Carbon::parse($item->reservation->first()->arrDate) < \Carbon\Carbon::parse("2024-03-01")) && (\Carbon\Carbon::parse($item->reservation->first()->depDate) > \Carbon\Carbon::parse("2024-06-30")))
                                     <option value="{{$item->id}}">{{$item->roomNum}}</option>
                                 @endif
                             @endif
@@ -438,7 +440,7 @@
                         <div class="position-relative w-50">
                             <img src="{{URL::to($img)}}"
                             id="id_{{$loop->index}}"
-                            class="w-100 p-1 rounded" 
+                            class="w-100 h-100 p-1 rounded" 
                             alt="Zdjecie">
 
                             @can('isAdmin')
@@ -568,18 +570,18 @@
 
                     if(selAcadYear != "cYear"){
                             if(mm < 10 && mm > 6){
-                                $('#startDate').val("2022-10-01");
-                                $('#startDateForm').val("2022-10-01");
-                                $('#endDate').val("2023-06-30");
-                                $('#endDateForm').val("2023-06-30");
+                                $('#startDate').val("2023-10-01");
+                                $('#startDateForm').val("2023-10-01");
+                                $('#endDate').val("2024-06-30");
+                                $('#endDateForm').val("2024-06-30");
                             }
                             else{
                                 mm = mm = currDate.getMonth()+2;
                                 var Date = currDate.getFullYear() + "-" + mm + "-01";
                                 $('#startDate').val(Date);
                                 $('#startDateForm').val(Date);
-                                $('#endDate').val("2023-06-30");
-                                $('#endDateForm').val("2023-06-30");
+                                $('#endDate').val("2024-06-30");
+                                $('#endDateForm').val("2024-06-30");
                             }
 
                             $('#selRoomAcadYear').removeAttr('hidden');
@@ -634,7 +636,7 @@
                         else{
                             mm = "10";
                         }
-                        endDate = "2023-02-28";
+                        endDate = "2024-02-29";
                         $('#selRoomFirstSem').removeAttr('hidden');
                         $('.checkbox').removeAttr('hidden');
                         $("#selRoomFirstSem").change(function(){
@@ -660,7 +662,7 @@
                                 mm = "0"+mm;
                             }
                         }
-                        endDate = "2023-06-30"
+                        endDate = "2024-06-30"
                         $('#selRoomSecondSem').removeAttr('hidden');
                         $('.checkbox').removeAttr('hidden');
                         $("#selRoomSecondSem").change(function(){
