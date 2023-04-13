@@ -104,10 +104,10 @@ class UserController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/dorm');
+            return response('ok');
         }
         else{
-            return redirect('/login')->with('message', 'Błędny kod QR');
+            return response('fail');
         }
     }
 

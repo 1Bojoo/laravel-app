@@ -228,8 +228,8 @@ class AnnController extends Controller
         $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',
-            'email' => 'required',
-            'phone' => 'required',
+            'email' => 'required|email',
+            'phone' => 'required|min:111111111|max:999999999',
             'postalCode' => 'required|regex:/^\d{2}-\d{3}$/',
             'city' => 'required',
             'street' => 'required',

@@ -272,11 +272,6 @@
                     <div class="d-flex flex-column align-items-center">
                         <div class="w-50 ">
                             <div class="resForm" hidden>
-                                {{-- <div class="input-group input-daterange">
-                                    <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
-                                    <div class="input-group-addon">to</div>
-                                    <input type="text" placeholder="Do" name="date_end" id="endDate" class="form-control">
-                                </div> --}}
                                 <div class="form-group date mb-2 d-flex flex-row">
                                     <input type="text" placeholder="Od" name="date_start" id="startDate" class="form-control">
                                     <div class="input-group text-center align-items-center fs-4 ms-2" style="width: 10%">

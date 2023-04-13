@@ -54,7 +54,7 @@
                     <input type="text" name="title" class="form-control">
                 </div>
                 <div class="form-group">
-                    <label for="">Content</label>
+                    <label for="">Wiadomość</label>
                     <textarea type="text" name="content" class="form-control" use="newsForm"></textarea>
                 </div>
                 <input type="date" value="{{now()->format('Y-m-d')}}" name="date" hidden>
