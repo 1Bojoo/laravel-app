@@ -225,6 +225,8 @@ class AnnController extends Controller
 
         $checkRoom = Room::where('id', $roomId)->first();
 
+        dd($request->email);
+
         $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',
